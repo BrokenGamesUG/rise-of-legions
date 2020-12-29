@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="technical-panel" id="technical_panel" :visible="not hud.Capturemode and hud.IsTechnicalPanelVisible">
+	<div class="ping-text">{{ hud.Ping }} ms</div>
+	<div class="fps">{{ hud.FPS }} FPS</div>
+	<div class="ping-icon {{ good if hud.Ping < 200 else (neutral if hud.Ping < 500 else bad) }}"></div>
+</div>

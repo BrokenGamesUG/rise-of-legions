@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<div class="announcements" :show="hud.IsAnnouncementVisible">
+	<div class="background"></div>
+	<div class="content">
+		<div class="title">{{ hud.AnnouncementTitle }}</div>
+		<div class="subtitle">{{ hud.AnnouncementSubTitle }}</div>
+	</div>
+</div>

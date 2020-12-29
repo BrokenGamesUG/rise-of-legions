@@ -1,0 +1,83 @@
+{$INCLUDE 'CardTemplate.dws'};
+{$INCLUDE 'Globals.dws'};
+
+procedure PrepareSpellData(Entity : TEntity; SpellGroup, ChargeGroup : integer; IsLegendary : boolean; Tier : integer);
+begin
+  InitCardData(
+    Entity,        // Entity
+    [SpellGroup],  // Group
+    [ChargeGroup], // ChargeGroup
+    IsLegendary,   // IsLegendary
+    False,         // IsSpawner
+    True,          // IsSpell
+    Tier           // Tier
+  );
+
+  {$IFDEF CLIENT}
+    TWelaEventRedirecter.CreateGrouped(Entity, [SpellGroup]); // fetches costs dynamically from card
+  {$ENDIF}
+end;
+
+procedure PrepareSpell(Entity : TEntity; SpellGroup, ChargeGroup, Slot : integer; CardInfo : TCardInfo; CustomBuildButton : boolean = False; IsEpic : boolean = False);
+var {$IFDEF SERVER}
+    PayCostComponent: TWelaEffectPayCostComponent;
+    {$ENDIF}
+    ReadyCostComponent: TWelaReadyCostComponent;
+begin
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [SpellGroup], reCardLeague, CardInfo.League);
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [SpellGroup], reCardLevel, CardInfo.Level);
+  Entity.Blackboard.SetValue(eiSkinIdentifier, [SpellGroup], CardInfo.SkinID);
+
+  {$IFDEF SERVER}
+    TWelaEffectTriggerSpellCastComponent.CreateGrouped(Entity, [SpellGroup]);
+
+    PayCostComponent := TWelaEffectPayCostComponent.CreateGrouped(Entity, [SpellGroup])
+      .SetPayingGroup([])
+      .SetPayingGroupForType(reCharge, [SpellGroup])
+      .ConvertResource(reGold, reWood);
+    if IsEpic then
+      PayCostComponent.ConsumesAll;
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [SpellGroup])
+      .Name('Spell')
+      .TriggerOnFire;
+
+    TServerCardPlayStatisticsComponent.CreateGrouped(Entity, [SpellGroup], CardInfo.Filename);
+
+    if not CustomBuildButton then
+      TCommanderAbility.CreateGrouped(Entity, [SpellGroup])
+        .CardInfo(CardInfo)
+        .ChargeGroup([ChargeGroup]);
+  {$ENDIF}
+
+  if not IsEpic then
+    AddCharging(Entity, SpellGroup, ChargeGroup);
+  ReadyCostComponent := TWelaReadyCostComponent.CreateGrouped(Entity, [SpellGroup])
+    .SetPayingGroup([])
+    .SetPayingGroupForType(reCharge, [SpellGroup]);
+  if IsEpic then
+    ReadyCostComponent.CostsCap;
+
+  TWelaReadyAfterGameStartComponent.CreateGrouped(Entity, [SpellGroup]); // cast spells only after game has started
+
+  if IsEpic then
+  begin
+    TWelaTargetConstraintDynamicZoneComponent.CreateGrouped(Entity, [SpellGroup])
+      .SetZone([dzNexus]);
+    TWelaTargetConstraintZoneComponent.CreateGrouped(Entity, [SpellGroup], ZONE_DROP, False);
+  end
+  else
+    TWelaTargetConstraintZoneComponent.CreateGrouped(Entity, [SpellGroup], ZONE_WALK, False);
+
+  {$IFDEF CLIENT}
+    if not CustomBuildButton then
+      TDeckCardButtonComponent.CreateGrouped(Entity, [SpellGroup])
+        .Slot(Slot)
+        .CardInfo(CardInfo)
+        .SetCooldownGroup([ChargeGroup]);
+  {$ENDIF}
+end;
+
+procedure PrepareEpicSpell(Entity : TEntity; SpellGroup, ChargeGroup, Slot : integer; CardInfo : TCardInfo; CustomBuildButton : boolean = False);
+begin
+  PrepareSpell(Entity, SpellGroup, ChargeGroup, Slot, CardInfo, CustomBuildButton, True);
+end;

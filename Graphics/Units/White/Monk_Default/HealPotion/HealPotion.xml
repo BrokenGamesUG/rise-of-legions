@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh" identifier="133447312">
+  <AnimationDriver/>
+  <GeometryFile>HealPotion.fbx</GeometryFile>
+  <Cullmode>cmCCW</Cullmode>
+  <Alpha>1</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <Specular>False</Specular>
+  <SpecularIntensity>0,99999998430675</SpecularIntensity>
+  <SpecularPower>128</SpecularPower>
+  <DiffuseTetxure>HealPotionDiffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture></SpecularTexture>
+</TMesh>

@@ -1,0 +1,81 @@
+#define DURATION 15000
+
+procedure Apply(Entity : TEntity);
+var Group, DieGroup, HealthGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  DieGroup := Entity.ReserveFreeGroup();
+  HealthGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], DURATION); //Undying duration
+
+  Entity.Blackboard.SetValue(eiWelaDamage, [HealthGroup], 100000.0); // Set back to Max-Health initial
+
+  {$IFDEF SERVER}
+    // full heal
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [HealthGroup])
+      .ThinksPassively();
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [HealthGroup]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [HealthGroup])
+      .SetResourceType(reHealth);
+    TThinkImpulseNowComponent.CreateGrouped(Entity, [HealthGroup]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [HealthGroup])
+      .TargetGroup([HealthGroup]);
+
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative]);
+    TWelaEffectSuicideComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, DieGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Undying')
+      .TriggerOnKill;
+
+    // death effect
+    TAutoBrainOnDeathComponent.CreateGrouped(Entity, [DieGroup]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasUndying, upUnhealable]);
+  TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+
+  {$IFDEF CLIENT}
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGhost.Create()
+          .Color($FFBFFDED)
+      );
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGlow.Create(-1)
+          .FixedColorIdentity(ecBlack)
+          .AddPermaKey(0.1)
+      );
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/black/effect/undying_trigger')
+      .TriggerNow();
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Black\undying.pfx', 0.3)
+      .ActivateNow()
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [DieGroup], '\Black\undying_suicide.pfx', 0.45)
+      .ActivateOnFire()
+      .ScaleWith(eiCollisionRadius);
+
+    TSoundComponent.CreateGrouped(Entity, [DieGroup], 'event:/card/black/effect/undying_suicide')
+      .TriggerOnFire();
+
+    TIndicatorCooldownCircleComponent.CreateGrouped(Entity, [Group])
+      .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+      .SetRadius(1.5)
+      .ScaleWith(eiCollisionRadius)
+      .SetThickness(0.1)
+      .SetLinearBlend
+      .Color($60000000)
+      .Invert;
+  {$ENDIF}
+end;

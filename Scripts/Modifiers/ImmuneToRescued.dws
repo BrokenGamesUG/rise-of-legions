@@ -1,0 +1,16 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btDivine]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upImmuneToRescued]);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

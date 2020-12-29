@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<div class="tooltip " :visible="tooltip.IsVisible">
+	<div class="content">
+		<div class="name">{{ tooltip.name }}</div>
+		<img class="icon" src="{{ HClient.GetCardIconBackgroundByFile(tooltip.EntityScriptFileForIcon) }}">
+			<div class="legendary" :visible="tooltip.IsLegendary"></div>
+			<div class="epic" :visible="tooltip.IsEpic"></div>
+			<img class="card-icon" src="{{ HClient.GetCardIconByFile(tooltip.EntityScriptFileForIcon, tooltip.SkinID) }}"></img>
+			<wrapper class="stats">
+				<img class="league-icon" src="{{ HClient.GetLeagueIcon(tooltip.League) }}">
+					{{ tooltip.Level }}
+				</img>
+			</wrapper>
+		</img>
+		<div class="info" :visible="tooltip.CardType <> ctSpell">
+			<progress class="health">
+				<bar class="healthpoints" :width%="(tooltip.CurrentHealth / (tooltip.MaximumHealth + tooltip.CurrentOverheal))"></bar>
+				<bar class="overheal" :offset-x%="(tooltip.CurrentHealth / (tooltip.MaximumHealth + tooltip.CurrentOverheal))" :width%="(tooltip.CurrentOverheal / (tooltip.MaximumHealth + tooltip.CurrentOverheal))"></bar>
+				<div class="caption">{{ F.IntToStr(F.Ceil(tooltip.CurrentHealth + tooltip.CurrentOverheal)) }} / {{ F.IntToStr(F.Ceil(tooltip.MaximumHealth)) }}</div>
+			</progress>
+			<progress class="mana" :visible="tooltip.MaximumEnergy > 0">
+				<bar :width%="tooltip.CurrentEnergy / tooltip.MaximumEnergy"></bar>
+				<div class="caption">{{ F.IntToStr(tooltip.CurrentEnergy) }} / {{ F.IntToStr(tooltip.MaximumEnergy) }}</div>
+			</progress>
+			<div class="armor {{ has_energy if tooltip.CurrentEnergy > 0 }}" title="§ArmorType_{{ tooltip.ArmorType }}_Hint">
+				<img class="icon" src="{{ HClient.GetArmorTypeIcon(tooltip.ArmorType) }}"></img>
+				<div class="caption">§ArmorType_{{ tooltip.ArmorType }}_Caption</div>
+			</div>
+			<div class="weapon {{ has_energy if tooltip.CurrentEnergy > 0 }}" :visible="tooltip.HasMainWeapon">
+				<img class="icon" src="{{ HClient.GetDamageTypeIcon(tooltip.MainWeaponType) }}" title="§DamageType_{{ tooltip.MainWeaponType }}_Hint" ></img>
+				<div class="caption" title="{{ F._2(§dps_melee,F.FloatToStr(tooltip.MainWeaponDamage),F.FloatToStr(tooltip.MainWeaponCooldown)) if tooltip.MainWeaponIsMelee else F._sss(§dps,F.FloatToStr(tooltip.MainWeaponDamage),F.FloatToStr(tooltip.MainWeaponCooldown),F.FloatToStr(tooltip.MainWeaponRange)) }}">{{ F.FloatToStr(tooltip.MainWeaponDPS) }}</div>
+			</div>
+		</div>
+		<div :class="spell-info if tooltip.CardType = ctSpell else abilities">
+			{{ tooltip.Description if tooltip.CardType = ctSpell else tooltip.AbilityNames }}
+			<stack class="skill-hint custom-hint">
+				<stack class="skill-list" :visible="tooltip.HasSkills">
+					<div class="skill" :visible="tooltip.CardType = ctSpell">
+						<div class="skill-description">	
+							{{ tooltip.Description }}
+						</div>
+					</div>
+					<stack dxml-for:static="skill in tooltip.Skills" class="skill">
+						<div class="skill-name">- {{ skill.name }} -</div>
+						<div class="skill-description">{{ skill.hint }}</div>
+					</stack>
+				</stack>
+				<stack class="keyword-list" :visible="tooltip.HasKeywords">
+					<div dxml-for:static="keyword_id in tooltip.Keywords" class="keyword">
+						§effect_{{ keyword_id. }}_description
+					</div>
+				</stack>
+			</stack>
+		</div>
+	</div>
+</div>

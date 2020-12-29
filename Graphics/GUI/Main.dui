@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<root class="maingui">
+	<div class="black left"></div>
+	<div class="black right"></div>
+	<div class="black top"></div>
+	<div class="black bottom"></div>
+	<wrapper class="client-wrapper">
+		<div dxml-include="SettingsMenu.dui"></div>
+		<div dxml-include="MainMenu.dui"></div>
+		<div dxml-include="LoadingScreen.dui"></div>
+		<div dxml-include="Game.dui"></div>
+		<div dxml-include="ExitDialog.dui"></div>	
+		<div dxml-include="ErrorDialog.dui"></div>	 
+		<div dxml-include="SettingsMenu/KeybindingDialog.dui"></div>	
+		<div dxml-include="Reconnect.dui"></div>	
+	</wrapper>
+</root>

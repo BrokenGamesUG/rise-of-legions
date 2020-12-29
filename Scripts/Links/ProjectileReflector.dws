@@ -1,0 +1,40 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+    TAutoBrainOnWelaHitByProjectileComponent.CreateGrouped(Entity, [Group]);
+    TWelaTargetConstraintWelaPropertyComponent.CreateGrouped(Entity, [Group])
+      .CheckGroup([0])
+      .MustNotHave([dtTrue, dtReflected]);
+    TWelaTargetConstraintEnemiesComponent.CreateGrouped(Entity, [Group]);
+    TWelaTargetConstraintCreatorIsAliveComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('ProjectileReflector')
+      .TriggerOnFire;
+    TWelaEffectFireComponent.CreateGrouped(Entity, [Group])
+      .FireInCreator;
+  {$ENDIF}
+
+  // this aura can only placed once on a unit
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upProjectileReflector]);
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\ProjectileReflectorProjectile.dws');
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\projectile_reflector_trigger.pfx', 0.8)
+      .ActivateOnFireWarhead()
+      .FixedOrientationDefault()
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/blue/unit/shield_drone/projectile_reflected')
+      .TriggerOnFire;
+  {$ENDIF}
+
+  Result := [Group];
+end;

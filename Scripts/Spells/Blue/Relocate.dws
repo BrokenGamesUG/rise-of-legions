@@ -1,0 +1,99 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; Target, Offset : RVector2);
+var Group, BuildingGroup, EffectGroup,ReplenishGroup, ImmuneGroup : integer;
+begin
+  EffectGroup := Entity.ReserveFreeGroup();
+  Group := Entity.ReserveFreeGroup();
+  BuildingGroup := Entity.ReserveFreeGroup();
+  ReplenishGroup := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 500); //Delay
+
+  Entity.Blackboard.SetValue(eiCooldown, [EffectGroup], 1500); //Effect-Duration
+
+  Entity.Blackboard.SetIndexedValue(eiWelaDamage, [BuildingGroup], 1, 0.3);
+  Entity.Blackboard.SetIndexedValue(eiWelaDamage, [BuildingGroup], 2, 0.25);
+  Entity.Blackboard.SetIndexedValue(eiWelaDamage, [BuildingGroup], 3, 0.15);
+  Entity.Blackboard.SetValue(eiDamageType, [BuildingGroup], [dtSpell, dtFlatHeal]);
+
+  TWelaHelperResolveComponent.CreateGrouped(Entity, [BuildingGroup])
+    .ResolveTier;
+
+  Entity.Blackboard.SetIndexedValue(eiWelaDamage, [ReplenishGroup], 1, 0.3);
+  Entity.Blackboard.SetIndexedValue(eiWelaDamage, [ReplenishGroup], 2, 0.2);
+  Entity.Blackboard.SetIndexedValue(eiWelaDamage, [ReplenishGroup], 3, 0.2);
+  Entity.Blackboard.SetValue(eiDamageType, [ReplenishGroup], [dtSpell]);
+
+  TWelaHelperResolveComponent.CreateGrouped(Entity, [ReplenishGroup])
+    .ResolveTier;
+
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], 20000); //Relocate Immune-Duration
+
+  {$IFDEF SERVER}
+    TThinkImpulseTimerCooldownComponent.CreateGrouped(Entity, [Group])
+      .Once;
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively
+      .ThinksLocal;
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [Group], eiIsAlive);
+    TWelaEffectFireComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([BuildingGroup]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [BuildingGroup])
+      .MustHave([upBuilding]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [BuildingGroup]);
+    TWarheadSpottyHealComponent.CreateGrouped(Entity, [BuildingGroup])
+      .PercentageOfMaxHealth;
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [BuildingGroup])
+      .TargetGroup([ReplenishGroup]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [ReplenishGroup])
+      .SetResourceType(reMana)
+      .AmountIsPercentage;
+    // teleport after healing as entity id changes an target becomes invalid
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWarheadSpottyTeleportComponent.CreateGrouped(Entity, [Group])
+      .ToCoordinate(Target.X + Offset.X, Target.Y + Offset.Y);
+
+    TThinkImpulseTimerCooldownComponent.CreateGrouped(Entity, [EffectGroup]);
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [EffectGroup])
+      .ThinksPassively
+      .ThinksLocal;
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [EffectGroup])
+      .TargetGroup([Group, BuildingGroup, EffectGroup, ReplenishGroup]);
+
+    // Immunity
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToRelocate]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [ImmuneGroup], '\Blue\relocate_immune.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\relocate_apply.pfx', 1.1)
+      .ActivateNow;
+
+    TMeshEffectGlow.Create(900)
+      .FixedColorIdentity(ecBlue)
+      .AddKey(0, 0.0)
+      .AddKey(450, 0.15)
+      .AddKey(500, 0.5)
+      .AddKey(600, 0.5)
+      .AddKey(900, 0.0)
+      .AssignToEntity(Entity);
+
+    TVisualModificatorSizeComponent.CreateGrouped(Entity, [0, 1, 2, 3, 4, 5, 6, 7, 8, Group, EffectGroup])
+      .Keypoints([1.0, 1.0, 1.1, 0.0, 1.1, 1.0])
+      .TimeKeys([0, 300, 400, 500, 600, 700])
+      .Duration(700);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\relocate_finish.pfx', 1.0)
+      .ActivateOnFire;
+  {$ENDIF}
+end;

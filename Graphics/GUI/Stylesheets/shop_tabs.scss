@@ -1,0 +1,39 @@
+﻿.shop{
+	.shop-redeem-tab{
+		.code-form{
+			Position-Y : -6.3%;
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Background : MainMenu/Shop/redeem_bg.png;
+			Size : 100bw auto;
+			caption{
+				Position-Y : -5%;
+				Size-Y : 20%;
+				Anchor : caBottom;
+				ParentAnchor : caTop;
+			}
+			input{
+				Position : 0 7.9%;
+				Anchor : caTop;
+				ParentAnchor : caTop;
+				Size : 94% 48%;
+				FontSize : 40%;
+				FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+				BackgroundColor : 0;
+				FontColor : $font-color-white;
+			}
+			btn{
+				Anchor : caCenter;
+				ParentAnchor : caBottom;
+			}
+			.help-text{
+				Position : 0 40;
+				Size : 100vw 20vh;
+				Anchor : caTop;
+				ParentAnchor : caBottom;
+				FontSize : 18;
+				FontFlags : [ffCenter];
+			}
+		}
+	}
+}

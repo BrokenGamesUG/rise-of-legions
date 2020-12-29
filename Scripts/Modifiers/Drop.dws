@@ -1,0 +1,51 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+{$IFDEF CLIENT}
+  var ColorIdentity : integer;
+{$ENDIF}
+begin
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    ColorIdentity := Entity.ColorIdentity;
+    if ColorIdentity = ecGreen then
+    begin
+      TParticleEffectComponent.CreateGrouped(Entity, [0], '\Green\drop_green.pfx', 2.0)
+        .IgnoreModelSize
+        .ActivateNow
+        .FixedHeightGround;
+    end
+    else if ColorIdentity = ecBlack then
+    begin
+      TParticleEffectComponent.CreateGrouped(Entity, [0], '\Black\drop_black.pfx', 2.0)
+        .ActivateNow
+        .BindToSubPosition(BIND_ZONE_GROUND);
+    end
+    else if ColorIdentity = ecBlue then
+    begin
+      TParticleEffectComponent.CreateGrouped(Entity, [0], '\Blue\drop_blue.pfx', 2.0)
+        .ActivateNow
+        .BindToSubPosition(BIND_ZONE_TOP);
+    end
+    else if ColorIdentity = ecColorless then
+    begin
+      TParticleEffectComponent.CreateGrouped(Entity, [0], '\Colorless\drop_colorless.pfx', 0.5)
+        .IgnoreModelSize
+        .ScaleWith(eiCollisionRadius)
+        .ScaleRange(0.55, 0.7)
+        .FixedHeightGround
+        .ActivateNow;
+    end
+    else
+    // if ColorIdentity = ecWhite then // default case
+    begin
+      TParticleEffectComponent.CreateGrouped(Entity, [0], '\White\drop_white.pfx', 10.0)
+        .ActivateNow()
+        .BindToSubPositionGroup(BIND_ZONE_TOP, [0, 1]);
+    end;
+    TMeshEffectSpawn.Create()
+      .AssignToEntity(Entity);
+  {$ENDIF}
+end;

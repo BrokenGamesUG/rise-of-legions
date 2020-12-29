@@ -1,0 +1,71 @@
+#define DEFAULT_DURATION 12000
+
+procedure Apply(Entity : TEntity);
+var Group, ImmuneGroup, HoTGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  HoTGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], DEFAULT_DURATION); //Petrified-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], DEFAULT_DURATION + 10000); //PetrifiedImmunity-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [HoTGroup], 1000); //HoT-Tick
+  Entity.Blackboard.SetValue(eiWelaDamage, [HoTGroup], 10.0);
+  Entity.Blackboard.SetValue(eiDamageType, [HoTGroup], [dtHoT, dtOverheal]);
+
+  {$IFDEF SERVER}
+    // Stop unit at freeze
+    Entity.Eventbus.Trigger(eiStand, []);
+    Entity.Eventbus.Trigger(eiWelaStop, []);
+    // After eiCooldown Petrified is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, HoTGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Petrified')
+      .TriggerOnKilled;
+
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+
+    TWelaHelperBeaconComponent.CreateGrouped(Entity, [Group, ImmuneGroup])
+      .TriggerAt([upPetrified]);
+
+    // HoT
+    TBrainWelaSelfTargetComponent.CreateGrouped(Entity, [HoTGroup])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [HoTGroup], False);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [HoTGroup])
+      .MustNotHave([upUnhealable]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [HoTGroup]);
+    TWarheadSpottyHealComponent.CreateGrouped(Entity, [HoTGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [HoTGroup])
+      .Name('PetrifyHeal')
+      .TriggerOnHealDone;
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upPetrified]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToPetrified]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [HoTGroup], '\Colorless\petrify_heal.pfx', 1.25)
+      .ActivateOnFire()
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectStone.Create(DEFAULT_DURATION)
+          .AddKey(0, 0.0)
+          .AddKey(500, 1.0)
+          .AddKey(DEFAULT_DURATION - 250, 1.0)
+          .AddKey(DEFAULT_DURATION, 0.0)
+      );
+  {$ENDIF}
+end;

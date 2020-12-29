@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<wrapper class="settings keybinding">
+	<stack class="column">
+		<div class="binding" dxml-for="binding in settings.BindableKeys">
+			<div class="name">
+				§settings_keybinding_{{ binding. }}_caption
+			</div>
+			<div class="main" enabled="True" dxml-on:click="settings.RebindKey(binding., False)">
+				{{ F.KeybindingToStr(settings.GetKeybinding(binding.)) }}
+				<btn class="reset fa fa-times" dxml-on:click="settings.DeleteKey(binding., False)"></btn>
+			</div>
+			<div class="alt" enabled="True" dxml-on:click="settings.RebindKey(binding., True)">
+				{{ F.KeybindingToStr(settings.GetAltKeybinding(binding.)) }}
+				<btn class="reset fa fa-times" dxml-on:click="settings.DeleteKey(binding., True)"></btn>
+			</div>
+		</div>
+	</stack>
+	<btn class="btn-xl btn-revert" dxml-on:click="settings.RevertCategory(otKeybinding)">§RevertSettings</btn>
+</wrapper>

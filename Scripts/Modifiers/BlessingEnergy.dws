@@ -1,0 +1,90 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var EnergyRegenerationGroup, EnergyGroup, Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  EnergyGroup := Entity.ReserveFreeGroup();
+  EnergyRegenerationGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [EnergyRegenerationGroup], reWelaCharge, 4);
+  Entity.Blackboard.SetIndexedValue(eiResourceCap, [EnergyRegenerationGroup], reWelaCharge, 4);
+  Entity.Blackboard.SetIndexedValue(eiResourceCost, [EnergyRegenerationGroup], reWelaCharge, 1);
+  Entity.Blackboard.SetValue(eiWelaDamage, [EnergyRegenerationGroup], 1.0); // energy flow for 4 ticks
+  Entity.Blackboard.SetValue(eiCooldown, [EnergyRegenerationGroup], 3000);
+  Entity.Blackboard.SetValue(eiWelaDamage, [EnergyGroup], 2.0); // increase max energy
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, EnergyRegenerationGroup, EnergyGroup]);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Enchanted')
+      .Name('FluxField')
+      .TriggerOnTakeDamage;
+
+    // Increase Energy, only server because cap is synced
+    TModifierResourceComponent.CreateGrouped(Entity, [EnergyGroup])
+      .DontFillCap
+      .Resource(reMana)
+      .ApplyNow();
+
+    // Energy regeneration
+    TBrainWelaSelfTargetComponent.CreateGrouped(Entity, [EnergyRegenerationGroup])
+      .ThinksPassively();
+    TWelaReadyResourceCompareComponent.CreateGrouped(Entity, [EnergyRegenerationGroup])
+      .ComparedResource(reMana)
+      .CheckNotFull;
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [EnergyRegenerationGroup], False);
+    TWelaReadyCostComponent.CreateGrouped(Entity, [EnergyRegenerationGroup])
+      .SetPayingGroup([EnergyRegenerationGroup]);
+    TWelaEffectPayCostComponent.CreateGrouped(Entity, [EnergyRegenerationGroup])
+      .SetPayingGroup([EnergyRegenerationGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [EnergyRegenerationGroup]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [EnergyRegenerationGroup])
+      .SetResourceType(reMana)
+      .TargetGroup([]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedEnergy]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\blessing_energy_apply.pfx', 1.2)
+      .ActivateNow
+      .FixedHeightGround
+      .FixedOrientationDefault
+      .ScaleWith(eiCollisionRadius);
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGhost.Create()
+          .Additive
+          .Color($FF5BA9FF)
+      );
+
+    TVisualModificatorSizeComponent.CreateGrouped(Entity, [0, 1, 2, 3, 4, 5, 6, 7, 8, Group])
+      .Keypoints([1.0, 0.9, 1.05, 1.0])
+      .KeypointsY([1.0, 1.3, 0.95, 1.0])
+      .TimeKeys([0, 100, 250, 300])
+      .Duration(300);
+
+    TMeshEffectTint.Create(300, $FF5BA9FF)
+      .AddKey(0, 0.0)
+      .AddKey(100, 1.0)
+      .AddKey(300, 0.0)
+      .AssignToEntity(Entity);
+
+    TSoundComponent.CreateGrouped(Entity, [EnergyRegenerationGroup], 'event:/card/blue/shared/blessing_energy/tick')
+      .TriggerOnFire();
+
+    TIndicatorResourceCircleComponent.CreateGrouped(Entity, [EnergyRegenerationGroup])
+      .Padding(PI / 1000)
+      .ShowsResource(reWelaCharge)
+      .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+      .SetRadius(1.5)
+      .ScaleWith(eiCollisionRadius)
+      .SetThickness(0.1)
+      .Color($405BA9FF);
+  {$ENDIF}
+end;

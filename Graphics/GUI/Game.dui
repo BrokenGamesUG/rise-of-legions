@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<wrapper class="core-game {{ small if (hud.Resolution.X < 1710) or (hud.Resolution.Y < 816) }}" :visible="client.State = csCoreGame">
+	<div dxml-include="Mainmenu/Navbar/FeedbackDialog.dui"></div>
+	<wrapper class="hud {{ tutorial-hud if hud.IsTutorial }} {{ disabled if hud.IsTutorialHintOpen and hud.TutorialHintFullscreen }}" :visible="(hud.State = hsGame) and hud.IsHUDVisible">
+		<wrapper class="ui" id="ui">
+			<div dxml-include="HUD/GameStatePanel/GameInfoBar.dui"></div>
+			<div dxml-include="HUD/TechnicalPanel/TechnicalPanel.dui"></div>
+			<div dxml-include="HUD/CommanderSwitch/CommanderSwitch.dui"></div>
+			<div dxml-include="HUD/Sandbox/Sandbox.dui"></div>
+			<div dxml-include="HUD/InfoPanel/Tooltip.dui"></div>
+			<div dxml-include="HUD/MinimapPanel/Minimap.dui"></div>
+			<div dxml-include="HUD/RessourcePanel/RessourcePanel.dui"></div>
+			<div dxml-include="HUD/DeckPanel/DeckPanel.dui"></div>
+			<div dxml-include="HUD/DeckPanel/CardHint.dui"></div>
+			<div dxml-include="HUD/Scoreboard/Scoreboard.dui"></div>
+			<div dxml-include="HUD/Announcements/Announcements.dui"></div>
+		</wrapper>
+		<div dxml-include="HUD/Tutorial/TutorialHint.dui"></div>
+	</wrapper>
+	<div dxml-include="HUD/Menu.dui"></div>
+	<div dxml-include="HUD/ReconnectDialog.dui"></div>
+	<div dxml-include="HUD/FinalScreen/Final.dui"></div>
+</wrapper>

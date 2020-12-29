@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<wrapper class="deck-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diMatchmakingDeck)" :visible="menu.CurrentMenu = mtGame" dxml-on:click="dialogs.CloseDialog(diMatchmakingDeck)">
+	<div class="window">
+		<div class="window-caption">§teambuilding_deck_dialog_caption</div>
+		<stack class="decks">
+			<btn dxml-for="deck in deckbuilder.Decks" class="deck-wrapper {{ disabled if deck.IsEmpty }}" dxml-on:click="matchmaking.manager.CurrentTeam.Deck := deck.;dialogs.CloseDialog(diMatchmakingDeck)" title="{{ §teambuilding_deck_empty if deck.IsEmpty }}">
+				<div dxml-include="MainMenu/Deckbuilding/Deck.dui"></div>
+			</btn>
+		</stack>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diMatchmakingDeck)">§close</btn>
+		</stack>
+	</div>
+</wrapper>

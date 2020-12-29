@@ -1,0 +1,60 @@
+﻿.reconnect{
+	.message{
+		Position : 0 -4%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : 40% 40;
+		FontSize : 20;
+		FontFlags: [ffCenter,ffWordWrap];
+	}
+	.btn-reconnect{
+		Position : 0 4%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+	}
+	.force-broker-fallback{
+		Position : 0 40%;
+		Size : 40% 70;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		.caption{
+			Size : 100% 40;
+			FontSize : 18;
+			FontFlags: [ffCenter,ffWordWrap];
+		}
+		check{
+			Anchor : caBottom;
+			ParentAnchor : caBottom;
+			Size : text 20;
+		}
+	}
+}
+
+.idle-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-super-nested-dialog;
+	}
+	.window{
+		Size : 40vw 40vh;
+		.idle-caption{
+			Size : 100% 60%;
+			FontSize : 20%;
+			FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+		}
+		.idle-timer{
+			Position : 0 60%;
+			Size : 100% 40%;
+			FontFlags : [ffCenter,ffVerticalCenter];
+		}
+	}
+}
+
+.framed-icon{
+	Background : Shared/player_icon_frame.png;
+	.framed-icon-icon{
+		Size : auto 69%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		ZOffset : -2;
+	}
+}

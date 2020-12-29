@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<stack class="resource-panel">
+	<div class="currency-wrapper" title="§currency_gold_hint">
+		<img src="{{ HClient.CurrencyIcon(currency_gold) }}"></img>
+		<div class="balance" dxml-with="balance=shop.shop.Balance(dcGold)" >{{ balance.Balance }}</div>
+	</div>
+	<div class="currency-wrapper" title="§currency_diamonds_hint">
+		<img src="{{ HClient.CurrencyIcon(currency_diamonds) }}"></img>
+		<div class="balance" dxml-with="balance=shop.shop.Balance(dcDiamonds)">{{ balance.Balance }}</div>
+	</div>
+	<div class="currency-popup frame">
+		<stack>
+			<div dxml-for="balance in shop.Shop.Balances" class="col-2 row-4 currency" :visible="(balance.Currency.UID <> currency_gold) and (balance.Currency.UID <> currency_diamonds)" title="§{{ balance.Currency.UID }}">
+				<div class="amount">{{ balance.Balance }}</div>
+				<img class="icon" src="{{ HClient.CurrencyIcon(balance.Currency.UID) }}"></img>
+			</div>
+		</stack>
+	</div>
+</stack>

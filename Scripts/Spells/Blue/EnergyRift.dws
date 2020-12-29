@@ -1,0 +1,62 @@
+procedure Apply(Entity : TEntity);
+var Group, FireGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 30000);
+  FireGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [FireGroup], 1000);
+  Entity.Blackboard.SetValue(eiWelaDamage, [FireGroup], 24.0);
+  Entity.Blackboard.SetValue(eiWelaRange, [FireGroup], 14.0);
+  Entity.Blackboard.SetValue(eiWelaUnitPattern, [FireGroup], 'Projectiles\Blue\EnergyRiftProjectile');
+  Entity.Blackboard.SetValue(eiDamageType, [FireGroup], [dtSpell]);
+
+  {$IFDEF SERVER}
+    // After eiCooldown Buff is removed
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively;
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, FireGroup]);
+
+    TBrainWelaFightComponent.CreateGrouped(Entity, [FireGroup])
+      .ThinksPassively;
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [FireGroup], True);
+    TWelaTargetingRadialComponent.CreateGrouped(Entity, [FireGroup])
+      .SetTargetTeamConstraint(tcEnemies)
+      .PicksRandomTargets;
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [FireGroup])
+      .MustNotHave([upInvisible, upBanished, upSpellImmune]);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [FireGroup], eiDamageable);
+    TWelaEffectProjectileComponent.CreateGrouped(Entity, [FireGroup]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasEnergyRift]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\energy_rift_cast.pfx', 2.0)
+      .ActivateNow
+      .BindToSubPositionGroup(BIND_ZONE_TOP, [0, 1])
+      .SetModelOffset(0, 1.8, 0);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\energy_rift_buff.pfx', 2.0)
+      .Delay(200)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_TOP, [0, 1])
+      .SetModelOffset(0, 1.8, 0);
+
+    TCameraShakerComponent.CreateGrouped(Entity, [])
+      .Delay(300)
+      .PresetRotationLight
+      .ActivateNow;
+
+    TCameraShakerComponent.CreateGrouped(Entity, [])
+      .Delay(300)
+      .PresetVectorLight
+      .ActivateNow;
+
+    TSoundComponent.CreateGrouped(Entity, [FireGroup], 'event:/card/blue/spell/energy_rift/attack_fire')
+      .TriggerOnFire;
+  {$ENDIF}
+end;

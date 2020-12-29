@@ -1,0 +1,213 @@
+const
+  ALLGROUP = [255];
+
+type
+  single = float;
+
+  function s(arr : array of string; Index : integer) : string;
+  begin
+    Index := Index - 1; // as long there is no wood league, we skip it
+    Result := arr[Index];
+  end;
+
+  function i(arr : array of integer; Index : integer) : integer;
+  begin
+    Index := Index - 1; // as long there is no wood league, we skip it
+    Result := arr[Index];
+  end;
+
+  function ii(arr : array of array[0..4] of integer; Index, Index2 : integer) : integer;
+  begin
+    Index := Index - 1; // as long there is no wood league, we skip it
+    Index2 := Index2 - 1;
+    Result := arr[Index][Index2];
+  end;
+
+  function f(arr : array of single; Index : integer) : single;
+  begin
+    Index := Index - 1; // as long there is no wood league, we skip it
+    Result := arr[Index];
+  end;
+
+  function ff(arr : array of array[0..1] of single; Index, Index2 : integer) : single;
+  begin
+    Index := Index - 1; // as long there is no wood league, we skip it
+    Index2 := Index2 - 1;
+    Result := arr[Index][0] + (arr[Index][1] - arr[Index][0]) * (Index2 / 4);
+  end;
+
+type
+  RVector2Helper = record helper for RVector2
+    class function Create(X, Y : single) : RVector2;
+  end;
+
+type
+  RVector3Helper = record helper for RVector3
+    class function Create(X, Y, Z : single) : RVector3;
+    function SetX(Wert : single) : RVector3;
+    function SetY(Wert : single) : RVector3;
+    function SetZ(Wert : single) : RVector3;
+    function isZeroVector : boolean;
+    class function getRandomPointInSphere(Radius : single) : RVector3;
+  end;
+
+function RVector3Add(a, b : RVector3) : RVector3; forward;
+
+operator + (RVector3, RVector3) : RVector3 uses RVector3Add;
+
+type
+  RIntVector2Helper = record helper for RIntVector2
+    class function Create(X, Y : integer) : RIntVector2;
+  end;
+
+const
+  RVector3ZERO : RVector3 = (X : 0; Y : 0; Z : 0);
+
+type
+  RVariedVector3 = record
+    private
+      FHasVariance, FRadialVaried : boolean;
+    public
+      Mean, Variance : RVector3;
+      property RadialVaried : boolean read FRadialVaried write FRadialVaried;
+      class function Create(Mean : RVector3) : RVariedVector3; overload;
+      class function Create(Mean, Variance : RVector3) : RVariedVector3; overload;
+      class function CreateRadialVaried(Mean : RVector3; Variance : single) : RVariedVector3;
+      function getRandomVector() : RVector3;
+  end;
+
+type
+  RVariedSingleHelper = record helper for RVariedSingle
+    class function Create(Mean, Variance : single) : RVariedSingle;
+  end;
+
+  { type
+
+   RColorHelper = record helper for RColor
+   class function Create(Color : Cardinal) : RColor;
+   end; }
+
+
+  // -----------Implementation-----------------------------------------------------
+
+  // -----------RColor-----------------------------------------------------------
+
+  { class function RColorHelper.Create(Color : Cardinal) : RColor;
+   begin
+   result.Color := Color;
+   end; }
+
+  // -----------RIntVector2--------------------------------------------------------
+
+  class function RIntVector2Helper.Create(X, Y : integer) : RIntVector2;
+  begin
+    result.X := X;
+    result.Y := Y;
+  end;
+
+  // -----------RVector2--------------------------------------------------------
+
+  class function RVector2Helper.Create(X, Y : single) : RVector2;
+  begin
+    result.X := X;
+    result.Y := Y;
+  end;
+
+// -----------RVector3-----------------------------------------------------------
+
+  class function RVector3Helper.Create(X, Y, Z : single) : RVector3;
+  begin
+    result.X := X;
+    result.Y := Y;
+    result.Z := Z;
+  end;
+
+  function RVector3Helper.SetX(Wert : single) : RVector3;
+  begin
+    result := self;
+    result.X := Wert;
+  end;
+
+  function RVector3Helper.SetY(Wert : single) : RVector3;
+  begin
+    result.X := X;
+    result.Y := Wert;
+    result.Z := Z;
+  end;
+
+  function RVector3Helper.SetZ(Wert : single) : RVector3;
+  begin
+    result := self;
+    result.Z := Wert;
+  end;
+
+  function RVector3Helper.isZeroVector : boolean;
+  begin
+    result := (X = 0) and (Y = 0) and (Z = 0);
+  end;
+
+  class function RVector3Helper.getRandomPointInSphere(Radius : single) : RVector3;
+  var
+    a, b : single;
+  begin
+    a := Random * 2 * PI;
+    b := Random * PI;
+    Radius := Random * Radius;
+    result.X := Radius * sin(b) * Cos(a);
+    result.Y := Radius * sin(b) * sin(a);
+    result.Z := Radius * Cos(b);
+  end;
+
+  function RVector3Add(a, b : RVector3) : RVector3;
+  begin
+    result.X := a.X + b.X;
+    result.Y := a.Y + b.Y;
+    result.Z := a.Z + b.Z;
+  end;
+
+// ------------------RVariedVector3----------------------------------------------
+
+  class function RVariedVector3.Create(Mean : RVector3) : RVariedVector3;
+  begin
+    result := Create(Mean, RVector3ZERO);
+  end;
+
+  class function RVariedVector3.Create(Mean, Variance : RVector3) : RVariedVector3;
+  begin
+    result.Mean := Mean;
+    result.Variance := Variance;
+    result.FRadialVaried := False;
+    result.FHasVariance := not Variance.isZeroVector;
+  end;
+
+  class function RVariedVector3.CreateRadialVaried(Mean : RVector3; Variance : single) : RVariedVector3;
+  begin
+    result := Create(Mean, RVector3.Create(Variance, 0, 0));
+    result.FRadialVaried := true;
+  end;
+
+  function RVariedVector3.getRandomVector : RVector3;
+  begin
+    if FHasVariance then
+    begin
+      if FRadialVaried then
+      begin
+        result := Mean + RVector3.getRandomPointInSphere(Variance.X);
+      end
+      else
+      begin
+        result.X := Mean.X + ((Random * 2 - 1) * Variance.X);
+        result.Y := Mean.Y + ((Random * 2 - 1) * Variance.Y);
+        result.Z := Mean.Z + ((Random * 2 - 1) * Variance.Z);
+      end;
+    end
+    else result := Mean;
+  end;
+
+// ------------------RVariedSingle----------------------------------------------
+
+  class function RVariedSingleHelper.Create(Mean, Variance : single) : RVariedSingle;
+  begin
+    Result.Mean := Mean;
+    Result.Variance := Variance;
+  end;

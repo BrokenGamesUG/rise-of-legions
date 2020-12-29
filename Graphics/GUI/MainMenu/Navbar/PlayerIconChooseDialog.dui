@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<wrapper class="player-icon-dialog icon-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diPlayerIcon)" dxml-on:click="dialogs.CloseDialog(diPlayerIcon)">
+	<div class="window">
+		<div class="window-caption">§friendlist_playericon_list_caption</div>
+		<stack class="icons">
+			<div dxml-for="icon in profile.Profile.UnlockedIcons" class="btn framed-icon pop-out big {{ selected if icon. = profile.Account.Own.Icon }}" dxml-on:click="profile.ChoosePlayerIcon(icon.)">
+				<img class="framed-icon-icon" src="{{ HClient.GetPlayerIcon(icon.) }}"></img>
+			</div>
+		</stack>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diPlayerIcon)">§close</btn>
+			<btn class="btn-xl btn-success" dxml-on:click="dialogs.CloseDialog(diPlayerIcon); menu.CurrentMenu := mtShop; shop.ShopItemFilter.Category := scIcons">§to_shop</btn>
+		</stack>
+	</div>
+</wrapper>

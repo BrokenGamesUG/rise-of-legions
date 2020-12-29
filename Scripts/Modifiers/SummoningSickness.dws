@@ -1,0 +1,26 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; Duration : integer);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], Duration); //Stun-Duration
+
+  {$IFDEF SERVER}
+    TThinkImpulseTimerComponent.CreateGrouped(Entity, [Group]);
+    // After eiCooldown Stun is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btSummoningSickness]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], false);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upSummoningSickness]);
+
+  {$IFDEF CLIENT}
+     TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\SummoningSickness.pfx', 0.8)
+       .ActivateNow()
+       .BindToSubPositionGroup(BIND_ZONE_TOP, [0, 1]);
+  {$ENDIF}
+end;

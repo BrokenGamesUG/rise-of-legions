@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<div class="deck">
+	<div class="hover"></div>
+	<img class="icon" src="{{ HClient.GetDeckIcon(deck.icon) }}"></img>
+	<div class="info">
+		<div class="name">{{ deck.name }}</div>
+		<img class="league" src="{{ HClient.GetLeagueIcon(deck.League) }}" :title="F._d(§league_deck_hint, deck.League)"></img>
+	</div>
+</div>

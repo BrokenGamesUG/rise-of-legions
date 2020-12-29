@@ -1,0 +1,57 @@
+{$IFDEF SERVER}
+
+var
+  RootDudeSpawner, PriestDrop, BallistaDrop, SurgeOfLight, GiantGrowth : TCommanderAbility;
+
+procedure Prepare(AiInterface : TScriptAIInterface);
+begin
+  RootDudeSpawner := AiInterface.GetCardByName('RootDudeSpawner');
+  PriestDrop := AiInterface.GetCardByName('PriestDrop');
+  BallistaDrop := AiInterface.GetCardByName('BallistaDrop');
+  ArcherDrop := AiInterface.GetCardByName('BallistaDrop');
+  SurgeOfLight := AiInterface.GetCardByName('SurgeOfLight');
+  GiantGrowth := AiInterface.GetCardByName('GiantGrowth');
+end;
+
+procedure Think(AiInterface : TScriptAIInterface);
+var
+  FrontmostRootDude : TEntity;
+  PriestCount, BallistaCount, ArcherCount : integer;
+  HealthMissing : float;
+begin
+  // spawner logic
+  if RootDudeSpawner.IsReady then
+      AiInterface.UseSpawnerCard(RootDudeSpawner);
+
+  // RootDudeCount := AiInterface.GetUnitCountByName('RootDude'):
+  FrontmostRootDude := AiInterface.GetFrontmostUnitByName('RootDude');
+  if assigned(FrontmostRootDude) then
+  begin
+    HealthMissing := FrontmostRootDude.CapSingle(reHealth) - FrontmostRootDude.BalanceSingle(reHealth);
+    // spell logic
+    if (HealthMissing > 50.0) and GiantGrowth.IsReady and AiInterface.IsTargetForSpellValid(GiantGrowth, FrontmostRootDude) then
+        AiInterface.UseSingleTargetSpell(GiantGrowth, FrontmostRootDude)
+    else if (HealthMissing > 50.0) and SurgeOfLight.IsReady then
+        AiInterface.UseSingleTargetSpell(SurgeOfLight, FrontmostRootDude)
+    else
+    begin
+      // drop logic
+      PriestCount := AiInterface.GetUnitCountByName('Priest');
+      BallistaCount := AiInterface.GetUnitCountByName('Ballista');
+      ArcherCount := AiInterface.GetUnitCountByName('Archer');
+      if (PriestCount <= 0) and PriestDrop.IsReady then
+          AiInterface.UseDropCardBehind(PriestDrop, FrontmostRootDude, 3.5)
+      else if (BallistaCount < ArcherCount) and BallistaDrop.IsReady then
+          AiInterface.UseDropCardBehind(BallistaDrop, FrontmostRootDude, 5)
+      else if True then
+
+    end;
+  end;
+end;
+
+{$ENDIF}
+
+
+// main
+begin
+end;

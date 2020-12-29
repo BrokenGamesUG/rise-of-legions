@@ -1,0 +1,75 @@
+{$INCLUDE 'Math.dws'};
+
+function ApplyEffect(Entity : TEntity) : integer;
+var WoundsGroup, Group, BleedingGroup, StackBleedingGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Result := Group;
+  WoundsGroup := Entity.ReserveFreeGroup();
+  BleedingGroup := Entity.ReserveFreeGroup();
+  StackBleedingGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [WoundsGroup], 1000); // max bleeding apply rate
+  Entity.Blackboard.SetValue(eiWelaDamage, [StackBleedingGroup], 1.0);
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, WoundsGroup, BleedingGroup, StackBleedingGroup]);
+
+    TAutoBrainOnDealDamageComponent.CreateGrouped(Entity, [WoundsGroup]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [WoundsGroup], true);
+    TWelaTargetConstraintNotSelfComponent.CreateGrouped(Entity, [WoundsGroup]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [WoundsGroup])
+      .MustHave([upUnit])
+      .MustNotHave([upLegendary, upImmuneToStateEffects]);
+
+    // stack bleeding if present
+    TWelaEffectFireComponent.CreateGrouped(Entity, [WoundsGroup])
+      .TargetGroup([StackBleedingGroup]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [StackBleedingGroup])
+      .MustHave([upBleeding]);
+    TWelaEffectResetCooldownComponent.CreateGrouped(Entity, [StackBleedingGroup])
+      .SearchForWelaBeacon([upBleeding]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [StackBleedingGroup]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [StackBleedingGroup])
+      .SetResourceType(reWelaCharge)
+      .SearchForWelaBeacon([upBleeding]);
+
+    // apply bleeding if not present
+    TWelaEffectFireComponent.CreateGrouped(Entity, [WoundsGroup])
+      .TargetGroup([BleedingGroup]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [BleedingGroup])
+      .MustNotHave([upBleeding]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [BleedingGroup]);
+  {$ENDIF}
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [BleedingGroup], 'Modifiers\Bleeding.dws');
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedGrievousWounds]);
+end;
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := ApplyEffect(Entity);
+
+  {$IFDEF CLIENT}
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGhost.Create()
+          .Color($FFb92020)
+      );
+
+    TMeshEffectTint.Create(300, $FFb92020)
+      .AddKey(0, 0.0)
+      .AddKey(100, 1.0)
+      .AddKey(300, 0.0)
+      .AssignToEntity(Entity);
+  {$ENDIF}
+end;
+
+procedure ApplyWithoutEffect(Entity : TEntity);
+begin
+  ApplyEffect(Entity);
+end;

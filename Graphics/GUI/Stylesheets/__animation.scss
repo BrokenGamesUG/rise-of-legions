@@ -1,0 +1,792 @@
+﻿@keyframes empty_animation{
+  0% {
+  }
+  100% {
+  }
+}
+
+$jello-horizontal{
+	AnimationName: jello-horizontal;
+	AnimationDuration : 2000;
+	AnimationTimingFunction : 0.250, 0.460, 0.450, 0.940;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : infinite;
+	TransformAnchor : caCenter;
+}
+
+@keyframes jello-horizontal{
+  0% {
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+$jello{
+	AnimationName: jello;
+	AnimationDuration : 3000;
+	AnimationTimingFunction : ease;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : infinite;
+	TransformAnchor : caCenter;
+}
+
+@keyframes jello{
+  0% {
+    transform: scale(1.00);
+  }
+  3% {
+    transform: scale(0.60);
+	BackgroundColorOverride : 0;
+	AnimationTimingFunction : ease-in;
+  }
+  8% {
+    transform: scale(1.50);
+	BackgroundColorOverride : $8000FFFF;
+	AnimationTimingFunction : ease-out;
+  }
+  17% {
+    transform: scale(1.00);
+	BackgroundColorOverride : 0;
+  }
+  100% {
+    transform: scale(1.00);
+  }
+}
+
+$jello-flash{
+	AnimationName: jello-flash;
+	AnimationDuration : 4000;
+	AnimationTimingFunction : linear;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : infinite;
+	TransformAnchor : caCenter;
+}
+
+@keyframes jello-flash{
+  0% {
+	AnimationTimingFunction : ease;
+    transform:  scale(1.00);
+  }
+  2% {
+	AnimationTimingFunction : ease;
+    transform:  scale(0.40);
+	BackgroundColorOverride : 0;
+  }
+  6% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.80);
+	BackgroundColorOverride : $FF80FFFF;
+  }
+  11% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.00);
+	BackgroundColorOverride : $0000FFFF;
+  }
+  24% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.10);
+	BackgroundColorOverride : $4000FFFF;
+  }
+  39% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.00);
+	BackgroundColorOverride : $0000FFFF;
+  }
+  55% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.10);
+	BackgroundColorOverride : $4000FFFF;
+  }
+  70% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.00);
+	BackgroundColorOverride : $0000FFFF;
+  }
+  85% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.10);
+	BackgroundColorOverride : $4000FFFF;
+  }
+  100% {
+	  AnimationTimingFunction : ease;
+    transform:  scale(1.00);
+	BackgroundColorOverride : $0000FFFF;
+  }
+}
+
+$slide-top-in{
+	AnimationName: slide-top-in;
+	AnimationDuration : 120;
+	AnimationTimingFunction : 0.250, 0.460, 0.450, 0.940;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+}
+
+$slide-top-out{
+	AnimationName: slide-top-in;
+	AnimationDuration : 60;
+	AnimationTimingFunction : 0.550 0.085 0.680 0.530;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+}
+
+@keyframes slide-top-in{
+  0% {
+    transform: translateY(-1000);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+$slide-right-in-large{
+	AnimationName: slide-in-right-large;
+	AnimationDuration : 125;
+	AnimationTimingFunction :  0 0 0 1;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+}
+
+$slide-right-out-large{
+	AnimationName: slide-in-right-large;
+	AnimationDuration : 250;
+	AnimationTimingFunction : 1 0 1 1;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+	TransformAnchor : caLeft;
+}
+
+@keyframes slide-in-right-large{
+  0% {
+    transform: translateX(1500);
+  }
+  100% {
+	transform: translateX(0);
+  }
+}
+
+$slide-left-in-large{
+	AnimationName: slide-in-left-large;
+	AnimationDuration : 125;
+	AnimationTimingFunction : 0 0 0 1;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+}
+
+$slide-left-out-large{
+	AnimationName: slide-in-left-large;
+	AnimationDuration : 250;
+	AnimationTimingFunction : 1 0 1 1;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+	TransformAnchor : caLeft;
+}
+
+@keyframes slide-in-left-large{
+  0% {
+    transform: translateX(-1500);
+  }
+  100% {
+	transform: translateX(0);
+  }
+}
+
+$slide-right-in{
+	AnimationName: slide-in-right;
+	AnimationDuration : 125;
+	AnimationTimingFunction : 0.550 0.085 0.680 0.530;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+}
+
+$slide-right-out{
+	AnimationName: slide-in-right;
+	AnimationDuration : 250;
+	AnimationTimingFunction : 0.250, 0.460, 0.450, 0.940;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+	TransformAnchor : caLeft;
+}
+
+@keyframes slide-in-right{
+  0% {
+    transform: translateX(400);
+    opacity: 0;
+  }
+  100% {
+	transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+$collapse-in{
+	AnimationName: collapse-in;
+	AnimationDuration : 250;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+}
+
+$collapse-out{
+	AnimationName: collapse-in;
+	AnimationDuration : 125;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+	TransformAnchor : caBottom;
+}
+
+@keyframes collapse-in{
+  0% {
+    Transform : scaleY(0);
+  }
+  100% {
+    Transform : scaleY(1);
+  }
+}
+
+$stretch-in{
+	AnimationName: stretch-in;
+	AnimationDuration : 2000;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : 0 0 .3 1;
+	AnimationIterationCount : 1;
+	TransformAnchor : caLeft;
+}
+
+@keyframes stretch-in{
+  0% {
+    Transform : scaleX(0);
+  }
+  100% {
+    Transform : scaleX(1);
+  }
+}
+
+$fade-in{
+	AnimationName: fade-in;
+	AnimationDuration : 120;
+	AnimationFillMode : afBoth;
+	AnimationIterationCount : 1;
+}
+
+$fade-out{
+	AnimationName: fade-in;
+	AnimationDuration : 60;
+	AnimationFillMode : afBoth;
+	AnimationDirection : adReverse;
+	AnimationIterationCount : 1;
+}
+
+@keyframes fade-in{
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+$scale-in{
+	AnimationName: scale-in;
+	AnimationDuration : 120;
+	AnimationDelay : 60;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : 0.250, 0.460, 0.450, 0.940;
+	AnimationIterationCount : 1;
+	TransformAnchor : caCenter;
+}
+
+$scale-out{
+	AnimationName: scale-in;
+	AnimationDuration : 70;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : 0.550, 0.085, 0.680, 0.530;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+	TransformAnchor : caCenter;
+}
+
+@keyframes scale-in{
+  0% {
+    transform: scale(0);
+  }
+  75% {
+    transform: scale(1.20);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+$scale-in-min{
+	AnimationName: scale-in-min;
+	AnimationDuration : 120;
+	AnimationDelay : 60;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : 0.250, 0.460, 0.450, 0.940;
+	AnimationIterationCount : 1;
+	TransformAnchor : caCenter;
+}
+
+$scale-out-min{
+	AnimationName: scale-in-min;
+	AnimationDuration : 70;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : 0.550, 0.085, 0.680, 0.530;
+	AnimationIterationCount : 1;
+	AnimationDirection : adReverse;
+	TransformAnchor : caCenter;
+}
+
+@keyframes scale-in-min{
+  0% {
+    transform: scale(0.5);
+  }
+  75% {
+    transform: scale(1.20);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+$pulsate{
+	AnimationName: pulsate;
+	AnimationDuration : 1000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-in-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes pulsate{
+  0% {
+	Transform: scale(1);
+  }
+  50% {
+	Transform: scale(1.1);
+  }
+  100% {
+	Transform: scale(1);
+  }
+}
+
+$flash{
+	AnimationName: flash;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : linear;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes flash{
+  0% {
+	Opacity : 0.0;
+  }
+  30% {
+	Opacity : 0.0;
+  }
+  40% {
+	Opacity : 1.0;
+  }
+  55% {
+	Opacity : 0.0;
+  }
+  100% {
+	Opacity : 0.0;
+  }
+}
+
+$glow{
+	AnimationName: glow;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-in-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes glow{
+  0% {
+	Opacity : 1.0;
+	Transform: scale(1.02);
+  }
+  50% {
+	Opacity : 0.6;
+	Transform: scale(1);
+  }
+  100% {
+	Opacity : 1.0;
+	Transform: scale(1.02);
+  }
+}
+
+$cyan-glow{
+	AnimationName: cyan-glow;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-in-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes cyan-glow{
+  0% {
+	BackgroundColorOverride : $4059DCE2;
+  }
+  50% {
+	BackgroundColorOverride : $0059DCE2;
+  }
+  100% {
+	BackgroundColorOverride : $4059DCE2;
+  }
+}
+
+$white-glow{
+	AnimationName: white-glow;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-in-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes white-glow{
+  0% {
+	BackgroundColorOverride : $20FFFFFF;
+  }
+  50% {
+	BackgroundColorOverride : $00FFFFFF;
+  }
+  100% {
+	BackgroundColorOverride : $20FFFFFF;
+  }
+}
+
+$red-flash{
+	AnimationName: red-flash;
+	AnimationDuration : 250;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-in-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes red-flash{
+  0% {
+	BackgroundColorOverride : $00FF4040;
+  }
+  25% {
+	BackgroundColorOverride : $FFFF4040;
+  }
+  100% {
+	BackgroundColorOverride : $00FF4040;
+  }
+}
+
+$flash{
+	AnimationName: flash;
+	AnimationDuration : 150;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes flash{
+  0% {
+	Opacity : 0;
+  }
+  25% {
+	Opacity : 1.0;
+  }
+  100% {
+	Opacity : 0;
+  }
+}
+
+$swing{
+	AnimationName: swing;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : linear;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes swing{
+  0% {
+	Transform: translate(0);
+	AnimationTimingFunction : ease-out;
+  }
+  25% {
+	Transform: translate(5, -20);
+	AnimationTimingFunction : ease-in-out;
+  }
+  75% {
+	Transform: translate(-5, 20);
+	AnimationTimingFunction : ease-in;
+  }
+  100% {
+	Transform: translate(0);
+  }
+}
+
+$swing-small{
+	AnimationName: swing-small;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : linear;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes swing-small{
+  0% {
+	Transform: translate(0);
+	AnimationTimingFunction : ease-out;
+  }
+  25% {
+	Transform: translate(1, -4);
+	AnimationTimingFunction : ease-in-out;
+  }
+  75% {
+	Transform: translate(-1, 4);
+	AnimationTimingFunction : ease-in;
+  }
+  100% {
+	Transform: translate(0);
+  }
+}
+
+$rotate{
+	AnimationName: rotate;
+	AnimationDuration : 15000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : linear;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes rotate{
+	0.0% {
+		Transform: rotateZ(-00deg);
+	}
+	2.7777777777777777% {
+		Transform: rotateZ(-10deg);
+	}
+	5.555555555555555% {
+		Transform: rotateZ(-20deg);
+	}
+	8.333333333333332% {
+		Transform: rotateZ(-30deg);
+	}
+	11.11111111111111% {
+		Transform: rotateZ(-40deg);
+	}
+	13.88888888888889% {
+		Transform: rotateZ(-50deg);
+	}
+	16.666666666666664% {
+		Transform: rotateZ(-60deg);
+	}
+	19.444444444444446% {
+		Transform: rotateZ(-70deg);
+	}
+	22.22222222222222% {
+		Transform: rotateZ(-80deg);
+	}
+	25.0% {
+		Transform: rotateZ(-90deg);
+	}
+	27.77777777777778% {
+		Transform: rotateZ(-100deg);
+	}
+	30.555555555555557% {
+		Transform: rotateZ(-110deg);
+	}
+	33.33333333333333% {
+		Transform: rotateZ(-120deg);
+	}
+	36.11111111111111% {
+		Transform: rotateZ(-130deg);
+	}
+	38.88888888888889% {
+		Transform: rotateZ(-140deg);
+	}
+	41.66666666666667% {
+		Transform: rotateZ(-150deg);
+	}
+	44.44444444444444% {
+		Transform: rotateZ(-160deg);
+	}
+	47.22222222222222% {
+		Transform: rotateZ(-170deg);
+	}
+	50.0% {
+		Transform: rotateZ(-180deg);
+	}
+	52.77777777777778% {
+		Transform: rotateZ(-190deg);
+	}
+	55.55555555555556% {
+		Transform: rotateZ(-200deg);
+	}
+	58.333333333333336% {
+		Transform: rotateZ(-210deg);
+	}
+	61.111111111111114% {
+		Transform: rotateZ(-220deg);
+	}
+	63.888888888888886% {
+		Transform: rotateZ(-230deg);
+	}
+	66.66666666666666% {
+		Transform: rotateZ(-240deg);
+	}
+	69.44444444444444% {
+		Transform: rotateZ(-250deg);
+	}
+	72.22222222222221% {
+		Transform: rotateZ(-260deg);
+	}
+	75.0% {
+		Transform: rotateZ(-270deg);
+	}
+	77.77777777777779% {
+		Transform: rotateZ(-280deg);
+	}
+	80.55555555555556% {
+		Transform: rotateZ(-290deg);
+	}
+	83.33333333333334% {
+		Transform: rotateZ(-300deg);
+	}
+	86.11111111111111% {
+		Transform: rotateZ(-310deg);
+	}
+	88.88888888888889% {
+		Transform: rotateZ(-320deg);
+	}
+	91.66666666666666% {
+		Transform: rotateZ(-330deg);
+	}
+	94.44444444444444% {
+		Transform: rotateZ(-340deg);
+	}
+	97.22222222222221% {
+		Transform: rotateZ(-350deg);
+	}
+	100.0% {
+		Transform: rotateZ(-360deg);
+	}
+}
+
+$quest-ping{
+	AnimationName: quest-ping;
+	AnimationDuration : 1000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes quest-ping{
+  0% {
+	Opacity : 0.0;
+	Transform: scale(10);
+  }
+  100% {
+	Opacity : 1.0;
+	Transform: scale(0);
+  }
+}
+
+$blink{
+	AnimationName: blink;
+	AnimationDuration : 2000;
+	AnimationDelay : 0;
+	AnimationFillMode : afBoth;
+	AnimationTimingFunction : ease-in-out;
+	AnimationIterationCount : 0;
+	TransformAnchor : caCenter;
+}
+
+@keyframes blink{
+  0% {
+	Opacity : 0.0;
+  }
+  50% {
+	Opacity : 1.0;
+  }
+  100% {
+	Opacity : 0.0;
+  }
+}
+
+@keyframes ammo-in{
+  0% {
+	BackgroundColorOverride : $FF00FF00;
+	Transform : scaleY(0);
+  }
+  30% {
+	BackgroundColorOverride : $FF00FF00;
+	Transform : scaleY(1);
+  }
+  100% {
+	BackgroundColorOverride : $0000FF00;
+	Transform : scaleY(1);
+  }
+}
+
+@keyframes ammo-out{
+  0% {
+	BackgroundColorOverride : $00FF0000;
+	Transform : scaleY(1);
+  }
+  70% {
+	BackgroundColorOverride : $FFFF0000;
+	Transform : scaleY(1);
+  }
+  100% {
+	BackgroundColorOverride : $FFFF0000;
+	Transform : scaleY(0);
+  }
+}

@@ -1,0 +1,269 @@
+﻿.filter{
+	Background : MainMenu/Shared/CardFilter/FilterbarBackground.png;
+	Size : 206 auto;
+	Padding : 8 10 5 10;
+	.filter-fulltext{
+		Position : 5.5% 3.0%;
+		Size : 90% 6.8%;
+		Padding : 0 0 0 120ch;
+		input{
+			Size : 100% 100%;
+			BackgroundColor : 0;
+			Enabled : True;
+			Fontflags : [ffVerticalCenter];
+			Fontsize : 70%;
+			FontColor : $font-color-white;
+		}
+		&:hover{
+			btn{
+				Visibility : True;
+			}
+		}
+		.icon, btn{
+			Position : 0 -4%;
+			Size : 100ch 100%;
+			Fontflags : [ffCenter,ffVerticalCenter];
+			Fontcolor : $FFFFFFFF;
+		}
+		.icon{
+			Position-X : -120ch;
+			MouseEvents : mePass;
+			Background : MainMenu/Shared/CardFilter/SearchIcon.png;
+		}
+		btn{
+			ParentAnchor: caRight;
+			Anchor : caRight;
+			Fontsize : 60%;
+			Visibility : False;
+		}
+	}
+	.filter-faction, .filter-league{
+		Position : 5% 12.5%;
+		Size : 90% 13%;
+		Padding : 0 0;
+		.check-wrapper{
+			Size : 20% auto;
+			Background : MainMenu/Shared/CardFilter/FactionFilterCheckBackground.tga;
+			&:hover{
+				Background : MainMenu/Shared/CardFilter/FactionFilterCheckBackgroundHover.tga;
+			}
+			check{
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				Size : auto 74%;
+				Position-Y : 2%;
+			}
+			.black{
+				Background : Shared/FactionIcons/FactionIcon_Black_Disabled.png;
+				BackgroundDown : Shared/FactionIcons/FactionIcon_Black.png;
+			}
+			.colorless{
+				Background : Shared/FactionIcons/FactionIcon_Colorless_Disabled.png;
+				BackgroundDown : Shared/FactionIcons/FactionIcon_Colorless.png;
+			}
+			.green{
+				Background : Shared/FactionIcons/FactionIcon_Green_Disabled.png;
+				BackgroundDown : Shared/FactionIcons/FactionIcon_Green.png;
+			}
+			.red{
+				Background : Shared/FactionIcons/FactionIcon_Red_Disabled.png;
+				BackgroundDown : Shared/FactionIcons/FactionIcon_Red.png;
+			}
+			.blue{
+				Background : Shared/FactionIcons/FactionIcon_Blue_Disabled.png;
+				BackgroundDown : Shared/FactionIcons/FactionIcon_Blue.png;
+			}
+			.white{
+				Background : Shared/FactionIcons/FactionIcon_White_Disabled.png;
+				BackgroundDown : Shared/FactionIcons/FactionIcon_White.png;
+			}
+		}
+	}
+	.filter-league{
+		Position : 5% 23.5%;
+		.check-wrapper{
+			Size : 20% auto;
+			check{
+				Size : auto 94%;
+				Opacity : 0.2;
+				&:down{
+					Opacity : 1.0;
+				}
+			}
+			.stone{
+				Background : Shared/LeagueIcons/League1.tga;
+			}
+			.bronze{
+				Background : Shared/LeagueIcons/League2.tga;
+			}
+			.silver{
+				Background : Shared/LeagueIcons/League3.tga;
+			}
+			.gold{
+				Background : Shared/LeagueIcons/League4.tga;
+			}
+			.crystal{
+				Background : Shared/LeagueIcons/League5.tga;
+			}
+		}
+	}
+	.filter-tech{
+		Position : 14% 74.8%;
+		Size : 72% 13%;
+		check{
+			BoxSizing: bsMargin;
+			Margin : 12%;
+			Size : 33% auto;
+			Background : MainMenu/Shared/CardFilter/TechButton.png;
+			BackgroundDown : MainMenu/Shared/CardFilter/TechButton_Down.png;
+			Fontflags : [ffCenter,ffVerticalCenter];
+			Fontcolor : $FFFFFFFF;
+			Padding: 15%;
+			&:hover{
+				Fontcolor : $FF00FFFF;
+			}
+			&:down{
+				Padding-Top: 20%;
+				Padding-Bottom: 10%;
+				Fontcolor : $FFA0FFFF;
+			}
+			&:hover:down{
+				Fontcolor : $FF00FFFF;
+			}
+		}
+	}
+	.filter-cardtype{
+		Position : 10% 53.5%;
+		Anchor : caLeft;
+		Size : 82% 37%;
+		check{
+			Size : 100% 25%;
+			BoxSizing : bsMargin;
+			Margin : 14% 0;
+			Fontsize : 65%;
+			FontWeight : 700;
+			Padding-Left : 110ch;
+			FontFlags : [ffCenter,ffVerticalCenter];
+		}
+	}
+	.order{
+		Position : 11% 90%;
+		Size : 78% 7%;
+		select{
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			& > caption{
+				FontSize : 90%;
+			}
+		}
+	}
+}
+
+.filtered-item-pool{
+	.reset{
+		Size : 100% 22;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		.text{
+			Size : 100% 100%;
+			FontFlags : [ffCenter];
+		}
+		.btn-reset{
+			ParentAnchor : caBottom;
+			Anchor : caTop;
+		}
+	}
+}
+
+.deck{
+	Size : 100% auto;
+	Background : MainMenu/Deckbuilding/deckslot.png;
+	ZOffset : 3;
+	&:hover{
+		.hover{
+			Visibility : True;
+		}
+	}
+	&.disabled{
+		MouseEvents : mePass;
+		*{
+			MouseEvents : mePass;
+		}
+	}
+	&.add{
+		Background : MainMenu/Deckbuilding/deckslot_add.png;
+	}
+	&.empty{
+		Background : MainMenu/Deckbuilding/deckslot_empty.png;
+	}
+	&.buy{
+		.icon{
+			Size : auto 84.5%;
+			Background : MainMenu/Deckbuilding/deck_slot_buy_icon.png;
+		}
+		&:hover{
+			.icon{
+				Background : MainMenu/Deckbuilding/deck_slot_buy_icon_hover.png;
+			}
+		}
+	}
+	.hover{
+		ZOffset : -3;
+		Position : 0 -16%;
+		Size : 106.6% auto;
+		ParentAnchor : caCenter;
+		Anchor : caCenter;
+		Background : MainMenu/Deckbuilding/deckslot_hover.png;
+		Visibility : False;
+	}
+	.info{
+		Size : 100% 100%;
+		Padding : 0 0 0 20ch;
+		BoxSizing : bsMargin;
+		Margin : 21ch 10ch 21ch 110ch;
+		.league{
+			ParentAnchor : caRight;
+			Anchor : caRight;
+			Size : auto 100%;
+			MouseEvents : pePassClick;
+		}
+		.name{
+			Size : 100% 100%;
+			BoxSizing : bsMargin;
+			Margin : 0 100ch 0 0;
+			DefaultText : deck_name;
+			Fontsize : 59%;
+			Fontflags : [ffLeft,ffVerticalCenter,ffAutoShrink];
+		}
+	}
+	.icon{
+		ZOffset : -2;
+		Position : 50ph 0;
+		Size : auto 69%;
+		Anchor : caCenter;
+		ParentAnchor : caLeft;
+	}
+}
+
+.player-icon{
+	ZOffset : 3;
+	Size : auto 100%;
+	Background : Shared/player_icon_frame.png;
+	.icon{
+		ZOffset : -3;
+		Size : auto 69%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+	}
+}
+
+.rank{
+	Size : 100% 100%;
+	MouseEvents : mePass;
+	.current{
+		Size : 100% 100%;
+		FontSize : 50%;
+		FontFlags : [ffCenter];
+		MouseEvents : mePass;
+	}
+}

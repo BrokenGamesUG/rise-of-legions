@@ -1,0 +1,58 @@
+{$INCLUDE 'Math.dws'};
+
+procedure InitUnitData(Entity : TEntity);
+begin
+  Entity.Blackboard.SetIndexedValue(eiUnitData, [], udUsePathfinding, True);
+  Entity.Blackboard.SetValue(eiAttentionrange, [0, 1, 2, 3, 4, 5], 22.0);
+  Entity.Blackboard.SetValue(eiSpeed, [], (4 / 1000));
+
+  Entity.Blackboard.SetValue(eiWelaUnitPattern, [GROUP_SOUL], 'Projectiles\Black\SoulGatherProjectileSpawner');
+
+  {$IFDEF CLIENT}
+    Entity.Blackboard.SetIndexedValue(eiUnitData, [], udHasDeathEffect, True);
+    Entity.Blackboard.SetIndexedValue(eiUnitData, [], udMinimapIcon, 'MinimapUnitIcon.png');
+  {$ENDIF}
+end;
+
+procedure InitUnitMeta(Entity : TEntity);
+begin
+
+end;
+
+procedure InitUnitEntity(Entity : TEntity);
+begin
+  TCollisionComponent.Create(Entity);
+
+  {$IFDEF SERVER}
+    TStatisticsUnitComponent.Create(Entity);
+
+    THealthComponent.Create(Entity);
+    TArmorComponent.Create(Entity);
+    TMovementComponent.Create(Entity);
+    TThinkImpulseTimerComponent.Create(Entity);
+    TBrainFollowLaneComponent.Create(Entity);
+    TBrainActionComponent.CreateGroupedAll(Entity);
+
+    // releasing soul
+    TAutoBrainOnDeathComponent.CreateGrouped(Entity, [GROUP_SOUL])
+      .FireAtGround;
+    TWelaReadyUnitPropertyComponent.CreateGrouped(Entity, [GROUP_SOUL])
+      .MustNotHave([upSoulless]);
+    TWelaEffectFactoryComponent.CreateGrouped(Entity, [GROUP_SOUL])
+      .PassCardValues;
+  {$ENDIF}
+
+  TPathfindingComponent.Create(Entity);
+
+  {$IFDEF CLIENT}
+    TOrienterMovementComponent.Create(Entity);
+    TOrienterTargetComponent.CreateGrouped(Entity, [0, 1]);
+    TOrienterSmoothRotateComponent.Create(Entity)
+      .SetAngleSpeed(0.008);
+
+    TEntityDisplayWrapperComponent.Create(Entity);
+    TResourceDisplayHealthComponent.Create(Entity)
+      .OrderValue(-1);
+    TShowOnMinimapComponent.Create(Entity);
+  {$ENDIF}
+end;

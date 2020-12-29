@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{CBDD28C0-1005-4388-81A4-6F4441C120E9}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="RiseOfLegions.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GameServer\RiseOfLegionsGameServer.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Tools\RoLTools.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="RiseOfLegions">
+        <MSBuild Projects="RiseOfLegions.dproj"/>
+    </Target>
+    <Target Name="RiseOfLegions:Clean">
+        <MSBuild Projects="RiseOfLegions.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RiseOfLegions:Make">
+        <MSBuild Projects="RiseOfLegions.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="RiseOfLegionsGameServer">
+        <MSBuild Projects="GameServer\RiseOfLegionsGameServer.dproj"/>
+    </Target>
+    <Target Name="RiseOfLegionsGameServer:Clean">
+        <MSBuild Projects="GameServer\RiseOfLegionsGameServer.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RiseOfLegionsGameServer:Make">
+        <MSBuild Projects="GameServer\RiseOfLegionsGameServer.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="RoLTools">
+        <MSBuild Projects="Tools\RoLTools.dproj"/>
+    </Target>
+    <Target Name="RoLTools:Clean">
+        <MSBuild Projects="Tools\RoLTools.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="RoLTools:Make">
+        <MSBuild Projects="Tools\RoLTools.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="RiseOfLegions;RiseOfLegionsGameServer;RoLTools"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="RiseOfLegions:Clean;RiseOfLegionsGameServer:Clean;RoLTools:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="RiseOfLegions:Make;RiseOfLegionsGameServer:Make;RoLTools:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

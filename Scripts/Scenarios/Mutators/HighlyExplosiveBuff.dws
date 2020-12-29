@@ -1,0 +1,29 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group, ExplosionGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  ExplosionGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [ExplosionGroup], 30.0);
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, ExplosionGroup]);
+
+    // Explode on death
+    TAutoBrainOnDeathComponent.CreateGrouped(Entity, [ExplosionGroup])
+      .FireAtKiller();
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [ExplosionGroup]);
+    TWarheadSplashDamageComponent.CreateGrouped(Entity, [ExplosionGroup]);
+    TWelaTargetConstraintEnemiesComponent.CreateGrouped(Entity, [ExplosionGroup]);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [ExplosionGroup], eiDamageable);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [ExplosionGroup], '\HighlyExplosive.pfx', 10.0)
+      .ActivateOnFire()
+      .ScaleWith(eiCollisionRadius);
+  {$ENDIF}
+end;

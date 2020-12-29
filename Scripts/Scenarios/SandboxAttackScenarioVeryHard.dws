@@ -1,0 +1,39 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TClientGame{$ENDIF});
+{$IFDEF SERVER}
+var
+  ScenarioDirector : TScenarioDirectorComponent;
+  {$ENDIF}
+begin
+  {$IFDEF SERVER}
+  ScenarioDirector := Game.ScenarioDirector;
+
+  // 1. outpost
+  ScenarioDirector.SpawnUnit(-48, -23, 'Units\Scenario\GolemLaneTowerLevel1_WithLaneNode.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-52.07, -19.63, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-52.07, -26.88, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnGuards(-53, -23, ['MediumMeleeGolem', 'SmallRangedGolem', 'SmallRangedGolem'], [], 0);
+
+  // 2. outpost
+  ScenarioDirector.SpawnUnit(0, -23, 'Units\Scenario\GolemLaneTowerLevel2_WithLaneNode.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-2, -22.78, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-2, -28.94, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-2, -18.46, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnGuards(-5, -23, ['BigFlyingGolem'], ['SmallMeleeGolem', 'MediumMeleeGolem', 'SmallFlyingGolem'], 700);
+
+  // 3. outpost
+  ScenarioDirector.SpawnUnit(48, -23, '\Units\Scenario\GolemLaneTowerLevel3_WithLaneNode.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(44.00, -19.63, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(44.00, -26.88, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnGuards(43, -23, ['BigMeleeGolem', 'SmallRangedGolem'],
+    ['MediumMeleeGolem', 'BigFlyingGolem', 'SmallRangedGolem'], 700);
+
+  // boss guards
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(89.53, -18.92, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(89.56, -27.00, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.66, -28.90, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.86, -17.12, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.72, -22.81, 'Units\Colorless\BossGolem.ets');
+  {$ENDIF}
+end;

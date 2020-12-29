@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<div class="requirement card-unlocked {{ done if requirement.IsFulfilled or card.Unlocked }}">
+	<div class="description">{{ F._(§card_requirement_card_unlock, requirement.RequiredCard.CardInfo.Name) }}</div>
+	<div class="overlay">
+		<div class="done"></div>
+	</div>
+	<progress>
+		<bar :width%="requirement.Progress"></bar>
+		<div class="caption">{{ requirement.CurrentValue if not card.Unlocked else requirement.TargetValue }} / {{ requirement.TargetValue }}</div>
+	</progress>
+</div>

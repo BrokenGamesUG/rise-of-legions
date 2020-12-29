@@ -1,0 +1,282 @@
+﻿.collection{
+	.content-sub:important{
+		Padding : 30 0 0 0;
+	}
+	.navbar{
+		.btn-nav{
+			Padding-Left : 120ch;
+		}
+		.icon{
+			Position : -20ch -5ch;
+			Size : auto 100%;
+			ParentAnchor : caLeft;
+			Anchor : caRight;
+		}
+	}
+	.collectionitem-dialog{
+		.showcase{
+			Size : 30% auto;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			MouseEvents : mePass;
+			& > stack{
+				Position-X : 50%;
+				Anchor : caTop;
+				Size : 320 auto;
+				MouseEvents : mePass;
+			}
+			.requirements{
+				Margin-Bottom : 16;
+				$frame;
+				.credit-offer-background{
+					Position: -2 2;
+					Anchor : caTopLeft;
+					ParentAnchor : caBottomLeft;
+					Size : 50% 74;
+					BackgroundColor : $window-background;
+					$frame;
+					BorderSides : [bsLeft,bsRight,bsBottom];
+					OutlineSides : [bsLeft,bsRight,bsBottom];
+				}
+			}
+			.card{
+				.description{
+					&.skills{
+						FontSize : 23%;
+					}
+				}
+			}
+			.offers{
+				Size : 320 48;
+				ParentAnchor : caTopLeft;
+				.offer{
+					Position-Y : -4;
+					Padding : 0 8cw;
+					Margin : 0;
+					&.locked{
+						btn{
+							Enabled : False;
+							*{
+								Opacity : 0.5;
+							}
+						}
+						.lock{
+							Position : 50% -3%;
+							Size : auto 57%;
+							$jello-horizontal;
+							AnimationDelay : 350;
+							AnimationIterationCount : 1;
+						}
+					}
+					btn{
+						Size : auto 100%;
+					}
+				}
+			}
+		}
+	}
+	.deco{
+		Size : 100bw auto;
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+		Opacity : 0.3;
+		MouseEvents : mePass;
+	}
+	.tree{
+		Size : 100% auto;
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Padding : 17 10 10 10;
+		ZOffset : 1;
+	}
+	.golem-hint{
+		Padding : 6 12;
+		FontSize : 18;
+		Size : text 30;
+		Position : 0 -15;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		FontFlags : [ffLeft,ffVerticalCenter];
+		FontColor: $font-color-default;
+	}
+	.collection-item{
+		Anchor : caCenter;
+		Size : auto 13%;
+		Enabled : True;
+		& > wrapper{
+			MouseEvents : mePass;
+		}
+		&:hover{
+			.card-node{
+				&.card{
+					.hover{
+						Visibility : True;
+					}
+				}
+			}
+			.requirements-popup, .card-name-popup{
+				Opacity : 1.0;
+				Transform : empty;
+			}
+		}
+		& > .shadow{
+			Position : 3% 2%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Size : 134% auto;
+			Background : MainMenu/Collection/card_shadow.png;
+			MouseEvents : mePassClick;
+		}
+		.card-node.card{
+			Size : auto 100%;
+			MouseEvents : mePassClick;
+			*{
+				MouseEvents : mePassClick;
+			}
+			.league-icon{
+				ZOffset : 100;
+				MouseEvents : mePassClick;
+				BackgroundColorOverrideInheritance : False;
+			}
+		}
+		.lock{
+			Enabled : True;
+			Anchor : caCenter;
+			ParentAnchor : caBottom;
+			Position : 5% -8%;
+			Size : auto 34%;
+			ZOffset : 110;
+			Background : Shared/lock.png;
+		}
+		&.locked{
+			.lock{
+				MouseEvents : mePassClick;
+			}
+			.card{
+				BackgroundColorOverride : $override-darken;
+			}
+		}
+		.requirements-popup, .card-name-popup{
+			Opacity : 0;
+			TransitionProperty : gtTransform gtOpacity;
+			TransitionDuration : 50;
+			Transform : scale(0.95, 0.95);
+			ZOffset : 1000;
+			Position : 0 5;
+			Size : 320 auto;
+			MouseEvents : mePass;
+			TransformInheritance : False;
+			*{
+				MouseEvents : mePass;
+			}
+		}
+		.requirements-popup{
+			Anchor : caAuto caTop caBottom;
+			ParentAnchor : caAuto caTop caBottom;
+			ParentOffset : 2;
+			$frame;
+		}
+		.card-name-popup{
+			Size : text 27;
+			MinSize-X : 200;
+			Anchor : caAuto caBottom caTop;
+			ParentAnchor : caAuto caBottom caTop;
+			BackgroundColor : $background-headline-secondary;
+			FontColor : $font-color-real-white;
+			FontFlags : [ffCenter,ffVerticalCenter];
+			$frame;
+			Padding : 4 20;
+		}
+	}
+	.requirements{
+		Size : 100% auto;
+		BackgroundColor : $window-background;
+		& > *{
+			Size : 100% 80;
+			Outline : $frame-border;
+			OutlineSides : [bsBottom];
+			Margin-Bottom : 2;
+			&:last-child{
+				Margin-Bottom : 0;
+				OutlineSides : [];
+			}
+			&.caption{
+				Size-Y : 27;
+				Padding : 4;
+				BackgroundColor : $background-headline;
+				FontColor : $font-color-real-white;
+				FontFlags : [ffCenter,ffVerticalCenter];
+				&.secondary{
+					Margin-Bottom : 0;
+					OutlineSides : [];
+					BackgroundColor : $background-headline-secondary;
+				}
+			}
+		}
+		.requirement{
+			Size : 100% 100%;
+			&.blocked{
+				.block{
+					Visibility : True;
+				}
+				.overlay{
+					Visibility : True;
+				}
+			}
+			&.done{
+				.done{
+					Visibility : True;
+				}
+				.overlay{
+					Visibility : True;
+				}
+			}
+			.description{
+				Padding : 0 10;
+				Size : 100% 70%;
+				FontSize : 30%;
+				FontFlags : [ffVerticalCenter,ffWordWrap];
+			}
+			progress{
+				ParentAnchor : caBottom;
+				Anchor : caBottom;
+				Size : 100% 30%;
+				BackgroundColor : $20000000;
+				.caption{
+					$text-overlay;
+					Fontweight : 700;
+				}
+				bar{
+					BackgroundColor : $progress-cyan;
+				}
+			}
+			.block, .done{
+				ParentAnchor : caCenter;
+				Anchor : caCenter;
+				Size : auto 40%;
+				MaxSize-Y : 100bh;
+				HintAnchor : caCenter;
+				Background : Shared/Lock.png;
+				Visibility : False;
+			}
+			.block{
+				$jello-horizontal;
+				AnimationDelay : 350;
+				AnimationIterationCount : 1;
+			}
+			.done{
+				Background : Shared/Checkmark.png;
+				ParentAnchor : caRight;
+				Anchor : caRight;
+				Position : -10 -15%;
+				Size : auto 32%;
+			}
+			.overlay{
+				Size : 100% 100%;
+				ZOffset : 10;
+				BackgroundColor: rgba(0.11, 0.16, 0.19, 0.75);
+				Visibility : False;
+			}
+		}
+	}
+}

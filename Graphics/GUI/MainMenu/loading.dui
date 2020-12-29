@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<wrapper class="loading-generic" :visible="menu.IsLoading">
+	<div class="text">§main_menu_loading</div>
+	<div class="spinner" rotation="-1.0"></div>
+</wrapper>

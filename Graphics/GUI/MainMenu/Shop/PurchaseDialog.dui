@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<wrapper class="purchase-dialog backdrop dialog {{ disabled if shop.PurchaseState = psProcessing }}" :show="dialogs.IsDialogVisible(diShopPurchase)" dxml-on:click="shop.ConfirmPurchaseDialog">
+	<div class="window">
+		<div class="window-caption">
+			§shop_purchase_dialog_caption
+		</div>
+		<div class="message">
+			§shop_purchase_dialog_{{ shop.PurchaseState }}
+			<div class="spinner" rotation="-1.0" :visible="shop.PurchaseState = psProcessing"></div>
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl {{ disabled if shop.PurchaseState = psProcessing }}" dxml-on:click="shop.ConfirmPurchaseDialog; dialogs.CloseDialog(diCollectionCardDetail)">{{ §wait if shop.PurchaseState = psProcessing else §ok }}</btn>
+		</stack>
+	</div>
+</wrapper>

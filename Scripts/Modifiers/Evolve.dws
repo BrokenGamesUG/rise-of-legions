@@ -1,0 +1,37 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; Duration : integer);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], Duration); //Duration of spawn, where the unit is invincible, untargetable and stunned
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btSummoningSickness]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upInvincible, upSummoningSickness, upUntargetable]);
+
+  {$IFDEF CLIENT}
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([0, 1])
+      .SetEffect(
+        TMeshEffectGlow.Create(Duration)
+          .AddKey(0, 1)
+          .AddKey(Duration, 0)
+      );
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([0, 1])
+      .SetEffect(
+        TMeshEffectSpherify.Create(Duration - Duration div 4)
+          .PowFactor(5.0)
+          .SetFixedCenter(0, 0.3, 0)
+          .AddKey(0, 1)
+          .AddKey(Duration - Duration div 4, 0)
+      );
+  {$ENDIF}
+end;

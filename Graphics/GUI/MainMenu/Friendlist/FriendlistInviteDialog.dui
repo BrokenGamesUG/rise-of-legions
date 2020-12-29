@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<wrapper class="friend-invite-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diFriendInvite)" dxml-on:click="dialogs.CloseDialog(diFriendInvite)">
+	<div class="window">
+		<div class="window-caption">§friendlist_add_new_friend</div>
+		<div class="proposal panel">
+			<div class="caption">§friendlist_add_new_friend_by_list</div>
+			<stack vertical>
+				<div class="clickable" dxml-for="proposal in friendlist.Friendlist.FriendProposals" dxml-on:click="friendlist.InviteFriendByProposal(proposal.)">
+					{{ proposal.Name }}
+				</div>
+			</stack>
+		</div>
+		<div class="request panel">
+			<div class="caption">§friendlist_add_new_friend_by_code</div>
+			<div class="subcaption">({{ F._d(§friendlist_friend_id, friendlist.Friendlist.FriendID) }})</div>
+			<div class="form">
+				<input dxml-on:change="friendlist.SetNewFriendID" dxml-on:submit="friendlist.AddNewFriend">{{ friendlist.NewFriendID }}</input>
+				<div class="btn" dxml-on:click="friendlist.AddNewFriend">§Chat_Request_Add</div>
+			</div>
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diFriendInvite)">§close</btn>
+		</stack>
+	</div>
+</wrapper>

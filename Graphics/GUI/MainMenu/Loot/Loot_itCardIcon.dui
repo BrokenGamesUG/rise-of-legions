@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<div class="loot-wrapper loot-card-icon">
+	<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=item.ShopItem.CardInfo"></div>
+</div>

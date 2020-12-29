@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<div class="window">
+	<div class="window-shine subtile"></div>
+	<div class="window-caption">§notification_caption_{{ notifications.Notification.NotificationType }}</div>
+	<div class="notification notification-card">
+		<div class="ncard">
+			<div dxml-include="MainMenu/Shared/Card/CardTemplate.dui" dxml-with="card=notification.card.CardInfo"></div>
+		</div>
+		<div class="caption">§notification_card_unlocked</div>
+		<div class="caption sub">
+			§notification_card_unlocked_hint
+			<img src="{{ HClient.CurrencyIcon(currency_gold) }}" title="§currency_gold_hint"></img>
+		</div>
+	</div>
+	<stack class="window-buttons">
+		<btn class="btn-xl btn-success btn-notification-action" :visible="menu.CurrentMenu <> mtShop" dxml-on:click="notification.ToShop">§notification_card_unlocked_to_shop</btn>
+		<btn class="btn-xl btn-notification-close" dxml-on:click="notifications.Close">§notification_close</btn>
+	</stack>
+</div>

@@ -1,0 +1,234 @@
+﻿.player-level-up-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-dialog;
+	}
+	.window{
+		Size : 45vw 50vh;
+		&.has_text{
+			Size-Y : 60vh;
+			.new-level{
+				Position-Y : 26.666&;
+			}
+			.content{
+				.level-text{
+					Visibility : True;
+				}
+				.loot{
+					Size-Y : 35%;
+				}
+			}
+		}
+		.new-level{
+			Position : 0 32%;
+			Anchor : caCenter;
+			ParentAnchor : caTop;
+			Size : auto 583;
+			Background : MainMenu\PlayerLevel\level_up_level.png;
+			MouseEvents : mePass;
+			.level-number{
+				Position : 0 0;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				Size : auto 11%;
+				&.big{
+					Size-Y : 14%;
+				}
+			}
+		}
+		.content{
+			Position : 0 12;
+			Size : 100% 100%;
+			.level-text{
+				Visibility : False;
+				Position : 0 -35%;
+				Size : 100% 10%;
+				Anchor : caBottom;
+				ParentAnchor : caBottom;
+				BackgroundColor : $40000000;
+				FontSize : 80%;
+				FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+				FontColor : $font-color-reward;
+			}
+			.loot{
+				Position : 0 8;
+				ZOffset : 1;
+				Size : 100% 40%;
+				Anchor : caBottom;
+				ParentAnchor : caBottom;
+				MouseEvents : mePass;
+				BackgroundColor : $40000000;
+				.loot-caption{
+					Position : 0 5%;
+					Size : 100% 20%;
+					FontWeight : 700;
+					FontFlags : [ffCenter,ffVerticalCenter];
+					FontColor : $font-color-reward-secondary;
+					MouseEvents : mePass;
+				}
+				*{
+					MouseEvents : mePass;
+				}
+				.loot-list{
+					Position : 0 10%;
+				}
+				.loot-item{
+					Padding: 0;
+					.loot-icon{
+						Position : 0 0;
+						Size : 100% 100%;
+						.framed-icon{
+							Size : auto 50%;
+							Anchor : caCenter;
+							ParentAnchor : caCenter;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+.level-up-reward{
+	Size : 100% 120cw;
+	.header{
+		Position : 0 160ch;
+		Size : 65% auto;
+		Anchor : caTop;
+		ParentAnchor : caTop;
+		Background : MainMenu/PlayerLevel/level_preview_header_background.png;
+		.level{
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Size : auto 250%;
+			Position : 0 -10;
+			Background : MainMenu/PlayerLevel/level_preview_header_number_plate.png;
+			.level-number{
+				Size : auto 55%;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+			}
+		}
+	}
+	.content{
+		Position : 0 40cw;
+		Anchor : caTop;
+		ParentAnchor : caTop;
+		Size : 100% auto;
+		Background : MainMenu/PlayerLevel/level_preview_content_background.png;
+		&.has_text{
+			Background : MainMenu/PlayerLevel/level_preview_content_with_text_background.png;
+			.loot-list{
+				&.items-3{
+					.loot-item:last-child{
+						Visibility : False;
+					}
+				}
+			}
+		}
+		&.index-4, &.index-9{
+			Background : MainMenu/PlayerLevel/level_preview_content_background_with_highlight.png;
+			&.has_text{
+				Background : MainMenu/PlayerLevel/level_preview_content_with_text_and_highlight_background.png;
+			}
+		}
+		.checkmark {
+			ZOffset : 100;
+			Size: 100% 100%;
+			Background : MainMenu/PlayerLevel/level_preview_checkmark_overlay.png;
+		}
+		.text{
+			Size : 100% 70%;
+			Position : 0 30%;
+			Padding : 15 30;
+			FontSize : 50%;
+			Fontcolor : $font-color-white;
+			FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap,ffAutoShrink];
+		}
+		.loot-list{
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Size : 100% 100%;
+			StackColumns : 2;
+			.loot-item{
+				Size : 50% 25%;
+				.loot-currency{
+					.icon{
+						Position : 10 -0.5;
+						Size : auto 110%;
+						Anchor : caTopLeft;
+						ParentAnchor : caTopLeft;
+						ParentOffset : 1;
+						.deco{
+							Visibility : False;
+						}
+					}
+					.amount{
+						Position : -8 1.5;
+						Size : 70% 80%;
+						Padding : 2;
+						Padding-top : 3;
+						Padding-left : 80ch;
+						Anchor : caRight;
+						ParentAnchor : caRight;
+						Backgroundcolor : $dark-background;
+						FontWeight : fwBold;
+						Fontflags : [ffRight,ffVerticalCenter];
+					}
+				}
+			}
+			&.items-3{
+				.loot-item:last-child{
+					Size : 100% 75%;
+					Position : 0 25%;
+					Background : MainMenu/PlayerLevel/level_preview_content_item_highlight.png;
+					.loot-wrapper.loot-icon{
+						Anchor : caCenter;
+						ParentAnchor : caTopLeft;
+						Position: 50% 50%;
+						Size : auto 55%;
+					}
+				}
+			}
+		}
+	}
+}
+
+.player-level-up-overview-dialog{
+	.window{
+		Position: 0 15;
+		Size : 93vw 80vh;
+		Padding-Left : 45;
+		Padding-Right : 45;
+		Padding-Bottom : 30;
+		.level-up-reward-list{
+			StackColumns : 5 2;
+			Position : 0 -9;
+			.level-up-reward-item{
+				Size : 20% 50%;
+				Padding : 5;
+			}
+		}
+		.btn-left, .btn-right{
+			ParentBox : pbPadding;
+			Size : 5.5% auto;
+		}
+		.btn-left{
+			Position-X: 15cw;
+		}
+		.btn-right{
+			Position-X: -15cw;
+		}
+	}
+}
+
+.player-level-lock:important{
+	Size : 100% 100%;
+	Enabled : True;
+	MouseEvents : meAll;
+	icon {
+		Size : auto 75bh;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		MouseEvent : mePass;
+	}
+}

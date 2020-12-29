@@ -1,0 +1,31 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+{$IFDEF CLIENT}
+{$ENDIF}
+begin
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [0], '\Shared\SpawnerImpact.pfx', 2.4)
+      .Delay(160)
+      .ActivateNow();
+
+    TAnimatorComponent.CreateGrouped(Entity, [])
+      .Duration(300)
+      .SizeKeypointsXZ([1, 1, 1])
+      .SizeKeypointsY([3.0, 0.3, 1])
+      .SizeTimes([0, 160, 300])
+      .PositionKeypointsY([3, 0, 0])
+      .PositionTimes([0, 160, 300]);
+
+    TMeshEffectGlow.Create(350)
+      .AddKey(0, 1.0)
+      .AddKey(300, 0.0)
+      .AssignToEntity(Entity);
+
+    TPositionerOffsetComponent.CreateGrouped(Entity, [])
+      .Offset(0, 0.2, 0);
+  {$ENDIF}
+end;

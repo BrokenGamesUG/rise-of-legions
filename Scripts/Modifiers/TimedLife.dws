@@ -1,0 +1,37 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group, ReleaseGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  ReleaseGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 17000); // Prevent trigger of aura
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetGroundComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively;
+    TWelaEffectSuicideComponent.CreateGrouped(Entity, [Group]);
+
+    TAutoBrainOnUnitPropertyComponent.CreateGrouped(Entity, [ReleaseGroup])
+      .TriggerOn([upBlessed]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [ReleaseGroup]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ReleaseGroup])
+      .TargetGroup([Group, ReleaseGroup]);
+  {$ENDIF}
+
+  TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+
+  {$IFDEF CLIENT}
+    TTooltipUnitAbilityComponent.CreateGrouped(Entity, [Group], 'TimedLife')
+      .PassInteger('duration', 17);
+
+    TIndicatorCooldownCircleComponent.CreateGrouped(Entity, [Group])
+        .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+        .SetRadius(1.5)
+        .ScaleWith(eiCollisionRadius)
+        .SetThickness(0.1)
+        .SetLinearBlend
+        .Color($60FFFFFF)
+        .Invert;
+  {$ENDIF}
+end;

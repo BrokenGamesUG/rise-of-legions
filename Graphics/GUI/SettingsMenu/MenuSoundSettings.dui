@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<wrapper class="settings sound">
+	<stack class="column">
+		<div class="caption">
+			§settings_sound_meta_caption
+		</div>
+		<check dxml-on:change="settings.SetBoolean(coSoundMetaPlayMaster)" checked="{{ settings.GetBoolean(coSoundMetaPlayMaster) }}">
+			§settings_sound_check
+		</check>
+		<progress dxml-on:change="settings.SetInteger(coSoundMetaMasterVolume)">
+			<bar width="{{ settings.GetInteger(coSoundMetaMasterVolume) }}%"></bar>
+		</progress>
+		<check dxml-on:change="settings.SetBoolean(coSoundMetaBackground)" checked="{{ settings.GetBoolean(coSoundMetaBackground) }}">
+			§settings_sound_background_check
+		</check>
+		<stack vertical split="22 22 22 22 22 22" :class="deactivated if not settings.GetBoolean(coSoundMetaPlayMaster)">
+			<check dxml-on:change="settings.SetBoolean(coSoundMetaPlayMusic)" checked="{{ settings.GetBoolean(coSoundMetaPlayMusic) }}">
+				§settings_sound_music_check
+			</check>
+			<progress dxml-on:change="settings.SetInteger(coSoundMetaMusicVolume)">
+				<bar width="{{ settings.GetInteger(coSoundMetaMusicVolume) }}%"></bar>
+			</progress>
+			<check dxml-on:change="settings.SetBoolean(coSoundMetaPlayGUISound)" checked="{{ settings.GetBoolean(coSoundMetaPlayGUISound) }}">
+				§settings_sound_gui_check
+			</check>
+			<progress dxml-on:change="settings.SetInteger(coSoundMetaGUISoundVolume)">
+				<bar width="{{ settings.GetInteger(coSoundMetaGUISoundVolume) }}%"></bar>
+			</progress>
+		</stack>
+	</stack>
+	<btn class="btn-xl btn-revert" dxml-on:click="settings.RevertCategory(otSoundMeta)">§RevertSettings</btn>
+</wrapper>

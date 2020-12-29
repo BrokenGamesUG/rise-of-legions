@@ -1,0 +1,29 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+{$IFDEF CLIENT}
+  var ColorIdentity : integer;
+{$ENDIF}
+begin
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    ColorIdentity := Entity.ColorIdentity;
+    if ColorIdentity = ecGreen then
+    begin
+    end
+    else if ColorIdentity = ecBlack then
+    begin
+      TParticleEffectComponent.CreateGrouped(Entity, [], '\Black\black_death.pfx', 3.0)
+        .ActivateOnDie()
+        .EmitFromAllBones
+        .FixedOrientationDefault
+        .IgnoreModelSize;
+    end
+    else
+    // if ColorIdentity = ecWhite then // default case
+    begin
+    end;
+  {$ENDIF}
+end;

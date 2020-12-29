@@ -1,0 +1,251 @@
+﻿.navbar-wrapper{
+	Size : 100% auto;
+	Background: MainMenu/Navbar/NavbarBackground.png;
+	MouseEvents : mePass;
+	ZOffset : 100;
+}
+
+.navbar{
+	Size : 100% $navbar-size;
+	Padding : 3 0;
+	MouseEvents : mePass;
+	.issue-info{
+		Position : 7.75%;
+		&.team-size-1{
+			Position : 9.25%;
+		}
+		&.team-size-2{
+			Position : 7.25%;
+		}
+		&.team-size-3{
+			Position : 8.5%;
+		}
+		&.team-size-4, &.team-size-5{
+			Position : 6.5%;
+		}
+		Size : 10 100%;
+		ParentAnchor : caCenter;
+		Anchor : caCenter;
+		.server-issues, .maintenance-info{
+			Anchor : caLeft;
+			ParentAnchor : caRight;
+			Size : auto 70%;
+			Background : MainMenu/Navbar/ServerIssue.png;
+			&:hover{
+				.hint{
+					Visibility : True;
+				}
+			}
+			&.important{
+				$jello-horizontal;
+			}
+			.hint{
+				Visibility : False;
+				Position : 0 8;
+				Size : 300 text;
+				TransformInheritance : False;
+				Anchor : caTop;
+				ParentAnchor : caBottom;
+				FontSize : 18;
+				FontFlags: [ffWordWrap];
+				Padding : 10;
+			}
+		}
+		.maintenance-info{
+			Anchor : caRight;
+			ParentAnchor : caLeft;
+			Background : MainMenu/Navbar/Maintenance.png;
+			.hint{
+				StackOrientation : soVertical;
+				Size : 300 auto;
+				.text, .time{
+					Position : inherit inherit;
+					Size : 100% text;
+					FontSize : 18;
+					FontFlags: [ffWordWrap];
+				}
+				.time{
+					Margin-Top : 10;
+					FontFlags: [ffCenter];
+				}
+			}
+		}
+	}
+	.navbar-left{
+		Size: auto 100%;
+		.btn-nav{
+			&:first-child{
+				HintAnchor : caTopLeft;
+				HintOffset : -95cw;
+			}
+		}
+		.logo{
+			Anchor : caCenter;
+			Position : 50% 50%;
+			Size : auto 65%;
+			BackgroundMipMapping : True;
+			MouseEvents : mePass;
+		}
+		.start{
+			width : 53;
+			BackgroundColor : $FF314747;
+			&:hover:enabled{
+				BackgroundColor : $FF364f4f;
+			}
+		}
+		.queue-info{
+			DefaultText : §navbar_menu_play_queue_info;
+			size : 100% 25%;
+			Padding: 2;
+			Anchor: caBottomLeft;
+			ParentAnchor : caBottomLeft;
+			FontSize : 100%;
+			FontFlags: [ffCenter,ffVerticalCenter];
+			Visibility : False;
+		}
+	}
+	.navbar-right{
+		Position: 100% 0;
+		Size : 50% 100%;
+		Anchor : caTopRight;
+		MouseEvents : mePass;
+	}
+	.btn-nav{
+		position: inherit inherit;
+		size: 1000text 100%;
+		Padding : 0 15;
+		Enabled : True;
+		TextTransform : ttUppercase;
+		FontWeight : 500;
+		FontColor : $font-color-subtle;
+		Fontflags : [ffCenter,ffVerticalCenter];
+		Fontsize : 43%;
+		FontBorder : 0 $0;
+		HintAnchor : caTop;
+		HintOffset : 0 5;
+		&.btn:disabled{
+			Opacity : 1;
+		}
+		&:hover:enabled{
+			FontColor : $font-color-highlight;
+		}
+		&.btn-shop:enabled{
+			FontColor : $font-color-gold;
+			&:hover{
+				FontColor : lighten($font-color-gold, 0.8);
+			}
+		}
+		&.btn-premium:enabled{
+			FontColor : $font-color-reward;
+			&:hover{
+				FontColor : lighten($font-color-premium, 0.8);
+			}
+		}
+		&.btn-diamonds:enabled{
+			FontColor : $highlight-cyan;
+			FontWeight : 10000;
+			&:hover{
+				FontColor : lighten($highlight-cyan, 0.8);
+			}
+		}
+		&.btn-credits:enabled{
+			FontColor : $font-color-gold;
+			&:hover{
+				FontColor : lighten($font-color-gold, 0.8);
+			}
+		}
+		&.selected{
+			Fontweight : 1000;
+			FontColor : $font-color-highlight;
+			.selection-indicator{
+				Visibility : True;
+			}
+		}
+		&:disabled{
+			FontColor : $80FFFFFF;
+		}
+		.selection-indicator{
+			Visibility : False;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Size : auto 100%;
+			Background : MainMenu/Navbar/chosen_tab_indicator.png;
+			TransformInheritance : False;
+			ZOffset : -2;
+		}
+		.new-flag{
+			Position : 0 -11%;
+			Anchor : caCenter;
+			ParentAnchor : caBottom;
+			Size : auto 60%;
+			Background : MainMenu/Deckbuilding/new_flag.png;
+			TransformInheritance : False;
+			ZOffset : 30;
+			MouseEvents : mePass;
+			$jello-horizontal;
+			&:hiding{
+				$scale-out;
+			}
+		}
+		&.btn-play{
+			Margin : 0 0 0 10;
+			FontColor : $font-color-highlight;
+			MinWidth : 204.2ch;
+			&:hover:enabled{
+				FontColor : $font-color-real-white;
+				.highlight{
+					Background : MainMenu/Navbar/play_button_hover.png;
+				}
+			}
+			.highlight{
+				ZOffset : -1;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				Background : MainMenu/Navbar/play_button.png;
+				Size: auto 100bh;
+			}
+		}
+		&.queue-locked{
+			Enabled : False;
+			BackgroundColorOverride : $override-darken;
+			& > .lock{
+				Visibility : True;
+			}
+		}
+		& > .lock{
+			Visibility : False;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Size : auto 35%;
+			ZOffset : 110;
+			BackgroundColorOverrideInheritance : False;
+			MouseEvents : mePass;
+		}
+	}
+	&.navbar-sub{
+		ZOffset : 900;
+		Size : 100% auto;
+		Background : MainMenu/Navbar/SubNavbarBackground.png;
+		Padding-Left : 4.5%;
+		Padding-Right : 4.5%;
+		Padding-Bottom : 15%;
+		.btn-nav{
+			Fontsize: 90%;
+			Padding-Top : 2;
+			Padding-Bottom : 1;
+			.new-flag{
+				Position : 0 30%;
+				Size : auto 120%;
+			}
+		}
+		& > stack.right{
+			Size : auto 100%;
+			Anchor : caTopRight;
+			ParentAnchor : caTopRight;
+		}
+		&.navbar-sub-seconday{
+			Position : 0 90ch;
+			BackgroundColor : $70FFFFFF;
+		}
+	}
+}

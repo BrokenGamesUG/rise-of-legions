@@ -1,0 +1,86 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+const LIFT_DURATION = 15000;
+var Group, EffectEndGroup, ImmuneGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  EffectEndGroup := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], LIFT_DURATION); //Lifted-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], LIFT_DURATION + 10000); //LiftedImmunity-Duration
+
+  {$IFDEF SERVER}
+    // Stop unit at grounding
+    Entity.Eventbus.Trigger(eiStand, []);
+    // After eiCooldown root is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectFireComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([EffectEndGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Lifted')
+      .TriggerOnKilled;
+
+    // Immunity
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .TargetGroup([EffectEndGroup, ImmuneGroup]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upGround])
+    .Remove;
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upFlying]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upLifted]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToLifted]);
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\LiftedEnds.dws');
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\lifted.pfx', 1.0)
+      .ActivateNow
+      .ScaleWith(eiCollisionRadius)
+      .FixedHeightGround
+      .FixedOrientationDefault;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [EffectEndGroup], '\Blue\inverse_gravity_lifted.pfx', 0.6)
+      .ActivateNow
+      .ActivateOnCreate
+      .DeactivateOnFire
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault;
+
+    TPositionerRotationComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .Radius(0.05)
+      .RotationSpeed(0, 0, 0.75 * PI)
+      .Factor(0, 1, 0)
+      .Phase(random)
+      .FadeIn(500);
+
+    TPositionerRotationComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .Radius(0.025)
+      .RotationSpeed(0.45 * PI, 0.55 * PI, 0.65 * PI)
+      .Factor(1, 0, 1)
+      .Phase(random)
+      .FadeIn(500);
+
+    TPositionerOffsetComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .Offset(0, FLYING_HEIGHT, 0)
+      .Transition(500);
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/blue/effect/lifted')
+      .TriggerNow();
+  {$ENDIF}
+end;

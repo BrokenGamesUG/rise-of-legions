@@ -1,0 +1,47 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; League : integer);
+var EffectGroup : integer;
+begin
+  EffectGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [EffectGroup], 500); //Delay to heal
+  // all subsequent heals on targets around first target
+  Entity.Blackboard.SetValue(eiWelaDamage, [EffectGroup], 25.0);
+  Entity.Blackboard.SetValue(eiDamageType, [EffectGroup], [dtFlatHeal, dtOverheal]);
+
+  {$IFDEF SERVER}
+    TThinkImpulseTimerCooldownComponent.CreateGrouped(Entity, [EffectGroup]);
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [EffectGroup])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [EffectGroup], False);
+
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [EffectGroup])
+      .MustHave([upUnit])
+      .MustNotHave([upUnhealable])
+      .ConstraintsWarhead;
+
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWarheadSpottyHealComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [EffectGroup])
+      .Name('FlatHeal')
+      .TriggerOnFire;
+
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [EffectGroup]);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [EffectGroup], '\White\solar_flare_fire.pfx', 1.5)
+      .ActivateNow();
+
+    TCameraShakerComponent.CreateGrouped(Entity, [EffectGroup])
+      .PresetRotationLight
+      .ActivateOnFree;
+
+    TCameraShakerComponent.CreateGrouped(Entity, [EffectGroup])
+      .PresetVectorLight
+      .ActivateOnFree;
+
+    TSoundComponent.CreateGrouped(Entity, [EffectGroup], 'event:/card/white/spell/solar_flare/attack_fire')
+      .TriggerNow();
+  {$ENDIF}
+end;

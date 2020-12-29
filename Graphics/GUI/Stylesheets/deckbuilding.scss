@@ -1,0 +1,385 @@
+﻿.decks{
+	Anchor : caTop;
+	ParentAnchor : caTop;
+	Stackcolumns : 2;
+	Overflow : ohScrollY;
+	MouseEvents : meAll;
+	ScrollbarWidth : 24;
+	.deck-wrapper{
+		Position : inherit inherit;
+		Margin : 2pw 0;
+		Size : 50% auto;
+		BoxSizing : bsMargin;
+		&:even{
+			Margin-Left : 2pw;
+			Margin-Right : 2pw;
+		}
+		&:odd{
+			Margin-Left : 2pw;
+			Margin-Right : 2pw;
+		}
+		&.disabled:important{
+			HintOffset : -90 30;
+			BackgroundColorOverride : $override-darken;
+			MouseEvents : mePass;
+			*{
+				MouseEvents : mePass;
+			}
+			.btn-delete{
+				Visibility : False;
+			}
+		}
+		.new-flag{
+			Position : 5% -10%;
+			Size : auto 45%;
+			ParentAnchor : caBottom;
+			Anchor : caCenter;
+			Background : MainMenu/Deckbuilding/new_deck_flag.png;
+		}
+	}
+}
+
+.decklist{
+	.decks{
+		Position : 2% 9%;
+		Size : 71% 82%;
+		.deck-wrapper{
+			Padding-Right : 5.5pw;
+			btn{
+				MouseEvents : meAll;
+			}
+			&:hover{
+				.btn-delete{
+					Visibility : True;
+				}
+			}
+			.btn-delete{
+				Position : 2% -8%;
+				ParentAnchor : caTopRight;
+				Anchor : caTopLeft;
+				Size : auto 70%;
+				Visibility : False;
+			}
+		}
+	}
+	.new-card-hint{
+		Position : 200ch 3.5%;
+		Size : text 24;
+		ParentAnchor : caTop;
+		Anchor : caTop;
+		.new-flag{
+			Position : -25ch;
+			Anchor : caRight;
+			ParentAnchor : caLeft;
+			AnimationIterationCount : 0;
+		}
+	}
+}
+
+.mainmenu{
+	.main-content{
+		& > .deckeditor{
+			Margin : 0;
+		}
+	}
+}
+
+.deckeditor{
+	.sidebar{
+		Anchor : caRight;
+		ParentAnchor : caRight;
+		Position : 0 -5.7%;
+		Size : 209 auto;
+		Background : MainMenu/Deckbuilding/DeckbuildingFilterbar.png;
+		.cardpool-filter{
+			Anchor : caTopRight;
+			Position: 100% 1%;
+			Size : auto 0;
+			.filter{
+				Background : ;
+				Size : 206 397;
+			}
+		}
+		.deck-meta{
+			Anchor : caBottomRight;
+			ParentAnchor : caBottomRight;
+			Size : 100% 26%;
+			.btn-deck-icon{
+				ParentAnchor : caTop;
+				Anchor : caCenter;
+				Position: 2% 30.5%;
+				Size : 25% auto;
+			}
+			input{
+				Position: 51.8% 69%;
+				Anchor : caCenter;
+				Size : 82% 18%;
+				Fontsize : 70%;
+				Fontweight : 600;
+				BackgroundColor : 0;
+				FontColor : $font-color-white;
+				Fontflags : [ffCenter,ffVerticalCenter];
+				&:hover{
+					BackgroundColor : $20FFFFFF;
+				}
+				&:focus{
+					BackgroundColor : $A0FFFFFF;
+					Fontflags : [ffVerticalCenter];
+					FontColor : $FF202020;
+				}
+			}
+			.btn-deck-close{
+				Position: 2% 0%;
+				Size : 67% auto;
+				Anchor : caTop;
+				ParentAnchor : caBottom;
+			}
+		}
+	}
+		
+	.current-deck{
+		Position : 43.0% 90.7%;
+		Size : 84% 12%;
+		Anchor : caCenter;
+		StackPartitioning : 100% 100% 100% 100% 100% 100% 100% 100% 100% 100% 100% 100%;
+		.deck-card{
+			Position : inherit inherit;
+			.empty-slot, .btn-remove{
+				ParentAnchor : caCenter;
+				Anchor : caCenter;
+			}
+			.empty-slot{
+				Position : 0 -6%;
+				Size : auto 120%;
+				Margin : 0 -4 0 -18;
+				Background : MainMenu/Deckbuilding/cardslot.png;
+			}
+			.btn-remove{
+				Size : auto 100%;
+				Enabled : True;
+				*{
+					MouseEvents : mePassClick;
+				}
+				&:hover{
+					.hover{
+						Visibility : True;
+					}
+				}
+				.card{
+					Size : auto 100%;
+					Anchor : caCenter;
+					ParentAnchor : caCenter;
+					.level-progress{
+						Visibility : False;
+					}
+				}
+				.btn-small{
+					ZOffset : 100;
+					Size : 40% auto;
+					Visibility : False;
+					HintClasses : small;
+					MouseEvents : meAll;
+					icon{
+						ParentAnchor : caCenter;
+						Anchor : caCenter;
+					}
+				}
+				.btn-detail{
+					ParentAnchor : caTop;
+					Anchor : caRight;
+					icon{
+						Size : 70% auto;
+					}
+				}
+				.btn-skin{
+					ParentAnchor : caTop;
+					Anchor : caLeft;
+					icon{
+						Size : auto 70%;
+						Background : MainMenu/Deckbuilding/skin_dialog.png;
+					}
+				}
+			}
+			&.filled{
+				&:hover{
+					.btn-remove{
+						.btn-small{
+							Visibility : True;
+						}
+					}
+				}
+			}
+			&:first-child{
+				.btn-small{
+					HintAnchor : caBottomLeft;
+				}
+			}
+		}
+	}
+	
+	.cardpool{
+		Position : 2.6% 3.9%;
+		Size : 78.97% 79%;
+		MouseEvents : meBlock;
+		.card-page{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Size : 100% 100%;
+			Padding : auto auto;
+			Stackcolumns : 3 3;
+			&.4x4{
+				Stackcolumns : 4 4;
+				.cardpool-item{
+					Width : 25%;
+				}
+			}
+			.cardpool-item{
+				Size : 33% 51cw;
+				$scale-in;
+				&.colors_exceed{
+					&:hover{
+						.color-exceed{
+							Visibility : True;
+						}
+						.hover{
+							Visibility : False;
+						}
+						.card{
+							BackgroundColorOverride : $override-darken;
+						}
+					}
+				}
+				.btn-add{
+					Size: 100% 100%;
+					Enabled : True;
+					TransitionProperty : gtTransform;
+					TransitionDuration : 50;
+					TransitionWithInheritance : False;
+					&:hover{
+						.btn-detail{
+							Visibility : True;
+						}
+					}
+					&.unusable{
+						&:hover{
+							.hover{
+								Visibility : False;
+							}
+						}
+						.card{
+							BackgroundColorOverride : $override-darken;
+							.skill-hint{
+								BackgroundColorOverrideInheritance : False;
+							}
+						}
+					}
+					&.usable:hover{
+						Transform : scale(1.05);
+						TransformAnchor : caCenter;
+						.name, .description, .dps, .health, .cost{
+							FontResolution : 1.62;
+						}
+						.skill-hint{
+							TransformInheritance : False;
+							Position : 12% 0;
+						}
+						.hover{
+							Visibility : True;
+						}
+					}
+					*{
+						MouseEvents : mePassClick;
+					}
+					.skill-hint{
+						MouseEvents : mePass;
+						*{
+							MouseEvents : mePass;
+						}
+					}
+					.btn-detail{
+						Position : 25% 7%;
+						Anchor : caCenter;
+						Size : auto 48;
+						ZOffset : 100;
+						Visibility : False;
+						MouseEvents : meAll;
+						icon{
+							Size : 70% auto;
+							Anchor : caCenter;
+							ParentAnchor : caCenter;
+						}
+					}
+				}
+				.color-exceed{
+					Visibility : False;
+					Size : 100% 100%;
+					Padding : 20% 20%;
+					ParentAnchor : caCenter;
+					Anchor : caCenter;
+					ZOffset : 100;
+					FontSize : 22;
+					FontFlags : [ffWordWrap,ffCenter,ffVerticalCenter,ffAutoshrink];
+				}
+				.card{
+					.card-info{
+						Position-X : -2.5%;
+					}
+				}
+				.new-flag{
+					Position : 0 6%;
+					Transform : rotateZ(25deg);
+				}
+			}
+		}
+		.btn-left, .btn-right{
+			Size : 4.0% auto;
+		}
+		.btn-left{
+			Position-X: -0.5%;
+		}
+		.btn-right{
+			Position-X: 0.3%;
+		}
+		.size-switch{
+			Position : -30 0;
+			Size : 200ch 32;
+			Anchor : caRight;
+			ParentAnchor : caTopRight;
+			ZOffset : 1;
+			Margin : 0 20 0 0;
+			btn:hover{
+				Border : 1 $08FFFFFF;
+			}
+			.btn-3x3{
+				Position : 0 0;
+				Size : 50% 100%;
+			}
+			.btn-4x4{
+				Position : 100% 0;
+				Size : 50% 100%;
+				Anchor : caTopRight;
+			}
+		}
+		.page-counter{
+			Position : -5 -3;
+			Anchor : caBottomRight;
+			ParentAnchor : caBottomRight;
+			Size : 20% 3.0%;
+			fontflags : [ffRight];
+			fontsize : 100%;
+		}
+	}
+}
+
+.new-flag{
+	MouseEvents : mePass;
+	Size : auto 100bh;
+	Background : MainMenu/Deckbuilding/new_flag.png;
+	ZOffset : 50;
+	TransformAnchor : caCenter;
+	TransformOrder : toAnimationTransform;
+	$jello-horizontal;
+	&:hiding{
+		$scale-out;
+	}
+}

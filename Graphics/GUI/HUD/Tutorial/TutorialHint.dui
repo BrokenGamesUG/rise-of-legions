@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<wrapper class="tutorial-hint dialog" :show="hud.IsTutorialHintOpen" :animate-on="hud.TutorialWindowHighlight">
+	<wrapper class="backdrop active-hint" :visible="hud.TutorialHintFullscreen">
+		<div class="window">
+			<div class="text">
+				{{ hud.TutorialHintText }}
+			</div>
+			<stack class="window-buttons">
+				<btn class="btn-xl" dxml-on:click="hud.IsTutorialHintOpen := False; hud.SendGameEvent(tutorial_hint_confirmed)">{{ hud.TutorialWindowButtonText }}</btn>
+			</stack>
+		</div>
+	</wrapper>
+	<div class="passive-hint" :visible="not hud.TutorialHintFullscreen and not hud.TutorialWindowHighlight"> 
+		<div class="window">
+			<div class="text">
+				{{ hud.TutorialHintText }}
+			</div>
+		</div>
+	</div>
+	<div class="arrow-hint {{ backdrop if hud.TutorialWindowBackdrop else world }}" :visible="hud.TutorialWindowHighlight">
+		<div class="info" :position-x="hud.TutorialWindowPosition.X" :position-y="hud.TutorialWindowPosition.Y" :anchor="hud.TutorialWindowAnchor"> 
+			<div class="arrow {{ hud.TutorialWindowAnchor }}" :anchor="hud.TutorialWindowAnchor" :parentanchor="hud.TutorialWindowAnchor" :visible="hud.TutorialWindowArrowVisible"></div>
+			<div class="text {{ hud.TutorialWindowAnchor }} window {{ has-button if hud.TutorialWindowButtonText <> '' }}" :anchor="hud.TutorialWindowAnchor" :parentanchor="hud.TutorialWindowAnchor" :visible="hud.TutorialHintText <> ''">
+				<div class="rgl">
+					{{ hud.TutorialHintText }}
+				</div>
+				<stack class="window-buttons" :visible="hud.TutorialWindowButtonText <> ''">
+					<btn class="btn-xl" dxml-on:click="hud.IsTutorialHintOpen := False; hud.SendGameEvent(tutorial_hint_confirmed)">{{ hud.TutorialWindowButtonText }}</btn>
+				</stack>
+			</div>
+		</div>
+	</div>
+</wrapper>

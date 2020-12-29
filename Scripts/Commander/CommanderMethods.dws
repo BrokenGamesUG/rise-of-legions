@@ -1,0 +1,115 @@
+{$INCLUDE 'Math.dws'};
+{$INCLUDE 'Globals.dws'};
+
+procedure AddCardShared(Entity : TEntity; CardInfo : TCardInfo; Group, ChargeGroup, Slot : integer);
+begin
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [Group], reCardLeague, CardInfo.League);
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [Group], reCardLevel, CardInfo.Level);
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [Group], reCardTimesPlayed, 0);
+
+  Entity.Blackboard.SetValue(eiWelaUnitPattern, [Group], CardInfo.Filename);
+  Entity.Blackboard.SetValue(eiSkinIdentifier, [Group], CardInfo.SkinID);
+
+  TWelaEventRedirecter.CreateGrouped(Entity, [Group])          // fetches costs dynamically from card
+    .CopyIndexedValue(eiResourceCap, [], reCharge, [Group])    // fetches charge values statically from card
+    .CopyIndexedValue(eiResourceBalance, [], reCharge, [Group])
+    .CopyValue(eiCooldown, [], [ChargeGroup]);
+
+  {$IFDEF SERVER}
+    TWelaEffectPayCostComponent.CreateGrouped(Entity, [Group]) // pay cost
+      .SetPayingGroup([])
+      .SetPayingGroupForType(reCharge, [Group])
+      .ConvertResource(reGold, reWood)
+      .ConvertResource(reWood, reSpentWood);
+    TWelaEffectIncreaseResourceComponent.CreateGrouped(Entity, [Group])
+      .SetResourceType(reCardTimesPlayed);
+    TWelaEffectFactoryComponent.CreateGrouped(Entity, [Group])
+      .PassCardValues; // place drop
+    TBrainWelaCommanderComponent.CreateGrouped(Entity, [Group]);
+
+    TServerCardPlayStatisticsComponent.CreateGrouped(Entity, [Group], CardInfo.Filename);
+
+    TCommanderAbility.CreateGrouped(Entity, [Group])
+      .CardInfo(CardInfo)
+      .ChargeGroup([ChargeGroup]);
+  {$ENDIF}
+
+  AddCharging(Entity, Group, ChargeGroup);
+  TWelaReadyCostComponent.CreateGrouped(Entity, [Group]) // check cost
+    .SetPayingGroup([])
+    .SetPayingGroupForType(reCharge, [Group]);
+
+  {$IFDEF CLIENT}
+    TSpelltargetVisualizerShowPatternComponent.CreateGrouped(Entity, [Group]);
+    TDeckCardButtonComponent.CreateGrouped(Entity, [Group])
+      .Slot(Slot)
+      .CardInfo(CardInfo)
+      .SetCooldownGroup([ChargeGroup]);
+  {$ENDIF}
+end;
+
+procedure AddSpawner(Entity : TEntity; CardInfo : TCardInfo; Slot : integer);
+var Group, ChargeGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup;
+  ChargeGroup := Entity.ReserveFreeGroup();
+  AddCardShared(Entity, CardInfo, Group, ChargeGroup, Slot);
+
+  TWelaTargetConstraintBuildTeamComponent.CreateGrouped(Entity, [Group]);
+  TWelaTargetConstraintGridComponent.CreateGrouped(Entity, [Group]);
+  Entity.Blackboard.SetValue(eiAbilityTargetType, [Group], ctBuildZone);
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;
+
+procedure AddDrop(Entity : TEntity; CardInfo : TCardInfo; Slot : integer);
+var Group, ChargeGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup;
+  ChargeGroup := Entity.ReserveFreeGroup();
+  AddCardShared(Entity, CardInfo, Group, ChargeGroup, Slot);
+
+  Entity.Blackboard.SetValue(eiAbilityTargetCount, [Group], 1);
+  Entity.Blackboard.SetValue(eiAbilityTargetType, [Group], ctCoordinate);
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  TWelaReadyAfterGameStartComponent.CreateGrouped(Entity, [Group]); // drop only after game has started
+  TWelaReadySpawnedComponent.CreateGrouped(Entity, [Group]);
+
+  TWelaTargetConstraintDynamicZoneComponent.CreateGrouped(Entity, [Group])
+    .SetZone([dzDrop]);
+  TWelaTargetConstraintZoneComponent.CreateGrouped(Entity, [Group], ZONE_DROP, False);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;
+
+procedure AddBuilding(Entity : TEntity; CardInfo : TCardInfo; Slot: integer);
+var Group, ChargeGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup;
+  ChargeGroup := Entity.ReserveFreeGroup();
+  AddCardShared(Entity, CardInfo, Group, ChargeGroup, Slot);
+
+  Entity.Blackboard.SetValue(eiAbilityTargetCount, [Group], 1);
+  Entity.Blackboard.SetValue(eiAbilityTargetType, [Group], ctCoordinate);
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  TWelaReadyAfterGameStartComponent.CreateGrouped(Entity, [Group]); // buildings only after game has started
+  TWelaReadySpawnedComponent.CreateGrouped(Entity, [Group]);
+
+  TWelaTargetConstraintDynamicZoneComponent.CreateGrouped(Entity, [Group])
+    .SetZone([dzDrop]);
+  TWelaTargetConstraintZoneComponent.CreateGrouped(Entity, [Group], ZONE_DROP, False);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

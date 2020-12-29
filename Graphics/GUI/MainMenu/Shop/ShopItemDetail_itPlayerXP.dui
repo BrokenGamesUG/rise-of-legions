@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<div class="shopitem detail shopitem-xp">
+	<img class="header-icon" src="MainMenu/Shop/XPPotion.png"></img>
+	<div class="amount">{{ item.Amount }} XP</div>
+</div>

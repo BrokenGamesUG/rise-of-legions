@@ -1,0 +1,51 @@
+procedure Apply(Entity : TEntity; SameTeam : boolean);
+var Group, ArmorGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  ArmorGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 300.0);
+  // enemies health cap is reduced instead of raised
+  if not SameTeam then
+    Entity.Blackboard.SetValue(eiWelaModifier, [Group], -1.0);
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group]);
+
+    if SameTeam then
+      TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+        .Name('Permafrost')
+        .TriggerOnTakeDamage;
+
+    TModifierResourceComponent.CreateGrouped(Entity, [Group])
+      .Resource(reHealth)
+      .ApplyNow();
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedHardening]);
+
+  TWelaReadyUnitPropertyComponent.CreateGrouped(Entity, [ArmorGroup])
+    .MustHave([upFrozen]);
+  TModifierArmorTypeComponent.CreateGrouped(Entity, [ArmorGroup])
+    .SetTo(atHeavy)
+    .ReadyGroup([ArmorGroup]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Black\blessed_hardening_buff.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Black\permafrost_cast.pfx', 1.5)
+      .ActivateNow()
+      .ScaleWith(eiCollisionRadius);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [ArmorGroup], '\Black\permafrost_buff.pfx', 0.6)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .VisibleWithUnitPropertyMustHave([upFrozen]);
+  {$ENDIF}
+end;

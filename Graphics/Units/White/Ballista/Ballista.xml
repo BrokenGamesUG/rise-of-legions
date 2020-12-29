@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh">
+  <GeometryFile>ballista.fbx</GeometryFile>
+  <Cullmode>cmCCW</Cullmode>
+  <Alpha>1</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <SpecularIntensity>1</SpecularIntensity>
+  <SpecularPower>256</SpecularPower>
+  <SpecularTint>1</SpecularTint>
+  <ShadingReduction>0</ShadingReduction>
+  <DiffuseTetxure>BallistaDiffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture>BallistaMaterial.tga</SpecularTexture>
+  <GlowTexture>BallistaGlow.tga</GlowTexture>
+  <FurTexture></FurTexture>
+  <FurIterations>9</FurIterations>
+  <FurThickness>8,23529434204102</FurThickness>
+  <FurTrackBone></FurTrackBone>
+  <FurResponsivness>0,00811764691025019</FurResponsivness>
+  <FurAcceleration>1</FurAcceleration>
+  <FurAccelerationResponsivness>0,0309803914278746</FurAccelerationResponsivness>
+  <FurAttenuation>0,0038823529612273</FurAttenuation>
+  <FurMovementLength>1</FurMovementLength>
+  <FurGravitation>1</FurGravitation>
+</TMesh>

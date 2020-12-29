@@ -1,0 +1,22 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 0.4);
+
+  {$IFDEF SERVER}
+    TModifierWelaDamageComponent.CreateGrouped(Entity, [0])
+      .Multiply
+      .SetValueGroup([Group]);
+  {$ENDIF}
+
+  TModifierDamageTypeComponent.CreateGrouped(Entity, [0])
+    .Add([dtReflected]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [8], '\Blue\missile_trail.pfx', 1.0)
+      .ActivateNow;
+  {$ENDIF}
+end;

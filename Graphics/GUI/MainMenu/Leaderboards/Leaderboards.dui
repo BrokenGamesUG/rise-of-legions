@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<wrapper class="leaderboards" :visible="menu.CurrentMenu = mtLeaderboards">
+	<div class="navbar navbar-sub navbar-scenario">
+		<stack>
+			<btn class="btn btn-nav {{ selected if (leaderboards.ChosenScenario = es1v1) }}" dxml-on:click="leaderboards.ChosenScenario := es1v1" title="§scenario_type_description_es1v1">
+				§teambuilding_mode_pvp
+			</btn>
+			<btn class="btn btn-nav {{ selected if (leaderboards.ChosenScenario = es2v2) }}" dxml-on:click="leaderboards.ChosenScenario := es2v2" title="§scenario_type_description_es2v2">
+				§teambuilding_mode_pvp_duo
+			</btn>
+			<btn class="btn btn-nav {{ selected if leaderboards.ChosenScenario = es1vE }}" dxml-on:click="leaderboards.ChosenScenario := es1vE" title="§scenario_type_description_es1vE">		
+				§teambuilding_mode_pve
+			</btn>
+			<btn class="btn btn-nav {{ selected if leaderboards.ChosenScenario = es2vE }}" dxml-on:click="leaderboards.ChosenScenario := es2vE" title="§scenario_type_description_es2vE">		
+				§teambuilding_mode_pve_duo
+			</btn>
+		</stack>
+	</div>
+	<div class="navbar navbar-sub navbar-sub-seconday navbar-league">
+		<stack>
+			<btn :visible="leaderboards.IsTimeBoard" class="btn btn-nav {{ selected if leaderboards.ChosenLeague = lcStone }}" dxml-on:click="leaderboards.ChosenLeague := lcStone">		
+				§league_1
+				<img class="icon" :src="HClient.GetLeagueIcon(1)"></img>
+			</btn>
+			<btn class="btn btn-nav {{ selected if leaderboards.ChosenLeague = lcBronze }}" dxml-on:click="leaderboards.ChosenLeague := lcBronze">
+				§league_2
+				<img class="icon" :src="HClient.GetLeagueIcon(2)"></img>
+			</btn>
+			<btn class="btn btn-nav {{ selected if leaderboards.ChosenLeague = lcSilver }}" dxml-on:click="leaderboards.ChosenLeague := lcSilver">
+				§league_3
+				<img class="icon" :src="HClient.GetLeagueIcon(3)"></img>
+			</btn>
+			<btn class="btn btn-nav {{ selected if leaderboards.ChosenLeague = lcGold }}" dxml-on:click="leaderboards.ChosenLeague := lcGold">
+				§league_4
+				<img class="icon" :src="HClient.GetLeagueIcon(4)"></img>
+			</btn>
+			<btn :visible="leaderboards.IsTimeBoard" class="btn btn-nav {{ selected if leaderboards.ChosenLeague = lcCrystal }}" dxml-on:click="leaderboards.ChosenLeague := lcCrystal">
+				§league_5
+				<img class="icon" :src="HClient.GetLeagueIcon(5)"></img>
+			</btn>
+		</stack>
+	</div>
+	<wrapper class="content-sub">
+		<stack class="leaderboard top-players {{ center if leaderboards.IsTimeBoard }}">
+			<div class="header">
+				<div class="caption">
+					§leaderboards_top_list_caption - §month_{{ leaderboards.CurrentMonth }}
+				</div>
+			</div>
+			<stack class="content">
+				<div class="placement">
+					<div class="name-wrapper">
+						<div class="name">§leaderboards_list_name_column_caption</div>
+						<div class="points">§leaderboards_list_{{ time if leaderboards.IsTimeBoard else points }}_column_caption</div>
+					</div>
+				</div>
+				<div dxml-for="placement in leaderboards.leaderboard.TopList" class="placement {{ highlighted if placement.PlayerID = profile.Account.OwnID }}">
+					<div :visible="not leaderboards.IsTimeBoard" class="rank">{{ F.IntComma(placement.Rank) if placement.Rank > 0 else '-' }}</div>
+					<div class="player-icon">
+						<img class="icon" src="{{ HClient.GetPlayerIcon(placement.PlayerIcon) }}"></img>
+					</div>
+					<div class="name-wrapper">
+						<div class="hover"></div>
+						<div class="name">{{ placement.PlayerName }}</div>
+						<div class="points">{{ (F.IntToTime(placement.Points) if placement.Points > 0 else '-') if leaderboards.IsTimeBoard else F.IntComma(placement.Points) }}</div>
+					</div>
+				</div>
+			</stack>
+		</stack>
+		
+		<stack :visible="not leaderboards.IsTimeBoard" class="leaderboard player-environment">
+			<div class="header">
+				<div class="caption">
+					§leaderboards_player_list_caption - §month_{{ leaderboards.CurrentMonth }}
+				</div>
+			</div>
+			<stack class="content">
+				<div class="placement">
+					<div class="name-wrapper">
+						<div class="name">§leaderboards_list_name_column_caption</div>
+						<div class="points">§leaderboards_list_points_column_caption</div>
+					</div>
+				</div>
+				<div dxml-for="placement in leaderboards.leaderboard.PlayerList" class="placement {{ highlighted if placement.PlayerID = profile.Account.OwnID }}">
+					<div class="rank">{{ F.IntComma(placement.Rank) if placement.Rank > 0 else '-' }}</div>
+					<div class="player-icon">
+						<img class="icon" src="{{ HClient.GetPlayerIcon(placement.PlayerIcon) }}"></img>
+					</div>
+					<div class="name-wrapper">
+						<div class="hover"></div>
+						<div class="name">{{ placement.PlayerName }}</div>
+						<div class="points">{{ (F.IntToTime(placement.Points) if placement.Points > 0 else '-') if leaderboards.IsTimeBoard else F.IntComma(placement.Points) }}</div>
+					</div>
+				</div>
+			</stack>
+		</stack>
+	</wrapper>
+</wrapper>

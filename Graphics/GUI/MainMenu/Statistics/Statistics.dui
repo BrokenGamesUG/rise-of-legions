@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<wrapper class="game-statistics {{ inverted if (statistics.GameData.Statistics.CurrentUserTeamID = 2) and settings.GetBoolean(coGameplayFixedTeamColors) }}" :visible="menu.CurrentMenu = mtGameStatistics">
+	<div dxml-include="MainMenu/Statistics/RankingDialog.dui"></div>
+	<div dxml-include="MainMenu/Reward/GameInfoHeader.dui"></div>
+	<div class="players">
+		<stack class="team blue" vertical>
+			<div class="player" dxml-for="player in statistics.GameData.Statistics.TeamBlue">
+				<stack class="header">
+					<btn class="add-friend" :visible="(player.Player.FriendID > 0) and not friendlist.Friendlist.IsFriend(player.Player) and not player.Player.IsCurrentUser" dxml-on:click="friendlist.Friendlist.AddUserToFriendlist(player.Player.FriendID); client.ShowError(§friendlist_add_new_friend_direct_confirmation_caption, §friendlist_add_new_friend_direct_confirmation_text)" title="§friendlist_add_new_friend_direct"></btn>
+					<btn class="add-friend" :visible="player.Player.FriendID <= 0" dxml-on:click="client.ShowErrorConfirm(§friendlist_add_golems_caption, §friendlist_add_golems_text, §friendlist_add_golems_confirm)" title="§friendlist_add_new_friend_direct"></btn>
+					<div class="player-icon">
+						<img class="icon" src="{{ HClient.GetPlayerIcon(player.Player.Icon) }}"></img>
+					</div>
+					<div class="name">{{ player.Player.name }}</div>
+					<div class="ranking" :visible="player.Ranking >= 0" src="MainMenu/Shared/Rank/rank{{ player.Ranking }}.png"></div>
+				</stack>
+				<stack class="cards">
+					<div dxml-for="card in player.Cards" dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui"></div>
+				</stack>
+			</div>
+		</stack>
+		<div class="vs">vs.</div>
+		<stack class="team red" vertical>
+			<div class="player" dxml-for="player in statistics.GameData.Statistics.TeamRed">
+				<stack class="header">
+					<btn class="add-friend " :visible="(player.Player.FriendID > 0) and not friendlist.Friendlist.IsFriend(player.Player) and not player.Player.IsCurrentUser" dxml-on:click="friendlist.Friendlist.AddUserToFriendlist(player.Player.FriendID); client.ShowError(§friendlist_add_new_friend_direct_confirmation_caption, §friendlist_add_new_friend_direct_confirmation_text)" title="§friendlist_add_new_friend_direct"></btn>
+					<btn class="add-friend" :visible="player.Player.FriendID <= 0" dxml-on:click="client.ShowErrorConfirm(§friendlist_add_golems_caption, §friendlist_add_golems_text, §friendlist_add_golems_confirm)" title="§friendlist_add_new_friend_direct"></btn>
+					<div class="player-icon">
+						<img class="icon" src="{{ HClient.GetPlayerIcon(player.Player.Icon) }}"></img>
+					</div>
+					<div class="name">{{ player.Player.name }}</div>
+					<div class="ranking" :visible="player.Ranking >= 0" src="MainMenu/Shared/Rank/rank{{ player.Ranking }}.png"></div>
+				</stack>
+				<stack class="cards">
+					<div dxml-for="card in player.Cards" dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui"></div>
+				</stack>
+			</div>
+		</stack>
+	</div>
+	<btn class="btn-xl btn-prev" dxml-on:click="menu.CurrentMenu := mtGameRewards">§back</btn>
+	<btn class="btn-xl btn-success btn-next" dxml-on:click="quests.AutoCollect;menu.CurrentMenu := mtGame">§done</btn>
+</wrapper>

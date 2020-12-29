@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<div class="team-panel">
+	<stack class="meta-team {{ tight if matchmaking.manager.CurrentTeam.Players.Count > 2 }}">
+		<div class="team-member-wrapper" dxml-for="member in matchmaking.manager.CurrentTeam.Players" title="{{ member.Owner.name }}">
+			<select>
+				<div class="player-icon">
+					<img class="icon" src="{{ HClient.GetPlayerIcon(member.Owner.Icon) }}"></img>
+				</div>
+				<stack class="options">
+					<div :visible="member.Owner.IsCurrentUser" dxml-on:click="dialogs.OpenDialog(diPlayerIcon)">§popupmenu_choose_playericon</div>
+					<div class="{{ disabled if matchmaking.InQueue }}" :visible="member.IsKickable" dxml-on:click="matchmaking.manager.CurrentTeam.PromotePlayerToLeader(member.)">§Popupmenu_promote_player</div>
+					<div class="{{ disabled if matchmaking.InQueue }}" :visible="member.IsKickable" dxml-on:click="matchmaking.manager.CurrentTeam.Kick(member.)">§Popupmenu_kick_player</div>
+					<div class="{{ disabled if matchmaking.InQueue or (matchmaking.Manager.CurrentTeam.PlayerCount <= 1) }}" :visible="member.Owner.IsCurrentUser" dxml-on:click="matchmaking.manager.CurrentTeam.LeaveTeam">§popupmenu_leave_team</div>
+				</stack>
+			</select>
+		</div>
+		<btn class="btn-invite {{ invisible if not matchmaking.manager.CurrentTeam.CurrentUserIsLeader or matchmaking.Manager.CurrentTeam.IsFull }}" title="{{ F._d(§teambuilding_invites_pending, matchmaking.PendingInvites) }}" dxml-on:click="quests.IsVisible := False; friendlist.IsVisible := not friendlist.IsVisible">
+			{{ matchmaking.PendingInvites if matchmaking.PendingInvites > 0 }}
+		</btn>
+	</stack>
+	
+	<div class="invite-panel window " :visible="matchmaking.manager.CurrentInvite <> nil">
+		<div class="message">{{ F._(§Matchmaking_Team_Invite_Message, matchmaking.manager.CurrentInvite.Source.name) }}</div>
+		<stack class="window-buttons">
+			<btn class="btn-small btn-success btn-accept" dxml-on:click="matchmaking.manager.CurrentInvite.Accept"></btn>
+			<btn class="btn-small btn-danger btn-cancel" dxml-on:click="matchmaking.manager.CurrentInvite.Decline"></btn>
+		</stack>
+	</div>
+</div>

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<wrapper class="filter">
+	<div class="filter-fulltext"> 
+		<input dxml-on:change="filter.SetFilterForText">{{ filter.FilterForText }}</input>
+		<div class="icon"></div>
+		<btn class="fa fa-times" dxml-on:click="filter.FilterForText := ''"></btn>
+	</div>
+	<div dxml-include="MainMenu/Shared/CardFilter/FilterFaction.dui"></div>
+	<div dxml-include="MainMenu/Shared/CardFilter/FilterLeague.dui"></div>
+	<div class="filter-tech">
+		<stack>
+			<check dxml-on:change="filter.SetTech(1)" checked="{{ 1 in filter.FilterForTech }}">I</check>
+			<check dxml-on:change="filter.SetTech(2)" checked="{{ 2 in filter.FilterForTech }}">II</check>
+			<check dxml-on:change="filter.SetTech(3)" checked="{{ 3 in filter.FilterForTech }}">III</check>
+		</stack>
+	</div>
+	<div class="filter-cardtype">
+		<stack vertical>
+			<check dxml-on:change="filter.SetType(ctDrop)" checked="{{ ctDrop in filter.FilterForType }}">§CardType_Drop</check>
+			<check dxml-on:change="filter.SetType(ctSpawner)" checked="{{ ctSpawner in filter.FilterForType }}">§CardType_Spawner</check>
+			<check dxml-on:change="filter.SetType(ctBuilding)" checked="{{ ctBuilding in filter.FilterForType }}">§CardType_Building</check>
+			<check dxml-on:change="filter.SetType(ctSpell)" checked="{{ ctSpell in filter.FilterForType }}">§CardType_Spell</check>
+		</stack>
+	</div>
+	<div class="order">
+		<select class="form-control">
+			<caption>§gui_card_ordering_{{ filter.OrderBy }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-for:static="item in filter.OrderItems" dxml-on:click="filter.OrderBy := item.">§gui_card_ordering_{{ item. }}</div>
+			</stack>
+		</select>
+	</div>
+</wrapper>

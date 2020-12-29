@@ -1,0 +1,68 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TClientGame{$ENDIF});
+const
+  TEAMID : integer = PVE_TEAM_ID;
+  {$IFDEF SERVER}
+var
+  ScenarioDirector : TScenarioDirectorComponent;
+  {$ENDIF}
+begin
+  // adjust lane walk directions
+  Game.Map.Lanes.Single;
+
+  {$IFDEF SERVER}
+  Game.ScenarioDirector := TScenarioDirectorComponent.Create(Entity);
+  ScenarioDirector := Game.ScenarioDirector;
+  ScenarioDirector
+  // setup
+    .SetTeam(TEAMID)
+    .AddKIPlayer(2, 86, -23)
+    .ChooseUnitFaction(ecColorless);
+  // single player
+  ScenarioDirector.DisableMirroring;
+
+  // player nexus
+  Game.ServerEntityManager.SpawnUnit(-96, -23, 'Units\Neutral\NexusLevel1', 1); // Blue Nexus
+  // boss
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(96, -23, 'Units\Scenario\BossSiegeGolemAttack.ets');
+  {$ENDIF}
+  Game.Map.BuildZones
+    .AddBuildZone(// Red right Buildgrid
+    TBuildZone.Create(2)
+    .SetTeam(2)
+    .SetPosition(106.7, -23)
+    .SetSize(8, 3)
+    .SetFront(-1, 0)
+    .SetSpawnTarget(90, -23, 1, 0)
+    .Block(0, 0)
+    .Block(7, 0)
+    .Block(0, 2)
+    .Block(7, 2)
+    );
+
+  Game.Map.BuildZones
+    .AddBuildZone(// Blue right Buildgrid
+    TBuildZone.Create(0)
+    .SetTeam(1)
+    .SetPosition(-106.7, -23)
+    .SetSize(8, 3)
+    .SetFront(1, 0)
+    .SetSpawnTarget(-90, -23, -1, 0)
+    .Block(0, 0)
+    .Block(7, 0)
+    .Block(0, 2)
+    .Block(7, 2)
+    );
+
+  {$IFDEF CLIENT}
+  Game.ClientMap.AddDecoEntity(96, -0.1, -23, -1, 0, 0, 0.12, '\Environment\NexusGround');
+  Game.GameDirector
+    .AddEvent(1 * 60, 'pve_attack_boss_wave')
+    .AddEvent(3 * 60, 'pve_attack_boss_wave')
+    .AddEvent(5 * 60, 'pve_attack_boss_wave')
+    .AddEvent(7 * 60, 'pve_attack_boss_wave')
+    .AddEvent(10 * 60, 'pve_attack_boss_wave')
+    ;
+  {$ENDIF}
+end;

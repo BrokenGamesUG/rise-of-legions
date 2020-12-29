@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<wrapper class="reconnect-dialog dialog backdrop disabled" :show="hud.IsReconnecting">
+	<div class="window">
+		<div class="window-caption">
+			§core_reconnect_dialog_caption
+		</div>
+		<div class="message-wrapper">
+			<div class="message">§core_reconnect_dialog_message</div>
+			<div class="spinner" rotation="-1.0"></div>
+		</div>
+	</div>
+</wrapper>

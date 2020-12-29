@@ -1,0 +1,30 @@
+procedure AddCharging(Entity : TEntity; SpellGroup, ChargeGroup : integer);
+begin
+  Entity.Blackboard.SetValue(eiWelaDamage, [ChargeGroup], 1.0); // will be rounded to fit integer charges
+  Entity.Blackboard.SetValue(eiDamageType, [ChargeGroup], [dtCharge]);
+
+  {$IFDEF SERVER}
+    // activate recharging on usage of spell
+    TWelaEffectActivationAbilityComponent.CreateGrouped(Entity, [SpellGroup])
+      .OnlyAfterGameStart
+      .SetCheckGroup([SpellGroup])
+      .CheckNotFull(reCharge)
+      .SetsActive()
+      .SetActivationGroup([ChargeGroup]);
+
+    TThinkImpulseTimerComponent.CreateGrouped(Entity, [ChargeGroup]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [ChargeGroup])
+      .SetResourceType(reCharge)
+      .TargetGroup([SpellGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [ChargeGroup]);
+    // deactivate recharging if charges are full
+    TWelaEffectActivationAbilityComponent.CreateGrouped(Entity, [ChargeGroup])
+      .SetCheckGroup([SpellGroup])
+      .TriggerOnReachResourceCap(reCharge);
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ChargeGroup]);
+    TWelaHelperInitActiveAfterGameStartComponent.CreateGrouped(Entity, [ChargeGroup])
+      .DisableOnReachResourceCap(reCharge, [SpellGroup]);
+  {$ENDIF}
+
+  TWelaReadyCooldownComponent.CreateGrouped(Entity, [ChargeGroup], False);
+end;

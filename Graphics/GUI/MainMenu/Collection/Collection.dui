@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<wrapper class="collection" :visible="menu.CurrentMenu = mtCollection">
+	<div class="navbar navbar-sub">
+		<stack>
+			<btn :enabled="collection.Tab <> ecBlack" class="btn btn-nav {{ selected if collection.Tab = ecBlack }}" dxml-on:click="collection.Tab := ecBlack">		
+				§collection_nav_ecBlack
+				<img class="icon" src="{{ HClient.ColorIcon(ecBlack) }}"></img>
+			</btn>
+			<btn :enabled="collection.Tab <> ecGreen" class="btn btn-nav {{ selected if collection.Tab = ecGreen }}" dxml-on:click="collection.Tab := ecGreen">
+				§collection_nav_ecGreen
+				<img class="icon" src="{{ HClient.ColorIcon(ecGreen) }}"></img>
+			</btn>
+			<btn :enabled="collection.Tab <> ecWhite" class="btn btn-nav {{ selected if collection.Tab = ecWhite }}" dxml-on:click="collection.Tab := ecWhite">
+				§collection_nav_ecWhite
+				<img class="icon" src="{{ HClient.ColorIcon(ecWhite) }}"></img>
+			</btn>
+			<btn :enabled="collection.Tab <> ecBlue" class="btn btn-nav {{ selected if collection.Tab = ecBlue }}" dxml-on:click="collection.Tab := ecBlue">
+				§collection_nav_ecBlue
+				<img class="icon" src="{{ HClient.ColorIcon(ecBlue) }}"></img>
+			</btn>
+			<btn :enabled="collection.Tab <> ecColorless" class="btn btn-nav {{ selected if collection.Tab = ecColorless }}" dxml-on:click="collection.Tab := ecColorless">
+				§collection_nav_ecColorless
+				<img class="icon" src="{{ HClient.ColorIcon(ecColorless) }}"></img>
+			</btn>
+		</stack>
+	</div>
+	<div dxml-include="MainMenu/Collection/CardDetailDialog.dui" dxml-with="item=collection.ShopItem"></div>
+	<wrapper class="content-sub">
+		<img class="deco" src="MainMenu/Collection/CollectionDeco_{{ collection.Tab }}.png"></img>
+		<wrapper class="tree" src="MainMenu/Collection/CollectionBackground_{{ collection.Tab }}.png" :animate-on="(collection.Tab = ecBlue) or (menu.CurrentMenu = mtCollection)">
+			<div dxml-cache="enabled" dxml-for="card in collection.Cards" class="collection-item pop-out {{ locked if not card.Card.Unlocked }} item-index-{{ index. }}" left="{{ (card.Position.X * 115) + 51 }}" top="{{ (card.Position.Y * 150) + 56 }}"  dxml-on:click="collection.ShowCardDetail(card.Card)" dxml-on:rightclick="collection.ShowCardDetail(card.Card)" :animation-delay="index. * 10">
+				<wrapper dxml-with="card=card.Card">
+					<div class="shadow"></div>
+					<div class:merge="card-node" dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=card.CardInfo"></div>
+					<div class="card-name-popup" :visible="card.Unlocked">
+						{{ card.CardInfo.name }}
+					</div>
+					<div class="lock" :visible="not card.Unlocked">
+						<div class="requirements-popup">
+							<stack vertical class="requirements">
+								<div class="caption secondary">{{ card.CardInfo.name }}</div>
+								<div class="caption primary">§collection_requirements_caption</div>
+								<div dxml-for="requirement in card.Requirements">
+									<div dxml-include="MainMenu/Collection/Requirement_{{ requirement.RequirementType }}.dui"></div>
+								</div>
+							</stack>
+						</div>
+					</div>
+				</wrapper>
+			</div>
+		</wrapper>
+		<div class="window window-info golem-hint" :visible="collection.Tab = ecColorless">
+			§collection_hint_golems
+			<icon class="window-icon sign-info wobble"></icon>
+		</div>
+	</wrapper>
+</wrapper>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<wrapper class="final" :show="(hud.State = hsVictory) or (hud.State = hsDefeat)">
+	<div class="panel">
+		<div class="result {{ defeat if hud.State = hsDefeat }}"></div>
+		<btn id="EndGameButton" class="btn-xl">§continue</btn>
+	</div>
+</wrapper>

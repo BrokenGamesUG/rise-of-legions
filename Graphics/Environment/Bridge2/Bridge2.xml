@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh">
+  <GeometryFile>Bridge2.FBX</GeometryFile>
+  <Cullmode>cmCCW</Cullmode>
+  <Alpha>1</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <SpecularIntensity>0</SpecularIntensity>
+  <SpecularPower>128</SpecularPower>
+  <SpecularTint>1</SpecularTint>
+  <ShadingReduction>0,00392156885936856</ShadingReduction>
+  <DiffuseTetxure>Bridge2Diffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture></SpecularTexture>
+  <GlowTexture></GlowTexture>
+  <FurTexture></FurTexture>
+  <FurIterations>0</FurIterations>
+  <FurThickness>0</FurThickness>
+</TMesh>

@@ -1,0 +1,347 @@
+﻿.quest-log{
+	Size : 276 0;
+	ParentAnchor : caBottomRight;
+	Anchor : caBottomRight;
+	ZOffset : -1;
+	.lists-wrapper{
+		Position : 0 5%;
+		Size : 100% auto;
+		ParentAnchor : caBottomRight;
+		Anchor : caBottomRight;
+		BackgroundColor : $field-background;
+		.lists{
+			Size : 100% auto;
+			MaxSize-Y : 600;
+			Overflow : ohScrollY;
+			Padding : 2;
+			Stackorientation : soVertical;
+			Stackpartitioning : auto;
+			MouseEvents : meAll;
+			ScrollbarPadding : 2 2 3 2;
+			&:scrollable{
+				Padding-Right : 14;
+			}
+			& > stack{
+				Position : 0 inherit;
+				Size : 100% auto;
+				Stackorientation : soVertical;
+				Stackpartitioning : auto;
+				Padding-Top : 22;
+				&.empty{
+					Size : 100% 80;
+					.empty{
+						Visibility : True;
+					}
+				}
+				& > *{
+					Position : inherit inherit;
+					Size : 100% 62;
+					Margin : 1 0;
+					&.empty{
+						Position : 0 0;
+						Size : 100% 100%;
+						Opacity : 0.5;
+						Padding : 0 10%;
+						FontSize : 14;
+						FontFlags : [ffCenter,ffVerticalCenter,ffWordwrap];
+						BackgroundColor : $0FFFFFFF;
+						Visibility : False;
+					}
+					&.caption{
+						Position : 0 0;
+						Anchor : caBottomLeft;
+						Size : 100% 22;
+						FontSize : 20;
+						FontFlags : [ffCenter,ffVerticalCenter];
+					}
+				}
+			}
+		}
+	}
+	.reroll-panel{
+		ParentAnchor : caBottomLeft;
+		Size : 58 21;
+		BackgroundColor : $field-background;
+		Padding : 2;
+		icon{
+			Position : 40% 0;
+			Anchor : caTopRight;
+			Size : auto 100%;
+			Background : MainMenu/Quests/IconReroll.png;
+		}
+		.caption{
+			Position : 45% 0;
+			Size : 60% 100%;
+		}
+	}
+	.reroll-blocked{
+		.quest{
+			.overlay{
+				.reroll{
+					Visibility : False;
+				}
+			}
+		}
+	}
+}
+
+.quest{
+	Size : auto 100bh;
+	HintAnchor : caRight;
+	HintOffset : -10;
+	&.quest-daily{
+		Background: MainMenu/Quests/BGQuestDaily.png;
+	}
+	&.quest-weekly{
+		Background: MainMenu/Quests/BGQuestWeekly.png;
+	}
+	&.quest-tutorial{
+		Background: MainMenu/Quests/BGQuestTutorial.png;
+	}
+	&.quest-event{
+		Background: MainMenu/Quests/BGQuestEvent.png;
+	}
+	.highlight-flash{
+		Visibility : False;
+		MouseEvents : mePass;
+		Size : 100% 100%;
+		Background : MainMenu/Quests/quest_flash.png;
+		ZOffset : 10;
+		Opacity : 0.5;
+		$blink;
+		AnimationDuration : 1500;
+	}
+	.overlay{
+		Visibility : False;
+		.collect{
+			Visibility : False;
+			Enabled : True;
+			Size : 78.3% 100%;
+			Background : MainMenu/Quests/ButtonOverlayCollectReward.png;
+			.state{
+				Size-X : 27.2%;
+				icon{
+					Anchor : caCenter;
+					ParentAnchor : caCenter;
+					Background: MainMenu/Quests/IconCheckmark.png;
+				}
+			}
+			caption{
+				Anchor : caRight;
+				ParentAnchor : caRight;
+				Size : 72.8% 100%;
+				Padding : 0 2.5%;
+				FontSize : 25%;
+				FontFlags : [ffLeft,ffVerticalCenter];
+			}
+			&:hover{
+				Background : MainMenu/Quests/ButtonOverlayCollectRewardMouseover.png;
+			}
+		}
+		.reroll{
+			Anchor : caTopRight;
+			ParentAnchor : caTopRight;
+			Enabled : True;
+			Size : 21.7% 100%;
+			Background : MainMenu/Quests/ButtonOverlayReroll.png;
+			icon{
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				Size : 70% auto;
+				Background: MainMenu/Quests/IconReroll.png;
+			}
+			&:hover{
+				Background : MainMenu/Quests/ButtonOverlayRerollMouseover.png;
+			}
+			&:disabled{
+				icon{
+					Background: MainMenu/Quests/IconReroll_disabled.png;
+				}
+			}
+			&:hover:disabled{
+				Background : MainMenu/Quests/ButtonOverlayReroll.png;
+			}
+		}
+	}
+	.state{
+		Size : 21.3% 100%;
+		MouseEvents : mePass;
+		*{
+			MouseEvents : mePass;
+		}
+		icon{
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			Size : auto 75%;
+			Background: MainMenu/Quests/IconQuestionmark.png;
+		}
+		caption{
+			Position-Y : -5%;
+			Size : 100% 25%;
+			ParentAnchor : caBottom;
+			Anchor : caBottom;
+			FontWeight : 700;
+		}
+	}
+	.description{
+		MouseEvents : mePass;
+		Position-X : 21.3%;
+		Size : 57% 100%;
+		FontFlags : [ffLeft,ffVerticalCenter,ffWordWrap];
+		FontSize : 25%;
+		Padding : 0 2.5%;
+	}
+	.loot-list{
+		ParentAnchor : caTopRight;
+		Anchor : caTopRight;
+		Size : 21.7% 100%;
+		&.dual{
+			.loot-item.primary{
+				ParentAnchor : caTop;
+				Anchor : caTop;
+				Size : 85% 65%;
+			}
+			.loot-item.secondary{
+				.deco{
+					Visibility : False;
+				}
+				.loot-currency{
+					Position-Y : -5%;
+					ParentAnchor : caBottom;
+					Anchor : caBottom;
+					Size : 100% 26%;
+					.icon{
+						Position : 0 0;
+						ParentOffset : 0;
+						ParentAnchor : caRight;
+						Anchor : caLeft;
+						Size : auto 100%;
+					}
+					.amount{
+						Position : -50ch 0;
+						Size : text 100%;
+						ParentAnchor : caCenter;
+						Anchor : caCenter;
+						FontWeight : 700;
+						FontFlags : [ffVerticalCenter];
+						FontColor : $font-color-reward;
+					}
+				}
+			}
+		}
+		&.single{
+			.loot-currency{
+				.icon{
+					Position : 0 0;
+					Size : auto 75%;
+					ParentAnchor : caTop;
+					Anchor : caTop;
+				}
+				.amount{
+					Position : 0 -5%;
+					Size : 100% 25%;
+					ParentAnchor : caBottom;
+					Anchor : caBottom;
+					FontWeight : 700;
+					FontFlags : [ffCenter,ffVerticalCenter];
+					FontColor : $font-color-reward;
+				}
+			}
+		}
+		.loot-item{
+			Size : 100% 100%;
+			& > .deco{
+				ZOffset : -1;
+				ParentAnchor : caTop;
+				Anchor : caCenter;
+				Position-Y : 37.5%;
+				Size : 80.4% 30.65%;
+				BackgroundColor : $FF1F7579;
+			}
+			&.itDraftbox, &.itCard, &.itIcon{
+				& > .deco{
+					Visibility : False;
+				}
+			}
+			.loot-currency{
+				Padding : 0;
+				.deco{
+					Visibility : False;
+				}
+			}
+			&.itLootlist{
+				.icon{
+					Position : 0 0;
+					Size : auto 75%;
+					Anchor : caCenter;
+					ParentAnchor : caCenter;
+				}
+				& > .deco{
+					Position : 0 0;
+					ParentAnchor : caCenter;
+					Anchor : caCenter;
+				}
+			}
+			.icon{
+				ParentAnchor : caTop;
+				Anchor : caTop;
+			}
+			.loot-icon{
+				Size : 100% 100%;
+				Padding : 5%;
+				.framed-icon{
+					Anchor : caCenter;
+					ParentAnchor : caCenter;
+					Size : 100% auto;
+				}
+			}
+			.loot-card-icon{
+				Size : 100% 100%;
+				.card{
+					Position : 3%;
+					Size : 85% auto;
+					ParentAnchor : caCenter;
+					Anchor : caCenter;
+					.icon-frame{
+						Size : 100% auto;
+					}
+				}
+			}
+			.loot-draftbox{
+				Size : 100% 100%;
+				.icon{
+					ParentAnchor : caCenter;
+					Anchor : caCenter;
+					Size : 85% auto;
+					Background : MainMenu/Quests/Draftbox.png;
+					.league-icon{
+						Size : auto 70%;
+						Position : 75% 90%;
+						Anchor : caCenter;
+					}
+				}
+			}
+		}
+	}
+	&.completed{
+		.state{
+			icon{
+				$jello;
+				Background: MainMenu/Quests/IconCheckmark.png;
+			}
+		}
+		.overlay{
+			.collect{
+				Visibility : True;
+			}
+		}
+		.highlight-flash{
+			Visibility : True;
+		}
+	}
+	&:hover{
+		.overlay{
+			Visibility : True;
+		}
+	}
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<wrapper class="state-page loading-main-page" :visible="not client.IsApiReady or menu.IsPreloading">
+	<img class="game-logo" src="Shared/Logos/game_logo.png">
+		<img class="banner" src="MainMenu/LoadingScreen/ReleaseBanner.png"></img>
+	</img>
+	<div class="opener">§main_menu_loading_opener</div>
+	
+	<div class="status">
+		<div class="text">{{ §gui_load_main_menu_slow if menu.IsLoadingSlow else §gui_load_main_menu }}</div>
+		<div class="spinner" rotation="-1.0"></div>
+	</div>
+	
+	<img class="crunchy-logo" src="Shared/Logos/crunchy_leaf_logo.tga" dxml-on:click="client.BrowseTo(wePublisher)"></img>
+	<img class="broken-logo" src="Shared/Logos/broken_games_logo.png" dxml-on:click="client.BrowseTo(weCompany)"></img>
+	<img class="fmod-logo" src="Shared/Logos/fmod_logo.png" dxml-on:click="client.BrowseTo(weFmod)"></img>
+</wrapper>

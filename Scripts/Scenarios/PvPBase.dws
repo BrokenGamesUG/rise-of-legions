@@ -1,0 +1,22 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TGame{$ENDIF});
+begin
+  {$IFDEF SERVER}
+    if Game.IsTwoLane then
+    begin
+      Game.ServerEntityManager.SpawnUnit(0, 23, 'Units\Neutral\LaneNode', 0); // left capture point
+      Game.ServerEntityManager.SpawnUnit(0, -23, 'Units\Neutral\LaneNode', 0); // right capture point
+    end
+    else
+    begin
+      Game.ServerEntityManager.SpawnUnit(0, -23, 'Units\Neutral\LaneNode', 0); // center capture point
+    end;
+  {$ENDIF}
+
+  if not Game.IsTwoLane then
+    Game.Map.Lanes.Single; // adjust lane walk directions
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

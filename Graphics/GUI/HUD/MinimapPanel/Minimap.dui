@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<div class="minimap" id="minimap_panel">
+	<div class="content">
+		<div class="map" id="Minimap"></div>
+		<btn class="btn-menu" dxml-on:click="hud.IsMenuOpen := True"></btn>
+		<stack :visible="hud.IsTeamMode" class="pings">
+			<btn class="btn-ping ping-generic pop-out" title="§core_ping_generic" dxml-on:click="hud.ClickCommanderAbility(ping_generic)"></btn>
+			<btn class="btn-ping ping-attack pop-out" title="§core_ping_attack" dxml-on:click="hud.ClickCommanderAbility(ping_attack)"></btn>
+			<btn class="btn-ping ping-defense pop-out" title="§core_ping_defense" dxml-on:click="hud.ClickCommanderAbility(ping_defense)"></btn>
+		</stack>
+	</div>
+</div>

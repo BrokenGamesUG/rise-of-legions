@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<wrapper class="keybinding-dialog backdrop dialog" dxml-on:click="settings.CancelRebinding" :show="settings.KeytoBind <> kbNone" :visible="(client.State <> csLoadCoreGame) and dialogs.IsDialogVisible(diSettings)">
+	<div class="window">
+		<div class="window-caption">
+			§settings_keybinding_dialog_caption
+		</div>
+		<div class="title">{{ F._(§settings_keybinding_dialog_title, §settings_keybinding_ + settings.KeyToBindString + _caption)</div>
+		<div class="new-key">{{ F.KeybindingToStrRaw(settings.NewBinding) }}</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success" :enabled="settings.IsRebindValid" dxml-on:click="settings.ApplyRebinding">§settings_keybinding_dialog_apply</btn>
+			<btn class="btn-xl btn-danger"  dxml-on:click="settings.CancelRebinding(ecColorless)">§settings_keybinding_dialog_cancel</btn>
+		</stack>
+	</div>
+</wrapper>

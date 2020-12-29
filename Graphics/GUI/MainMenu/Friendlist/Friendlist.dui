@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<div class="friendList" :show="friendlist.IsVisible">
+	<btn class="btn-close-friendlist fa fa-times" dxml-on:click="friendlist.IsVisible := False"></btn>
+	<div class="friend-id">
+		{{ F._d(§friendlist_friend_id, friendlist.Friendlist.FriendID) }}
+		<btn class="fa fa-clipboard" title="§copy_to_clipboard" dxml-on:click="friendlist.Friendlist.CopyFriendIDToClipboard"></btn>
+	</div>
+	<stack class="lists">
+		<div class="empty empty-text" :visible="(friendlist.Friendlist.FriendCount <= 0) and (friendlist.Friendlist.RequestCount <= 0)">§friendlist_empty_description</div>
+		<stack>
+			<div class="request-{{ incoming if request.IsIncoming else outgoing }}" dxml-for:static="request in friendlist.IncomingRequests">
+				<img class="icon" src="Shared/PlayerIcons/Unknown.png"></img>
+				<div class="name">{{ request.name }}</div>
+				<div class="message">{{ §Chat_Request_Incoming if request.IsIncoming else §Chat_Request_Waiting }}</div>
+				<wrapper>
+					<btn class="btn-small btn-success btn-accept" :visible="request.IsIncoming" dxml-on:click="request.Accept"></btn>
+					<btn class="btn-small btn-danger btn-cancel" dxml-on:click="request.Decline"></btn>
+				</wrapper>
+			</div>
+		</stack>
+		<stack>
+			<div class="friend {{ friend.Status }}" dxml-for:static="friend in friendlist.Friends">
+				<wrapper>
+					<img class="icon" src="{{ HClient.GetPlayerIcon(friend.Icon) }}"></img>
+					<div class="name">{{ friend.name }}</div>
+					<div class="message">§Chat_Status_{{ friend.Status }}</div>
+				</wrapper>
+				<select>
+					<stack class="options">
+						<div dxml-on:click="friendlist.OpenChat(friend.)">§Popupmenu_send_message</div>
+						<div class="{{ disabled if not matchmaking.manager.CurrentTeam.CanInviteFriend(friend.) }}" :visible="friend.Status <> csOffline" dxml-on:click="matchmaking.manager.CurrentTeam.InviteFriend(friend.)">§Popupmenu_invite_to_game</div>
+						<div class="{{ disabled if not matchmaking.manager.CurrentTeam.CurrentUserIsLeader or matchmaking.InQueue }}" :visible="(friend.Status = csIngame) and (profile.CanSpectate)" dxml-on:click="matchmaking.SpectateFriend(friend.)">§Popupmenu_spectate</div>
+						<div dxml-on:click="friendlist.RemoveFriend(friend.)">§Popupmenu_remove_friend</div>
+					</stack>
+				</select>
+			</div>
+		</stack>
+		<stack>
+			<div class="request-{{ incoming if request.IsIncoming else outgoing }}" dxml-for:static="request in friendlist.OutgoingRequests">
+				<img class="icon" src="Shared/PlayerIcons/Unknown.png"></img>
+				<div class="name">{{ request.name }}</div>
+				<div class="message">{{ §Chat_Request_Incoming if request.IsIncoming else §Chat_Request_Waiting }}</div>
+				<wrapper>
+					<btn class="btn-small btn-success btn-accept" :visible="request.IsIncoming" dxml-on:click="request.Accept"></btn>
+					<btn class="btn-small btn-danger btn-cancel" dxml-on:click="request.Decline"></btn>
+				</wrapper>
+			</div>
+		</stack>
+	</stack>
+	<div class="request-panel">
+		<btn class="btn-xl" dxml-on:click="dialogs.OpenDialog(diFriendInvite)">§friendlist_add_new_friend</btn>
+		<btn class="btn-xl btn-success" dxml-on:click="dialogs.OpenDialog(diReferAFriend)">Refer a friend</btn>
+	</div>
+</div>

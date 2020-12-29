@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<wrapper class="settings sound">
+	<stack class="column">
+		<div class="caption">
+			§settings_sound_caption
+		</div>
+		<check dxml-on:change="settings.SetBoolean(coSoundPlayMaster)" checked="{{ settings.GetBoolean(coSoundPlayMaster) }}">
+			§settings_sound_check
+		</check>
+		<progress dxml-on:change="settings.SetInteger(coSoundMasterVolume)">
+			<bar width="{{ settings.GetInteger(coSoundMasterVolume) }}%"></bar>
+		</progress>
+		<check dxml-on:change="settings.SetBoolean(coSoundBackground)" checked="{{ settings.GetBoolean(coSoundBackground) }}">
+			§settings_sound_background_check
+		</check>
+		<stack vertical split="22 22 22 22 22 22 22 22" :class="deactivated if not settings.GetBoolean(coSoundPlayMaster)">
+			<check dxml-on:change="settings.SetBoolean(coSoundPlayMusic)" checked="{{ settings.GetBoolean(coSoundPlayMusic) }}">
+				§settings_sound_music_check
+			</check>
+			<progress dxml-on:change="settings.SetInteger(coSoundMusicVolume)">
+				<bar width="{{ settings.GetInteger(coSoundMusicVolume) }}%"></bar>
+			</progress>
+			<check dxml-on:change="settings.SetBoolean(coSoundPlayEffects)" checked="{{ settings.GetBoolean(coSoundPlayEffects) }}">
+				§settings_sound_effect_check
+			</check>
+			<progress dxml-on:change="settings.SetInteger(coSoundEffectVolume)">
+				<bar width="{{ settings.GetInteger(coSoundEffectVolume) }}%"></bar>
+			</progress>
+			<check dxml-on:change="settings.SetBoolean(coSoundPlayPings)" checked="{{ settings.GetBoolean(coSoundPlayPings) }}">
+				§settings_sound_ping_check
+			</check>
+			<progress dxml-on:change="settings.SetInteger(coSoundPingVolume)">
+				<bar width="{{ settings.GetInteger(coSoundPingVolume) }}%"></bar>
+			</progress>
+			<check dxml-on:change="settings.SetBoolean(coSoundPlayGUISound)" checked="{{ settings.GetBoolean(coSoundPlayGUISound) }}">
+				§settings_sound_gui_check
+			</check>
+			<progress dxml-on:change="settings.SetInteger(coSoundGUISoundVolume)">
+				<bar width="{{ settings.GetInteger(coSoundGUISoundVolume) }}%"></bar>
+			</progress>
+		</stack>
+	</stack>
+	<btn class="btn-xl btn-revert" dxml-on:click="settings.RevertCategory(otSound)">§RevertSettings</btn>
+</wrapper>

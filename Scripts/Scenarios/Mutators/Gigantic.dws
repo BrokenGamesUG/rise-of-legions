@@ -1,0 +1,22 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TGame{$ENDIF});
+var EffectGroup : integer;
+begin
+  EffectGroup := Entity.ReserveFreeGroup();
+
+  Entity.Blackboard.SetValue(eiWelaChance, [EffectGroup], 0.20);
+
+  {$IFDEF SERVER}
+    TAutoBrainUnitSpawnComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaEffectOnlyByChanceComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaTargetConstraintTeamIDComponent.CreateGrouped(Entity, [EffectGroup])
+      .SetTargetTeam(2);
+  {$ENDIF}
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [EffectGroup], 'Scenarios\Mutators\GiganticBuff.dws');
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

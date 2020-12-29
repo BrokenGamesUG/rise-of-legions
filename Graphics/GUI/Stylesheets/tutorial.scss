@@ -1,0 +1,39 @@
+﻿.tutorial{
+	.tutorial-slide{
+		Size : auto 655;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+	}
+	.logo{
+		Position : 0 3%;
+		Size : 40% auto;
+		Anchor : caCenter;
+		ParentAnchor : caTop;
+		Background : Shared/Logos/game_logo.png;
+		MouseEvents : mePass;
+	}
+	.text{
+		Position : 0 -16.2%;
+		Size : 100% 5%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		FontFlags : [ffCenter,ffVerticalCenter];
+		MouseEvents : mePass;
+	}
+	.btn-previous, .btn-next{
+		ParentAnchor : caBottom;
+		Anchor : caTop;
+	}
+	.btn-next{
+		Anchor : caTopLeft;
+		Position-X : 4%;
+	}
+	.btn-previous{
+		Anchor : caTopRight;
+		Position-X : -4%;
+	}
+	.center{
+		Position-X : 0;
+		Anchor : caTop;
+	}
+}

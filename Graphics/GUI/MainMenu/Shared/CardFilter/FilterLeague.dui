@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<div class="filter-league">
+	<stack>
+		<div class="check-wrapper">
+			<check class="stone" dxml-on:change="filter.SetLeague(1)" checked="{{ 1 in filter.FilterForLeague }}"></check>
+		</div>
+		<div class="check-wrapper">
+			<check class="bronze" dxml-on:change="filter.SetLeague(2)" checked="{{ 2 in filter.FilterForLeague }}"></check>
+		</div>
+		<div class="check-wrapper">
+			<check class="silver" dxml-on:change="filter.SetLeague(3)" checked="{{ 3 in filter.FilterForLeague }}"></check>
+		</div>
+		<div class="check-wrapper">
+			<check class="gold" dxml-on:change="filter.SetLeague(4)" checked="{{ 4 in filter.FilterForLeague }}"></check>
+		</div>
+		<div class="check-wrapper">
+			<check class="crystal" dxml-on:change="filter.SetLeague(5)" checked="{{ 5 in filter.FilterForLeague }}"></check>
+		</div>
+	</stack>
+</div>

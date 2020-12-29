@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<div class="resources" id="resource_panel">
+	<div class="content">
+		<div class="gold-wrapper {{ has-income if hud.GoldIncome > 0 }}" id="gold_wrapper" title="§core_gold_hint">
+			<div class="caption">{{ hud.Gold }} / {{ hud.GoldCap }}</div>
+			<div class="income">(+{{ hud.GoldIncome }})</div>
+			<icon></icon>
+		</div>
+		<div class="wood-wrapper {{ has-income if hud.WoodIncome > 0 }}" id="wood_wrapper" title="§core_wood_hint">
+			<div class="caption">{{ hud.Wood }}</div>
+			<div class="income">(+{{ hud.WoodIncome }})</div>
+			<icon></icon>
+		</div>
+		<div class="income-wrapper" id="income_wrapper" title="§core_income_hint">
+			<div class="caption" :visible="hud.IncomeUpgrades < hud.MaxIncomeUpgrades">{{ hud.SpentWood }} / {{ hud.SpentWoodToIncomeUpgrade }}</div>
+			<div class="caption" :visible="hud.IncomeUpgrades >= hud.MaxIncomeUpgrades">Max</div>
+			<progress :visible="hud.IncomeUpgrades < hud.MaxIncomeUpgrades">
+				<bar width="{{ F.Min(1.0, hud.SpentWood / hud.SpentWoodToIncomeUpgrade) * 100 }}%"></bar>
+			</progress>
+			<icon></icon>
+		</div>
+		<div class="tech-wrapper" title="§gui_ingame_tech_hint">
+			<div class="caption">{{ F.AsRoman(hud.Tier) }}</div>
+			<div class="tech-timer" :visible="hud.TimeToNextTier >= 0">{{ F.IntToTime(hud.TimeToNextTier) }}</div>
+		</div>
+	</div>
+</div>

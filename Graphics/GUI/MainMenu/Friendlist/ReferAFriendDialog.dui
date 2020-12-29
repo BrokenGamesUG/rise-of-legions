@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<wrapper class="refer-a-friend-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diReferAFriend)" dxml-on:click="dialogs.CloseDialog(diReferAFriend)">
+	<div class="window">
+		<div class="window-shine subtile"></div>
+		<div class="window-caption">§friendlist_refer_a_friend</div>
+		<div class="top-text">
+			§refer_a_friend_dialog_text
+		</div>
+		<div class="clickable friend-id" dxml-on:click="friendlist.Friendlist.CopyFriendIDToClipboard">
+			{{ friendlist.Friendlist.FriendID }}
+			<div class="click-hint">(Click to copy)</div>
+		</div>
+		<div class="bottom-text">
+			§refer_a_friend_dialog_instructions
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diReferAFriend)">§close</btn>
+		</stack>
+	</div>
+</wrapper>

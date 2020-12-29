@@ -1,0 +1,100 @@
+﻿.login{
+	.wrapper{
+		Size : 100% 100%;
+		Padding: 10;
+		MouseEvents : mePass;
+		.login-box{
+			Position-Y : 18%;
+			Size : 350 230;
+			.btn-login{
+				Position : 50% 75%;
+				Size : 160 auto;
+				Anchor : caTop;
+				DefaultText : Login;
+			}
+			.login-form{
+				Position : 50% 5;
+				Size : 80% 63%;
+				Anchor : caTop;
+				MouseEvents : mePass;
+				.caption{
+					Size : 100% 27;
+					Fontsize : 22;
+					Fontweight : 700;
+					Padding : 5 0 0 0;
+					&.user{
+						Position : 0 0;
+					}
+					&.password{
+						Position : 0 60;
+					}
+				}
+				input{
+					Position : 10 40;
+					Size : 60% 24;
+					Anchor : caLeft;
+					Fontweight : 700;
+					&.password{
+						Position-Y : 100;
+					}
+				}
+				check{
+					Position : 65% 40;
+					Size : 95 30;
+					Anchor : caLeft;
+					Fontweight : 700;
+					FontSize : 60%;
+					&.password{
+						Position-Y : 100;
+					}
+				}
+				.register{
+					Size : 100% 14;
+					ParentAnchor : caBottomLeft;
+					Anchor : caBottomLeft;
+					Enabled : True;
+					Fontsize : 14;
+					Fontweight : 700;
+					Fontflags : [ffBottom];
+					&:hover{
+						Fontcolor : $FFFFFFFF;
+					}
+				}
+			}
+			.login-status{
+				Position : 0 50;
+				Size : 300 50;
+				Anchor : caTop;
+				ParentAnchor : caBottom;
+				Fontsize : 14;
+				Fontweight : 700;
+				Fontflags : [ffCenter,ffWordWrap];
+				&.success{
+					Fontcolor : $FF00EF00;
+				}
+				&.warning{
+					Fontcolor : $FFEFEF00;
+				}
+				&.danger{
+					Fontcolor : $FFEF0000;
+				}
+			}
+		}
+		.logo-dev{
+			Position : 10 -10;
+			Size : 128 auto;
+			ParentAnchor : caBottomLeft;
+			Anchor : caBottomLeft;
+		}
+		.logo-alpha{
+			Size : auto 25;
+			ParentAnchor : caBottomRight;
+			Anchor : caBottomRight;
+		}
+		.logo-game{
+			Position : 50% 5%;
+			Size : auto 40%;
+			Anchor : caTop;
+		}
+	}
+}

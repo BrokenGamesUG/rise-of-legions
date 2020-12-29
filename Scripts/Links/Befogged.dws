@@ -1,0 +1,26 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], -3.0);
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  TModifierWelaRangeComponent.CreateGrouped(Entity, [GROUP_APPROACH_MAINWEAPON, GROUP_MAINWEAPON, Group])
+    .AddModifier;
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBefogged, upHasStateEffect]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Befogged.pfx', 0.5)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_HEAD, [0, 1]);
+  {$ENDIF}
+
+  Result := [Group];
+end;

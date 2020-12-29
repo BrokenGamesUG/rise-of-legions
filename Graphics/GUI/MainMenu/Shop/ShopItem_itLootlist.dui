@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-bundle">
+	<img class="plate" src="MainMenu/Shop/{{ item.name }}.png">
+		<stack class="content">
+			<div class="title">
+				{{ §shop_item_ + item.name + _title }}
+			</div>
+			<div class="text">
+				{{ §shop_item_ + item.name + _text }}
+			</div>
+		</stack>
+		<div class="chest">
+			<div class="amount">
+				{{ F.IntComma(5000 if item.name = bundle_large else (10000 if item.name = bundle_gold else 2000)) }}
+				<img class="icon" src="{{ HClient.CurrencyIcon(currency_diamonds) }}"></img>
+			</div>
+		</div>
+	</img>
+</div>

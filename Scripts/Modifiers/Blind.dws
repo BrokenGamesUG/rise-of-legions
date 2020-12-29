@@ -1,0 +1,53 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+const BLIND_DURATION = 12000;
+      BLIND_IMMUNITY_DURATION = 10000;
+var Group, BlindGroup, ImmuneGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  BlindGroup := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], BLIND_DURATION); //Blinded-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], BLIND_DURATION + BLIND_IMMUNITY_DURATION); //BlindedImmunity-Duration
+
+  {$IFDEF SERVER}
+    // After eiCooldown Blinded is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, BlindGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Blind')
+      .TriggerOnKilled;
+
+    // After eiCooldown + Immunity to Blinded is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+
+    // Blind
+    TModifierBlindedComponent.CreateGrouped(Entity, [1, Group])
+      .SetFireGroup([BlindGroup])
+      .SetValueGroup([1]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group, BlindGroup], [upHasStateEffect, upBlinded]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToBlinded]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Blinded.pfx', 2.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_HEAD, [0, 1]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [BlindGroup], '\Shared\Miss.pfx', 3.0)
+      .ActivateOnFire()
+      .BindToSubPositionGroup(BIND_ZONE_TOP, [0, 1]);
+  {$ENDIF}
+end;

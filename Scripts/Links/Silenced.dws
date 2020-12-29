@@ -1,0 +1,40 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upSilenced, upHasStateEffect]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Silenced.pfx', 0.8)
+      .ScaleWith(eiCollisionRadius)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault
+      .SetModelRotationOffset(RVector3.Create(0.1, 0, 0.2));
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Silenced.pfx', 0.8)
+      .ScaleWith(eiCollisionRadius)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault
+      .SetModelRotationOffset(RVector3.Create(-0.1, 0, -0.7));
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Silenced.pfx', 0.8)
+      .ScaleWith(eiCollisionRadius)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault
+      .SetModelRotationOffset(RVector3.Create(-0.6, -0.1, 0));
+  {$ENDIF}
+
+  Result := [Group];
+end;

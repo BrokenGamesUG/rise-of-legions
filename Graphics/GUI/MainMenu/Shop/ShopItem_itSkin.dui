@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-skin">
+	<div class="deco"></div>
+	<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=item.CardInfo"></div>
+	<div class="name">{{ item.CardInfo.name }}</div>
+</div>

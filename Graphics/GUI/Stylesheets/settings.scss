@@ -1,0 +1,269 @@
+﻿.settings-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-nested-dialog;
+	}
+	.window{
+		Size : 800 580;
+		.menu{
+			Position : 0 0;
+			Size : 30% 100%;
+			Padding : 20 0;
+			BoxSizing : bsPadding;
+			BackgroundColor : $40000000;
+			.categories{
+				Size : 100% 60%;
+				Stackorientation : soVertical;
+				Stackpartitioning : auto;
+				.category{
+					Size : inherit 50;
+					Fontflags : [ffVerticalCenter];
+					Fontsize : 28;
+					Enabled : True;
+					BackgroundColor : $20808080;
+					Outline-X : 0;
+					Padding : 0 0 0 15;
+					Margin : 0 5 5 5;
+					Fontweight : 700;
+					BorderSides : [bsLeft];
+					&:enabled:hover{
+						BackgroundColor : $30FFFFFF;
+						Border : 5 $60FFFFFF;
+					}
+					&.selected{
+						BackgroundColor : rgba($highlight-cyan, 0.3);
+						Border : 5 $highlight-cyan;
+					}
+					&:disabled{
+						BackgroundColorOverride : $override-darken;
+					}
+					*{
+						MouseEvents : mePass;
+					}
+					.caption{
+						Size : 100% 65%;
+						Fontflags : [ffLeft,ffBottom];
+					}
+					.descriptor{
+						Position : 5% 60%;
+						Size : 100% 35%;
+						FontFlags : [ffLeft,ffTop];
+					}
+				}
+				.category-divider{
+					Size-Y : 10;
+				}
+				.category-headline{
+					Size : inherit 70;
+					Fontflags : [ffVerticalCenter];
+					FontWeight : 700;
+					Fontsize : 26;
+					Padding : 0 0 0 15;
+					FontColor : $font-color-crystal;
+					BoxSizing : bsMargin;
+					Margin : 5;
+					&.selected{
+						BackgroundColor : rgba($highlight-cyan, 0.1);
+						FontColor : $font-color-highlight;
+					}
+				}
+			}
+			.caption{
+				Position : 0 0;
+				Size : 100% 40;
+				Anchor : caTopLeft;
+				Fontsize : 26;
+				Fontweight : 700;
+				Fontflags : [ffCenter];
+			}
+		}
+		.content{
+			Position : 100% 0;
+			Size : 70% 100%;
+			Anchor : caTopRight;
+			MouseEvents : meAll;
+			Padding : 0 15;
+			.settings{
+				.btn-revert{
+					ParentAnchor : caBottomRight;
+					Anchor : caBottomRight;
+				}
+			}
+			& > *{
+				$fade-in;
+				&:hiding{
+					$fade-out;
+				}
+			}
+		}
+		.column{
+			Size : 320 100%;
+			Stackorientation : soVertical;
+			Stackpartitioning : auto;
+			Fontsize : 20;
+			& > *{
+				Position : inherit inherit;
+				Size : inherit 22;
+				margin : 2 0 2 0;
+				HintAnchor : caLeft;
+				Fontflags : [ffVerticalCenter];
+				&.secret{
+					Opacity : 0.01;
+					&:checked{
+						Opacity : 1;
+					}
+				}
+			}
+			.caption{
+				FontSize : 24;
+				FontColor : $font-color-real-white;
+			}
+			.subcaption{
+				FontSize : 18;
+			}
+			select, .combo-caption{
+				&.primary{
+					Size-Y : 28;
+				}
+			}
+			.lang-hint{
+				Size-X: 100%;
+				Padding : 0;
+				MouseEvents : meAll;
+				Enabled : True;
+				Margin-Top : 5;
+				StackPartitioning : 105 100%;
+				&:hover{
+					.text{
+						FontColor : $font-color-real-white;
+					}
+				}
+				*{
+					MouseEvents : mePass;
+				}
+				.icon{
+					Size : inherit auto;
+					Margin-Right : 5;
+				}
+				.text{
+					FontSize : 90%;
+					FontFlags: [ffVerticalCenter,ffAutoshrink];
+					FontColor : $font-color-highlight;
+				}
+			}
+			.combo-caption, .need-restart{
+				Fontsize : 90%;
+			}
+			& > stack{
+				Padding-Left : 35;
+			}
+			.deactivated{
+				Opacity : 0.55;
+				Enabled : False;
+				MouseEvents : mePass;
+				*{
+					Enabled : False;
+					MouseEvents : mePass;
+				}
+			}
+			progress{
+				Progressmaximum : 100;
+				BackgroundColor : $80000000;
+				Enabled : True;
+				bar{
+					BackgroundColor : $FF239191;
+				}
+			}
+			.need-restart{
+				Size : text 100%;
+				HintAnchor : caLeft;
+				HintOffset : 30 0;
+				Fontflags : [ffVerticalCenter];
+				.icon{
+					Position : 5 -8%;
+					ParentAnchor : caRight;
+					Anchor : caLeft;
+					Size : auto 70%;
+					Background : Shared/warning.png;
+				}
+			}
+			.language-chooser{
+				MaxSize-Y : 60vh;
+				Overflow : ohScrollY;
+				Position-Y : 1;
+				Border : -1 $border-cyan;
+				Outline : 3 $40000000 $00000000;
+			}
+		}
+		.keybinding{
+			.column{
+				Size : 100% 88%;
+				Overflow : ohScrollY;
+				MouseEvents : meAll;
+				&:scrollable{
+					Padding-Right : 14;
+				}
+				.binding{
+					Size-X : 100%;
+					&:odd{
+						BackgroundColor: $10FFFFFF;;
+					}
+					.name{
+						Size : 50% 100%;
+						FontFlags : [ffLeft,ffVerticalCenter,ffAutoShrink];
+					}
+					.main, .alt{
+						Size : 25% 100%;
+						BoxSizing : bsMargin;
+						Margin : 5ch;
+						BackgroundColor: $field-background;
+						FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+						.reset{
+							Visibility : False;
+							FontColor : $font-color-danger;
+							Opacity : 0.8;
+							&:hover{
+								Opacity : 1.0;
+							}
+						}
+						&:hover{
+							.reset{
+								Visibility : True;
+								Size : 100ch 100%;
+								ParentAnchor : caRight;
+								Anchor : caRight;
+								ZOffset : 10;
+							}	
+						}
+					}
+					.main{
+						Position : 50%;
+					}
+					.alt{
+						Position : 75%;
+					}
+				}
+			}
+		}
+	}
+}
+
+.keybinding-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-super-nested-dialog;
+	}
+	.window{
+		Size : 400 200;
+		.title{
+			Size : 100% 40%;
+			FontSize : 33%;
+			FontFlags : [ffCenter,ffVerticalCenter,ffWordwrap];
+		}
+		.new-key{
+			Size : 100% 60%;
+			ParentAnchor : caBottom;
+			Anchor : caBottom;
+			FontSize : 50%;
+			FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+		}
+	}
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<wrapper class="feedback-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diFeedback)" dxml-on:click="dialogs.CloseDialog(diFeedback)">
+	<div class="window">
+		<div class="window-caption">§gui_feedback_caption</div>
+		<input type="textarea" dxml-on:change="feedback.SetFeedback">{{ feedback.Feedback }}</input>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success" dxml-on:click="feedback.SendFeedback">§gui_feedback_submit</btn>
+			<btn class="btn-xl btn-danger" dxml-on:click="dialogs.CloseDialog(diFeedback)">§cancel</btn>
+		</stack>
+	</div>
+</wrapper>

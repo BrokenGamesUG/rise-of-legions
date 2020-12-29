@@ -1,0 +1,36 @@
+﻿.error-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-ultra-nested-dialog;
+	}
+	.window{
+		Size : 343 200;
+		.message{
+			Size : 100% 100%;
+			Fontsize : 16%;
+			Fontflags : [ffCenter,ffVerticalCenter,ffWordWrap];
+		}
+	}
+}
+
+.exit-dialog{
+	ParentBox : pbPadding;
+	&.backdrop{
+		Zoffset: $zoffset-nested-dialog;
+	}
+	.window{
+		Size : 450 160;
+		check{
+			Position : 50% 75%;
+			Size : 220 30;
+			Anchor : caCenter;
+			Fontsize : 20;
+		}
+		.message{
+			Position : 50% 50%;
+			Size : 80% 100%;
+			Anchor : caCenter;
+			Fontsize : 24;
+			Fontflags : [ffCenter,ffVerticalCenter,ffWordWrap];
+		}
+	}
+}

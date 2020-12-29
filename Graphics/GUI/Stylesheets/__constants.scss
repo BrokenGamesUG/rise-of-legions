@@ -1,0 +1,211 @@
+﻿$blur-color: $FFAFFFFF;
+$blur-color-fallback: $E0476067;
+$blur-color-dark: $FF8ECFCF;
+$border-cyan: $FF5c8989;
+$border-warning: $FF89885c;
+$border-danger: $FF895c5c;
+$border-dark-cyan: $FF154242;
+$progress-cyan: $FF49A7AC;
+$grey: $FF808090;
+$dark-background: $30000000;
+$field-background: $FF273A3C;
+$window-background: $FF324b50;
+$window-danger-background: $FF503232;
+$window-warning-background: $FF505032;
+$background-navbar: $FF202F38;
+$background-headline: $FF157E91;
+$background-headline-secondary: $FF146C7C;
+$background-hint: $FF3C5757;
+$background-backdrop: $A0080d0d;
+$background-state-tile: $AF236F7E;
+$background-state-tile-header: $AF1D4D57;
+$textarea-background: $FF5b8289;
+$font-color-default: $FFA9DCE7;
+$font-color-default-dark: $FF63858c;
+$font-color-real-white: $FFFFFFFF;
+$font-color-white: $EFE9FEFF;
+$font-color-real-black: $FF000000;
+$font-color-black: $EF404040;
+$font-color-disabled: $CF808080;
+$font-color-subtle: $FF839C9C;
+$font-color-highlight: $FFD6F5F5;
+$font-color-highlight-strong: $FF00FF00;
+$font-color-reward: $FF00FF00;
+$font-color-reward-secondary: $FF4c6d75;
+$font-color-level: $FF00FF00;
+$font-color-premium-time: $FF00FF00;
+$font-color-premium: $FF00FFFF;
+$font-color-premium-disabled: $FFEEEEEE;
+$font-color-warning: $FFe0d925;
+$font-color-danger: $FFD02020;
+$font-color-gold: $FFEEF4AD;
+$font-color-invalid: $CFFF4040;
+$font-color-crystal: $FF83FFFF;
+$highlight-cyan: $FF59DCE2;
+$highlight-green: $FF0f831E;
+
+$override-darken-soft: $AC263D42;
+$override-darken: $CC263D42;
+$override-black: $80080D0D;
+$override-full: $FF17292E;
+$override-subtile: $5032494a;
+$override-highlight: $2080FFFF;
+
+$faction-color-black: $FF495A82;
+$faction-color-green: $FF2CB434;
+$faction-color-white: $FFFFFFFF;
+
+$keyword-color-annihilated: $FFc64040;   
+$keyword-color-banished: $FF141b23;
+$keyword-color-bleeding: $FFb92020;
+$keyword-color-blinded: $FFffed79;
+$keyword-color-enchantment: $FFba83d4;
+$keyword-color-domain: $FF03a9a3;
+$keyword-color-frozen: $FF77c1ff;
+$keyword-color-grounded: $FFb38e20;
+$keyword-color-lifted: $FF5BA9FF;
+$keyword-color-missile: $FF3883ff;
+$keyword-color-overheal: $FF89db77;
+$keyword-color-petrified: $FFD0EDED;
+$keyword-color-protected: $FFffed79;
+$keyword-color-rescued: $FFffed79;
+$keyword-color-rooted: $FF31cf06;
+$keyword-color-sapling: $FF57ff4a;
+$keyword-color-shieldblock: $FFffed79;
+$keyword-color-silenced: $FFb7d9ff;
+$keyword-color-statuseffect: $FFc0c0c0;
+$keyword-color-stealthed: $FF79b8ff;
+$keyword-color-stunned: $FFffffff;
+$keyword-color-summoningsickness: $FFff9f49;
+$keyword-color-timed: $FFe5c8c8;
+
+$text-color-ability: $FFA0FFFF; 
+$text-color-armor: $FF51ad2d;  
+$text-color-cardname: $FFFFFFFF;  
+$text-color-counter: $FFFFFFFF;  
+$text-color-damage: $FFFF2020;
+$text-color-essence: $FF08d79f;
+$text-color-health: $FF24fe00;
+$text-color-highlight: $FFb3e9f5;
+$text-color-league-1: $FFaec4c9;
+$text-color-league-2: $FFe79e55;
+$text-color-league-3: $FFa9bce8;
+$text-color-league-4: $FFe8d964;
+$text-color-league-5: $FF80bee8;
+$text-color-mana: $FF009df9;
+$text-color-energy: $FFfaf800;
+$text-color-range: $FFffa200;
+$text-color-questcount: $FFffa200;
+
+$font:Proza Libre;
+
+$zoffset-popup: 9000;
+$zoffset-dialog: 10000;
+$zoffset-nested-dialog: 13000;
+$zoffset-super-nested-dialog: 16000;
+$zoffset-ultra-nested-dialog: 19000;
+
+$navbar-size: 54;
+$navbar-sub-size: 23;
+
+$small-font{
+	FontWeight : 400;
+}
+
+$medium-font{
+	FontWeight : 700;
+}
+
+$big-font{
+	FontWeight : 1000;
+}
+
+$shadow-outline: 3 $40000000 $00000000;
+$frame-border: 2 $border-cyan;
+$frame-warning-border: 2 $border-warning;
+$frame-danger-border: 2 $border-danger;
+$grey-frame-border: 2 $grey;
+
+$frame{
+	Padding : 2;
+	Border : $frame-border;
+	Outline : $shadow-outline;
+}
+
+$field-frame{
+	Padding : 5;
+	BackgroundColor : $40000000;
+	Border : 1 $border-cyan;
+	Outline : 2 $40000000 $00000000;
+	fontflags : [ffVerticalCenter];
+	fontsize : 70%;
+}
+
+$window{
+	Padding : 2;
+	Border : $frame-border;
+	Outline : $shadow-outline;
+	BackgroundColor : $window-background;
+}
+
+$icon{
+	fontflags : [ffVerticalCenter,ffCenter];
+	fontfamily : fontawesome;
+	fontsize : 50%;
+	Fontcolor : $FFFFFFFF;
+	FontBorder : 1 $FF000000;
+	MouseEvents : mePass;
+}
+
+$text-overlay{
+	Size : 100% 100%;
+	fontflags : [ffVerticalCenter,ffCenter];
+	fontsize : 70%;
+	Fontcolor : $font-color-white;
+	FontBorder : 1 $FF000000;
+	MouseEvents : mePass;
+}
+
+$check-btn(id){
+	id{
+		BackgroundColor : $40000000;
+		Border : 1 $border-cyan;
+		Outline : 1 $40000000 $00000000;
+	}
+	id:hover:enabled{
+		BackgroundColor : $40405060;
+	}
+	id:checked{
+		BackgroundColor : $804B6E74;
+	}
+	id:checked:hover{
+		BackgroundColor : $806B8EA4;
+	}
+}
+
+$btn(id){
+	id{
+		Enabled : True;
+	}
+	id:hover:enabled{
+		Fontcolor: $FFFFFFFF;
+	}
+	id:down{
+		Transform : scale(0.95, 0.95);
+		TransformAnchor : caCenter;
+	}
+}
+
+$btn-xl(id){
+	id{
+		Padding : 0 15% 23% 15%;
+		Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+		Background : Shared/BroadBtn.png;
+	}
+	id:hover:enabled{
+		Background : Shared/BroadBtnHover.png;
+	}
+	id:disabled{
+		Background : Shared/BroadBtnDisabled.png;
+	}
+}

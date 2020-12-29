@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<wrapper class="exit-dialog backdrop dialog" :show="client.ExitDialogVisible" dxml-on:click="client.ExitDialogVisible := False">
+	<div class="window">
+		<div class="window-caption">§exit_dialog_caption</div>
+		<btn class="btn-small btn-window-close fa fa-times" :visible="feedback. <> nil" dxml-on:click="client.ExitDialogVisible := False"></btn>
+		<div class="message">§exit_dialog_message</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success" dxml-on:click="dialogs.OpenDialog(diFeedback)" :visible="feedback. <> nil">§gui_feedback_caption</btn>
+			<btn class="btn-xl btn-danger" dxml-on:click=
+			"client.CloseNoPrompt">§exit_dialog_close_btn_caption</btn>
+			<btn class="btn-xl btn-primary" :visible="feedback. = nil" dxml-on:click="client.ExitDialogVisible := False">§cancel</btn>
+		</stack>
+	</div>
+</wrapper>

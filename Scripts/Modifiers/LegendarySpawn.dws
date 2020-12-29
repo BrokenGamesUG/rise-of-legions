@@ -1,0 +1,22 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; Duration : integer);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], Duration); //Duration of spawn, where the unit is invincible, untargetable and stunned
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btSummoningSickness]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upInvincible, upSummoningSickness, upUntargetable]);
+
+  {$IFDEF CLIENT}
+     // no effect as the legendary spawns have their own effects
+  {$ENDIF}
+end;

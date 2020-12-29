@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-currency">
+	<img class="header-icon" src="{{ HClient.CurrencyIcon(item.Currency.UID) }}"></img>
+	<div class="amount">
+		{{ item.Amount }}
+		<img class="icon" src="{{ HClient.CurrencyIcon(item.Currency.UID) }}"></img>
+	</div>
+</div>

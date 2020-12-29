@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<wrapper class="idle-dialog dialog backdrop filled" :show="statistics.IsIdleBlocked" dxml-on:click="statistics.IsIdleBlocked := False">
+	<div class="window">
+		<div class="window-caption">§idle_dialog_caption</div>
+		<div class="idle-caption">§idle_dialog_message</div>
+		<div class="idle-timer">{{ F.IntToTime(statistics.IdleTimerBlock) }}</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success {{ disabled if statistics.IdleTimerBlock >= 0" dxml-on:click="statistics.IsIdleBlocked := False">§idle_dialog_action</btn>
+		</stack>
+	</div>
+</wrapper>

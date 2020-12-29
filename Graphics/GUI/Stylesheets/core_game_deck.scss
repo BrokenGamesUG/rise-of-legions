@@ -1,0 +1,351 @@
+﻿.hud{
+	.card-hint{
+		Position : 0 -260;
+		Size : 334 auto;
+		ParentAnchor : caBottom;
+		Anchor : caTop;
+		.description{
+			.skill-hint{
+				ParentAnchor : caRight;
+				Anchor : caBottomLeft;
+			}
+		}
+		&.sandbox{
+			Position-Y : -560;
+		}
+	}
+	.deck-panel{
+		ParentAnchor : caBottom;
+		Anchor : caTop;
+		Size : auto 75;
+		BoxSizing : bsMargin;
+		Margin : 0 340 0 340;
+		MouseEvents : mePass;
+		Stackorientation : soHorizontal;
+		Stackpartitioning : auto;
+		StackAnchor : caBottomLeft;
+		ZOffset : 4;
+		&.sandbox{
+			Position-Y: -200;
+			.deco{
+				Visibility : False;
+			}
+			.instant{
+				Position-X : 60;
+				Anchor : caTop;
+				Stackorientation : soVertical;
+				Size : 0 95;
+			}
+			.spawner{
+				Position : 0 -30;
+				Anchor : caBottom;
+				ParentAnchor : caTop;
+			}
+			.cards{
+				Position : inherit inherit;
+				Anchor : caTop;
+			}
+		}
+		.deco{
+			Position : 0 0;
+			Size-Y : 80%;
+			ZOffset : -4;
+		}
+		.deco-left{
+			Anchor : caBottomRight;
+			ParentAnchor : caTopLeft;
+			Size-X : auto;
+		}
+		.deco-mid{
+			Anchor : caBottomRight;
+			ParentAnchor : caTopRight;
+			Size-X : 100%;
+			BackgroundRepeat : brRepeat brStretch;
+		}
+		.deco-right{
+			Anchor : caBottomLeft;
+			ParentAnchor : caTopRight;
+			Size-X : auto;
+		}
+		.instant{
+			MinSize-X : 115;
+			Position : inherit 0;
+			Size : auto 100%;
+			Stackorientation : soHorizontal;
+			Stackpartitioning : auto;
+			.deco-left{
+				Position-X : 40ch;
+				Background : HUD/DeckPanel/deck_main_left.png;
+			}
+			.deco-mid{
+				BoxSizing : bsMargin;
+				Margin: 0 150ch 0 40ch;
+				Background : HUD/DeckPanel/deck_main_mid.png;
+			}
+			.deco-right{
+				Position-X : -150ch;
+				Background : HUD/DeckPanel/deck_main_right.png;
+			}
+		}
+		.spawner{
+			MinSize-X : 63;
+			Margin-left : 80;
+			.deco-left{
+				Position-X : 70ch;
+				Background : HUD/DeckPanel/deck_spawner_left.png;
+			}
+			.deco-mid{
+				BoxSizing : bsMargin;
+				Margin: 0 35ch 0 70ch;
+				Background : HUD/DeckPanel/deck_spawner_mid.png;
+			}
+			.deco-right{
+				Position-X : -35ch;
+				Background : HUD/DeckPanel/deck_spawner_right.png;
+			}
+		}
+		.btn-spawner-jump{
+			Position : 55ch 0;
+			Size : auto 80%;
+			ParentAnchor : caTopRight;
+			Anchor : caBottomLeft;
+			Background : HUD/DeckPanel/nexus_jump_btn.png;
+			TransformAnchor : caCenter;
+			&:enabled:hover{
+				Background : HUD/DeckPanel/nexus_jump_btn_hover.png;
+				Transform : scale(1.05, 1.05);
+			}
+			&:enabled:down{
+				Transform : scale(0.95, 0.95);
+			}
+			&:disabled{
+				BackgroundColorOverride : $override-darken;
+			}
+		}
+		.cards{
+			Position : inherit 0;
+			Size : auto 100%;
+			Stackorientation : soHorizontal;
+			Stackpartitioning : auto;
+			&.disabled{
+				Position-Y : 55%;
+				.tier-timer{
+					Position-Y : -55%;
+				}
+			}
+			&.single{
+				.tier-timer{
+					.left, .right{
+						Visibility : False;
+					}
+					.mid{
+						Position : 0 0;
+						Anchor : caBottom;
+						ParentAnchor : caBottom;
+						Margin : 0;
+						Size : auto 100%;
+						Background : HUD/DeckPanel/tier_block_single.png;
+						BackgroundRepeat : brStretch brStretch;
+					}
+				}
+			}
+			.tier-timer{
+				Position : 0 0;
+				Size : 100% 100%;
+				Anchor : caBottom;
+				ParentAnchor : caTop;
+				Stackorientation : soHorizontal;
+				Stackpartitioning : auto;
+				ZOffset : -5;
+				.left, .right{
+					Position : -70ch 0;
+					Anchor : caBottomLeft;
+					ParentAnchor : caBottomRight;
+					Size : auto 100%;
+					Background : HUD/DeckPanel/tier_block_multi_end.png;
+				}
+				.left{
+					Position-X : 70ch;
+					Anchor : caBottomRight;
+					ParentAnchor : caBottomLeft;
+					BackgroundAnchor : baTopRight;
+				}
+				.mid{
+					Position : inherit inherit;
+					Size : 100% 100%;
+					BoxSizing : bsMargin;
+					Margin : 0 70ch 0 70ch;
+					Background : HUD/DeckPanel/tier_block_multi_mid.png;
+					BackgroundRepeat : brRepeat brStretch;
+				}
+				.timer{
+					Position : -20ch 7%;
+					Anchor : caTop;
+					ParentAnchor : caTop;
+					Size : text 25%;
+					DefaultText : 14.00;
+					Fontcolor : $font-color-white;
+					FontSize : 100%;
+					FontFlags : [ffCenter];
+				}
+				.lock{
+					Position : 230ch 11%;
+					Anchor : caTop;
+					ParentAnchor : caTop;
+					Size : auto 15%;
+					Background : HUD/DeckPanel/lock_icon.png;
+				}
+			}
+		}
+		.build-slot-wrapper{
+			Size : 85 90;
+			Anchor : caBottomLeft;
+			Padding : 0 1 0 1;
+			Enabled : True;
+			&:hover{
+				ZOffset : 50;
+				.card{
+					.hover{
+						Visibility : True;
+					}
+				}
+			}
+			&:disabled:important{
+				.ready-highlight{
+					Visibility : False;
+				}
+				.card{
+					.hover{
+						Visibility : False;
+					}
+				}
+			}
+			&.deactivated,&:disabled{
+				.card{
+					BackgroundColorOverride : $override-darken-soft;
+					.cooldown{
+						bar{
+							BackgroundColor : $60000000;
+						}
+					}
+					.charge-text{
+						BackgroundColorOverrideInheritance : False;
+					}
+				}
+			}
+			&.ready{
+				.card{
+					.icon-frame{
+						.ready-highlight{
+							Visibility : True;
+						}
+						.cooldown{
+							bar{
+								BackgroundColor : $30263D42;
+							}
+						}
+					}
+				}
+			}
+			.card{
+				Position : 0 0;
+				Size : 100% 100%;
+				ParentAnchor : caTop;
+				Anchor : caTop;
+				ZOffset : -1;
+				MouseEvents : mePass;
+				*{
+					MouseEvents : mePass;
+				}
+				.icon-frame{
+					Size : 100% auto;
+					.legendary, .epic{
+						ZOffset : 30;
+					}
+					.ready-highlight{
+						MouseEvents : mePass;
+						Visibility : False;
+						ZOffset : -2;
+						Position : 0 -13.5%;
+						Size : 113% auto;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						Background : HUD/DeckPanel/highlight_drop.png;
+						$glow;
+					}
+				}
+				.charge-text{
+					Position : -2 -2;
+					MouseEvents : mePass;
+					Anchor : caBottomLeft;
+					ParentAnchor : caBottomLeft;
+					ZOffset : 100;
+					Size : auto 22%;
+					Fontcolor : $font-color-white;
+					FontSize : 100%;
+					FontFlags : [ffCenter,ffVerticalCenter];
+					Background : HUD/DeckPanel/charge_background.png;
+					TransformInheritance : False;
+					BackgroundColorOverrideInheritance : False;
+				}
+				.hotkey{
+					Position : 0 -2;
+					Padding : 3 0 1 0;
+					MouseEvents : mePass;
+					Anchor : caBottom;
+					ParentAnchor : caBottom;
+					ZOffset : 100;
+					Size : auto 20%;
+					Fontcolor : $font-color-white;
+					FontSize : 100%;
+					FontFlags : [ffCenter,ffVerticalCenter];
+					Background : HUD/DeckPanel/hotkey_background.png;
+					TransformInheritance : False;
+					BackgroundColorOverrideInheritance : False;
+				}
+				.cooldown{
+					Size : 100% 100%;
+					MouseEvents : mePass;
+					bar{
+						Size : 100% 100%;
+						BackgroundColor : $FF263D42;
+						Background : HUD/DeckPanel/ProgressMask.tga;
+						MouseEvents : mePass;
+						Progressshape : psRadial;
+					}
+				}
+				.numeric-cooldown{
+					ZOffset : 10;
+					Size : 100% 100%;
+					MouseEvents : mePass;
+					BackgroundColorOverrideInheritance : False;
+					FontSize : 50%;
+					Fontcolor : $font-color-white;
+					Fontborder : 1 $FF000000;
+					FontFlags : [ffCenter,ffVerticalCenter];
+				}
+				&.ctSpawner{
+					.icon-frame{
+						.cooldown{
+							bar{
+								Background : HUD/DeckPanel/ProgressMaskSpawner.tga;
+							}
+						}
+						.ready-highlight{
+							Position : 0.5% -24%;
+							Size : 215% auto;
+							Background : HUD/DeckPanel/highlight_spawner.png;
+						}
+					}
+				}
+				&.ctSpell{
+					.cooldown{
+						bar{
+							Background : HUD/DeckPanel/ProgressMaskSpell.tga;
+						}
+					}
+				}
+			}
+		}
+	}
+}

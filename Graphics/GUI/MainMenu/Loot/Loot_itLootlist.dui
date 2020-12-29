@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<div class="loot-wrapper loot-lootlist">
+	<div class="amount">
+		<img class="icon" src="MainMenu/Loot/lootlist_icon_{{ item.ShopItem.name }}.png">
+			<div class="deco"></div>
+		</img>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+﻿.feedback-dialog{
+	&.backdrop{
+		Zoffset: $zoffset-super-nested-dialog;
+	}
+	.window{
+		Size : 500 320;
+		input{
+			Size : 100% 100%;
+			FontSize : 7%;
+			fontflags : [ffLeft,ffWordWrap];
+			BackgroundColor : $textarea-background;
+			FontColor : $font-color-white;
+		}
+	}
+}

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<wrapper class="deckeditor" :visible="(deckbuilder.deck <> nil) and (menu.CurrentMenu = mtDeck)">
+	<div dxml-include="Mainmenu/Deckbuilding/DeckIconChooseDialog.dui"></div>
+	<div dxml-include="Mainmenu/Deckbuilding/CardDetailDialog.dui"></div>
+	<div dxml-include="Mainmenu/Deckbuilding/SkinDialog.dui"></div>
+	
+	<div class="filtered-item-pool cardpool">
+		<stack class="card-page {{ 4x4 if deckbuilder.Gridsize = 4 else 3x3 }}">
+			<div dxml-cache="enabled" dxml-for="item in deckbuilder.CardpoolCurrentObjects" class="cardpool-item {{ colors_exceed if not deckbuilder.deck.ColorCheckCard(item.) }}" animate-on="" :animation-delay="index. * 25">
+				<div class="btn-add {{ invalid if deckbuilder.Deck.IsFull or not deckbuilder.deck.CanAddCard(item.) }} {{ unusable if not deckbuilder.deck.CanAddCard(item.) else usable }}" dxml-on:click="deckbuilder.AddCard(item.)" dxml-on:rightclick="deckbuilder.ShowCardDetails(item.)" dxml-on:mouse_enter="item.HasBeenSeen">
+					<div class="color-exceed">§deckbuilding_deck_card_add_color_exceed</div>
+					<div dxml-include="MainMenu/Shared/Card/Card.dui" dxml-with="card=item."></div>
+					<btn class="btn-small btn-detail" title="§deckbuilding_card_dialog_open" dxml-on:click="deckbuilder.ShowCardDetails(item.)">
+						<icon src="MainMenu/Deckbuilding/{{ ascension if item.IsLeagueUpgradable else card_push }}_dialog_icon.png"></icon>
+					</btn>
+					<div class="new-flag" :show="item.New"></div>
+				</div>
+			</div>
+		</stack>
+		<div class="btn btn-left pop-out big" :visible="deckbuilder.Cardpool.HasPrevious" dxml-on:click="deckbuilder.Cardpool.Previous"></div>
+		<div class="btn btn-right pop-out big" :visible="deckbuilder.Cardpool.HasNext" dxml-on:click="deckbuilder.Cardpool.Next"></div>
+		<div class="size-switch">
+			<btn class="btn-3x3" dxml-on:click="deckbuilder.Gridsize := 3"></btn>
+			<btn class="btn-4x4" dxml-on:click="deckbuilder.Gridsize := 4"></btn>
+		</div>
+		<div class="reset" :visible="deckbuilder.Cardpool.PageCount <= 0">
+			<div class="text">§filter_empty_text</div>
+			<btn class="btn btn-xl btn-reset" dxml-on:click="deckbuilder.ResetFilter">§filter_reset</btn>
+		</div>
+		<div class="page-counter">{{ deckbuilder.Cardpool.CurrentPage + 1 }} / {{ deckbuilder.Cardpool.PageCount }}</div>
+	</div>
+	
+	<stack class="current-deck">
+		<div dxml-for="deck_card in deckbuilder.deck.cards" class="deck-card {{ filled if deck_card. <> nil }}">
+			<div class="btn-remove" :show="deck_card. <> nil" dxml-on:click="deckbuilder.deck.RemoveCard(deck_card.)" dxml-on:rightclick="deckbuilder.ShowCardDetails(deck_card.CardInstance)">
+				<div dxml-include="MainMenu/Shared/Card/DeckCardIcon.dui" dxml-with="card=deck_card."></div>
+				<btn class="btn-small btn-detail" title="§deckbuilding_card_dialog_open" dxml-on:click="deckbuilder.ShowCardDetails(deck_card.CardInstance.)">
+					<icon src="MainMenu/Deckbuilding/{{ ascension if deck_card.CardInstance.IsLeagueUpgradable else card_push }}_dialog_icon.png"></icon>
+				</btn>
+				<btn class="btn-small btn-skin" :enabled="deck_card.CardInstance.OriginCard.HasSkins" :title="§deckbuilding_skin_dialog_open if deck_card.CardInstance.OriginCard.HasSkins else §deckbuilding_skin_dialog_open_no_skins" dxml-on:click="deckbuilder.DeckCard := deck_card.">
+					<icon></icon>
+				</btn>
+			</div>
+			<div class="empty-slot" :visible="deck_card. = nil"></div>
+		</div>
+	</stack>
+		
+	<div class="sidebar">
+		<div class="cardpool-filter">
+			<div dxml-include="MainMenu/Shared/CardFilter/CardFilter.dui"  dxml-with="filter=deckbuilder.CardpoolFilter"></div>
+		</div>
+				
+		<div class="deck-meta">
+			<wrapper>
+				<input maxlength="26" dxml-on:change="deckbuilder.SetNewDeckName" dxml-on:submit:blur="deckbuilder.SaveNewDeckName">{{ deckbuilder.NewDeckName }}</input>
+			</wrapper>
+			
+			<div class="btn btn-deck-icon framed-icon pop-out big" dxml-on:click="dialogs.OpenDialog(diDeckIcon)">
+				<img class="framed-icon-icon" src="{{ HClient.GetDeckIcon(deckbuilder.deck.icon) }}">
+				</img>
+			</div>
+			
+			<div class="btn btn-xl btn-deck-close" dxml-on:click="deckbuilder.deck := nil">§deckbuilding_deck_close</div>
+		</div>
+	</div>
+</wrapper>

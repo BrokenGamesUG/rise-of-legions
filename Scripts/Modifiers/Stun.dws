@@ -1,0 +1,34 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+const STUN_DURATION = 3000;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], STUN_DURATION); //Stun-Duration
+
+  {$IFDEF SERVER}
+    // Stop unit at stun
+    Entity.Eventbus.Trigger(eiStand, []);
+    Entity.Eventbus.Trigger(eiWelaStop, []);
+    // After eiCooldown Stun is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], false);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  // Stun
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upStunned]);
+
+  {$IFDEF CLIENT}
+     TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Stun.pfx', 1.0)
+       .ActivateNow
+       .ActivateOnCreate
+       .BindToSubPositionGroup(BIND_ZONE_TOP, [0, 1]);
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/shared/effect/stun')
+      .TriggerNow();
+  {$ENDIF}
+end;

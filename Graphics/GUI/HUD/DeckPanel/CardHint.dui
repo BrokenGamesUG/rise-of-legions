@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<div class="card-hint {{ sandbox if hud.IsSandbox and not hud.CaptureMode }}" :visible="hud.CardHintCardInfo <> nil">
+	<div dxml-include="MainMenu/Shared/Card/CardHUD.dui" dxml-with="card=hud.CardHintCardInfo"></div>
+</div>

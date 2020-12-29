@@ -1,0 +1,50 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 50.0);
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btDivine]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group]);
+
+    // Increase Health, only server because cap is synced
+    TModifierResourceComponent.CreateGrouped(Entity, [Group])
+      .Resource(reHealth)
+      .ApplyNow();
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\sapling_flourish.pfx', 1.0)
+      .ActivateNow
+      .FixedHeightGround
+      .FixedOrientationDefault
+      .ScaleWith(eiCollisionRadius);
+
+    TVisualModificatorSizeComponent.CreateGrouped(Entity, [0, 1, 2, 3, 4, 5, 6, 7, 8, Group])
+      .Keypoints([1.0, 1.2, 2.3, 1.8])
+      .KeypointsY([1.0, 3.2, 1.2, 1.8])
+      .TimeKeys([0, 250, 350, 400])
+      .Duration(400);
+
+    TMeshEffectTint.Create(400, $FFecffc5)
+      .AddKey(0, 0.0)
+      .AddKey(100, 1.0)
+      .AddKey(300, 1.0)
+      .AddKey(400, 0.0)
+      .AssignToEntity(Entity);
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGhost.Create()
+          .Color($FF73FF00)
+      );
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/green/unit/sapling/flourish')
+      .TriggerNow();
+  {$ENDIF}
+end;

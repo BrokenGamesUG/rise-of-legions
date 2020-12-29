@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<wrapper class="shop-redeem-tab" :visible="shop.ShopItemFilter.Category = scBonuscode">
+	<div class="code-form">
+		<caption>§shop_redeem_dialog_caption</caption>
+		<input dxml-on:change="shop.SetBonuscode" dxml-on:submit="shop.RedeemBonuscode">{{ shop.Bonuscode }}</input>
+		<btn class="btn-xl btn-success" dxml-on:click="shop.RedeemBonuscode">§shop_redeem_dialog_redeem</btn>
+		<div class="help-text">§shop_redeem_help_text</div>
+	</div>
+	<btn class="btn-xl btn-success anchor-bottom" dxml-on:click="dialogs.OpenDialog(diReferAFriend)">Refer a friend</btn>
+</wrapper>

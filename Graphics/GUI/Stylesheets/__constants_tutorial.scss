@@ -1,0 +1,137 @@
+﻿$zoffset-meta-tutorial-dialog:20000;
+$zoffset-meta-tutorial-highlight:22500;
+$zoffset-meta-tutorial-nested-dialog:25000;
+
+$arrow-bottom-right{
+	.arrow-offset{
+		Position : -9.2vw -9.2vw;
+		.meta-tutorial-window{
+			Anchor : caBottomRight;
+			.arrow{
+				Position : 4.6vw 4.6vw;
+				Anchor : caCenter;
+				ParentAnchor : caBottomRight;
+				Transform : rotateZ(45deg);
+			}
+		}
+	}
+}
+
+$arrow-bottom-left{
+	.arrow-offset{
+		Position : 9.2vw -9.2vw;
+		.meta-tutorial-window{
+			Anchor : caBottomLeft;
+			.arrow{
+				Position : -4.6vw 4.6vw;
+				Anchor : caCenter;
+				ParentAnchor : caBottomLeft;
+				Transform : rotateZ(-45deg);
+			}
+		}
+	}
+}
+
+$arrow-top-right{
+	.arrow-offset{
+		Position : -9.2vw 9.2vw;
+		.meta-tutorial-window{
+			Anchor : caTopRight;
+			.arrow{
+				Position : 4.6vw -4.6vw;
+				Anchor : caCenter;
+				ParentAnchor : caTopRight;
+				Transform : rotateZ(135deg);
+			}
+		}
+	}
+}
+
+$arrow-top-left{
+	.arrow-offset{
+		Position : 9.2vw 9.2vw;
+		.meta-tutorial-window{
+			Anchor : caTopLeft;
+			.arrow{
+				Position : -4.6vw -4.6vw;
+				Anchor : caCenter;
+				ParentAnchor : caTopLeft;
+				Transform : rotateZ(225deg);
+			}
+		}
+	}
+}
+
+$arrow-top-left-special{
+	.arrow-offset{
+		.meta-tutorial-window{
+			Anchor : caTopLeft;
+			.arrow{
+				Position : -4.6vw 3vw;
+				Anchor : caCenter;
+				ParentAnchor : caTopLeft;
+				Transform : rotateZ(135deg);
+			}
+		}
+	}
+}
+
+$arrow-right{
+	.arrow-offset{
+		Position : -13vw 0;
+		.meta-tutorial-window{
+			Anchor : caRight;
+			.arrow{
+				Position : 6.5vw 0;
+				Anchor : caCenter;
+				ParentAnchor : caRight;
+				Transform : rotateZ(90deg);
+			}
+		}
+	}
+}
+
+$arrow-left{
+	.arrow-offset{
+		Position : 13vw 0;
+		.meta-tutorial-window{
+			Anchor : caLeft;
+			.arrow{
+				Position : -6.5vw 0;
+				Anchor : caCenter;
+				ParentAnchor : caLeft;
+				Transform : rotateZ(-90deg);
+			}
+		}
+	}
+}
+
+$arrow-top{
+	.arrow-offset{
+		Position : 0 13vw;
+		.meta-tutorial-window{
+			Anchor : caTop;
+			.arrow{
+				Position : 0 -6.5vw;
+				Anchor : caCenter;
+				ParentAnchor : caTop;
+				Transform : rotateZ(180deg);
+			}
+		}
+	}
+}
+
+$arrow-bottom{
+	.arrow-offset{
+		Position : 0 -13vw;
+		.meta-tutorial-window{
+			Anchor : caBottom;
+			.arrow{
+				Position : 0 6.5vw;
+				Anchor : caCenter;
+				ParentAnchor : caBottom;
+				Transform : rotateZ(0deg);
+			}
+		}
+	}
+}

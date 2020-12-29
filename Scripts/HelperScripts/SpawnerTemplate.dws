@@ -1,0 +1,71 @@
+{$INCLUDE 'CardTemplate.dws'};
+
+procedure InitSpawnerData(Entity : TEntity; IsLegendary : boolean; Tier : integer);
+begin
+  InitCardData(
+    Entity,      // Entity
+    [],          // Group
+    [],          // ChargeGroup
+    IsLegendary, // IsLegendary
+    True,        // IsSpawner
+    False,       // IsSpell
+    Tier         // Tier
+  );
+
+  Entity.Blackboard.SetValue(eiUnitProperties, [], [upSpawner]);
+  Entity.Blackboard.SetValue(eiWelaNeededGridSize, [], RIntVector2.Create(1, 1));
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;
+
+procedure InitSpawnerMeta(Entity : TEntity);
+begin
+  {$IFDEF CLIENT}
+    TProductionPreviewComponent.CreateGrouped(Entity, [0, 1])
+      .IsSpawner();
+  {$ENDIF}
+end;
+
+procedure InitSpawnerEntity(Entity : TEntity);
+begin
+  {$IFDEF SERVER}
+    TBrainSpawnerComponent.CreateGrouped(Entity, [0])
+      .ApplyGridOffset;
+    TWelaEffectFactoryComponent.CreateGrouped(Entity, [0])
+      .SpreadSpawns()
+      .PassCardValues
+      .IsSpawner();
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TWarheadApplyScriptComponent.CreateGrouped(Entity, [0], 'Modifiers\Spawner.dws')
+      .ApplyToSelfAtCreate();
+
+    TWarheadApplyScriptComponent.CreateGrouped(Entity, [0], 'Modifiers\Death.dws')
+      .ApplyToProducedUnits();
+
+    TSoundComponent.CreateGrouped(Entity, [], 'event:/card/shared/spawner_place')
+      .TriggerOnCreate();
+
+    TMeshEffectComponent.CreateGrouped(Entity, [0])
+      .TargetGroup([])
+      .ActivateOnFire
+      .SetEffect(
+        TMeshEffectGlow.Create(500)
+          .FixedColorIdentity(ecColorless)
+          .AddKey(0, 0.3)
+          .AddKey(500, 0.0)
+      );
+
+    TMeshEffectComponent.CreateGrouped(Entity, [])
+      .TargetGroup([])
+      .ActivateOnWelaUnitProduced
+      .SetEffect(
+        TMeshEffectGlow.Create(500)
+          .FixedColorIdentity(ecColorless)
+          .AddKey(0, 0.3)
+          .AddKey(500, 0.0)
+      );
+  {$ENDIF}
+end;

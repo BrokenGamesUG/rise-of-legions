@@ -1,0 +1,120 @@
+﻿.leaderboards{
+	.content-sub:important{
+		Padding : 45 0 0 0;
+	}
+	.navbar{
+		&.navbar-league{
+			.btn-nav{
+				Padding-Left : 160ch;
+			}
+			.icon{
+				Position : 0ch -5ch;
+				Size : auto 140%;
+				ParentAnchor : caLeft;
+				Anchor : caRight;
+			}
+		}
+	}
+	.leaderboard{
+		Position : -2.5% 3%;
+		Size-X : 44.2vw;
+		&.top-players{
+			Position-X : -4.5%; 
+			Anchor : caTopRight;
+			ParentAnchor : caTop;
+		}
+		&.player-environment{
+			Anchor : caTopLeft;
+			ParentAnchor : caTop;
+		}
+		&.center{
+			Anchor : caTop;
+			Position-X : -3.315%;
+		}
+	}
+}
+
+.leaderboard{
+	Size : 100% auto;
+	StackOrientation : soVertical;
+	Padding-Left : 15%;
+	.header{
+		Size : 100% auto;
+		.caption{
+			Size : 100% auto;
+			Background : MainMenu/Leaderboards/header_background.png;
+			FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+			FontSize : 65%;
+			FontWeight : bold;
+		}
+	}
+	.content{
+		Size : 100% auto;
+		StackOrientation : soVertical;
+		.placement{
+			Size : 100% 50;
+			Margin-Bottom : 8;
+			.rank{
+				Size : 20% 100%;
+				Anchor : caRight;
+				ParentAnchor : caLeft;
+				Padding-Right : 20ch;
+				FontSize : 70%;
+				FontFlags : [ffRight,ffVerticalCenter];
+				FontBorder : 1 $FF000000;
+				FontWeight : bold;
+			}
+			.name-wrapper{
+				Position : 0 2;
+				Anchor : caTopRight;
+				ParentAnchor : caTopRight;
+				Size : auto 46;
+				Background : MainMenu/Leaderboards/rank_background.png;
+				.name, .points{
+					FontSize : 50%;
+					Padding : 0 20ch;
+				}
+				.hover{
+					Size : 100% 100%;
+					Zoffset: 10;
+					&:hover{
+						BackgroundColor : rgba(1.0,1.0,1.0,0.03);
+					}
+				}
+				.name{
+					Size : 77% 100%;
+					FontFlags : [ffVerticalCenter,ffAutoShrink];
+				}
+				.points{
+					Anchor : caTopRight;
+					ParentAnchor : caTopRight;
+					Size : 23% 100%;
+					FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+				}
+			}
+			&.highlighted{
+				.name-wrapper{
+					Background : MainMenu/Leaderboards/rank_background_highlighted.png;
+				}
+			}
+			&:first-child{
+				Size-Y : 30;
+				Margin-Bottom : 0;
+				.name-wrapper{
+					Background : empty;
+					Size : 426 30;
+					.name, .points{
+						TextTransform : ttUppercase;
+						FontFlags : [ffBottom,ffAutoShrink];
+						FontSize : 23;
+						FontWeight : bold;
+						FontColor : $FF377888;
+					}
+					.points{
+						FontFlags : [ffCenter,ffBottom];
+					}
+				}
+			}
+		}
+	}
+}

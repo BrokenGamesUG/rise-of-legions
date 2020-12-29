@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!-- Parameters | card : TCardInstance -->
+<div class="card instance">
+	<div class="shadow {{ card.CardInfo.CardType }} {{ special if card.CardInfo.IsLegendary or card.CardInfo.IsEpic }}">
+		<div class="hover"></div>
+		<div class="selected"></div>
+		<img class="icon-frame" src="{{ HClient.GetCardIconBackground(card.CardInfo.) }}">
+			<div class="legendary" :visible="card.CardInfo.IsLegendary"></div>
+			<div class="epic" :visible="card.CardInfo.IsEpic"></div>
+			<img class="icon" src="{{ HClient.GetCardIcon(card.CardInfo.) }}"></img>
+			<wrapper class="stats">
+				<img class="league-icon" src="{{ HClient.GetLeagueIcon(card.League) }}" :title="F._d(§league_card_hint, card.League)">
+					<icon class="level-number level-{{ card.Level }}"></icon>
+					<div class="league-upgrade" :visible="card.IsLeagueUpgradable"></div>
+				</img>
+				<progress class="level-progress">
+					<wrapper class="max " :visible="card.IsMaxLevel">Max</wrapper>
+					<bar width="{{ card.LevelProgress * 100 }}%"></bar>
+				</progress>
+			</wrapper>
+		</img>
+		<div class="card-info" src="{{ HClient.GetCardInfoBackground(card.CardInfo.) }}">
+			<div class="name">{{ card.CardInfo.name }}</div>
+			<div class="description {{ skills if not card.CardInfo.IsSpell }}">
+				{{ card.CardInfo.ShortDescription if card.CardInfo.IsSpell else card.CardInfo.SkillList }}
+				<stack class="skill-hint custom-hint">
+					<stack class="skill-list" :visible="card.CardInfo.HasSkills or card.CardInfo.IsSpell">
+						<div class="skill" :visible="card.CardInfo.IsSpell">
+							<div class="skill-description">	
+								{{ card.CardInfo.Description }}
+							</div>
+						</div>
+						<stack dxml-for:static="skill in card.CardInfo.Skills" class="skill">
+							<div class="skill-name">- {{ skill.name }} -</div>
+							<div class="skill-description">{{ skill.hint }}</div>
+						</stack>
+					</stack>
+					<stack class="keyword-list" :visible="card.CardInfo.HasKeywords">
+						<div dxml-for:static="keyword_id in card.CardInfo.Keywords" class="keyword">
+							§effect_{{ keyword_id. }}_description
+						</div>
+					</stack>
+				</stack>
+			</div>
+			<div class="card-stats" :visible="not card.CardInfo.IsSpell">
+				<div class="attackdefense">
+					<div class="dps" title="§damagetype_{{ card.CardInfo.DamageType }}_hint">
+						{{ F.IntToStr(F.Trunc(card.CardInfo.DPS * card.CardInfo.SquadSize)) if card.CardInfo.DPS <> 0 else '-'}}
+						<img class="icon" src="MainMenu/Shared/Card/Attack_{{  card.CardInfo.DamageType }}.png"></img>
+					</div>
+					<div class="health" title="§armortype_{{ card.CardInfo.ArmorType }}_hint">
+						{{ F.IntToStr(F.Trunc(card.CardInfo.Health * card.CardInfo.SquadSize)) }}
+						<img class="icon" src="MainMenu/Shared/Card/Armor{{ card.CardInfo.ArmorType }}.png"></img>
+					</div>
+				</div>
+			</div>
+			<div class="costs {{ spawner if card.CardInfo.IsSpawner }}">
+				<div class="cost">
+					{{ card.CardInfo.WoodCost if card.CardInfo.IsSpawner else card.CardInfo.GoldCost }}
+				</div>
+				<div class="tech" :visible="not card.CardInfo.IsSpawner">{{ F.AsRoman(card.CardInfo.TechLevel) }}</div>
+			</div>
+		</div>
+	</div>
+</div>

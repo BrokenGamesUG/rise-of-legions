@@ -1,0 +1,159 @@
+﻿.icon-dialog{
+	.icons{
+		Padding : 10;
+		StackColumns : 0;
+		Overflow : ohScrollY;
+		MouseEvents : meAll;
+		.framed-icon{
+			Size : 7.4% auto;
+			Margin : 4;
+			.framed-icon-icon{
+				Background : Shared/DeckIcons/Unknown.png;
+			}
+			&.selected{
+				BackgroundColorOverride : $override-darken;
+				Enabled : False;
+			}
+		}
+	}
+}
+
+.player-icon-dialog{
+	.window{
+		Size : 72% 63%;
+	}
+}
+
+.deck-icon-dialog{
+	.window{
+		Size : 72% 70%;
+	}
+}
+
+.card-dialog{
+	.showcase{
+		Size : 30% 26%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+	}
+}
+
+.loot-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-dialog;
+	}
+	&.skin{
+		.window{
+			Size : 60vw 58vh;
+			.loot{
+				.loot-item-list{
+					StackColumns : 2;
+					.loot-item{
+						Size : 50% 50%;
+						Padding : 10ch;
+						.loot-currency{
+							.icon{
+								Position : 0 0;
+								Size-Y : 75%;
+								Anchor : caTop;
+								ParentAnchor : caTop;
+							}
+							.amount{
+								Position : 0 0;
+								Size-Y : 25%;
+								Anchor : caBottom;
+								ParentAnchor : caBottom;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.window{
+		Size : 90vw 36vh;
+		.window-shine{
+			Size-Y : 140%;
+		}
+		.loot{
+			Size : 100% 100%;
+			.loot-item-list{
+				StackColumns : 3;
+				.loot-item{
+					Size : 33.33333% 100%;
+					Enabled : True;
+					Padding : 6ch;
+					&:enabled:hover{
+						.hover{
+							Visibility : True;
+						}
+					}
+					&.selected{
+						Enabled : False;
+						.item{
+							Transform : scale(1.10, 1.10);
+							.selected{
+								Opacity : 1;
+							}
+						}
+					}
+					.item{
+						TransitionProperty : gtTransform;
+						TransitionDuration : 50;
+					}
+					* {
+						MouseEvents : mePassClick;
+					}
+					.lock{
+						Visibility : False;
+						ZOffset : 300;
+						Size : auto 100bh;
+						Position : -26% 0;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						Background : Shared/Lock.png;
+					}
+					.sold-out{
+						ZOffset : 300;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						Size : 100% 25%;
+						FontFlags : [ffCenter];
+						Transform : rotate(28deg);
+						MouseEvents : mePass;
+						Visibility : False;
+					}
+					&.owned, &.locked{
+						Enabled : False;
+						.item{
+							BackgroundColorOverride : $override-darken;
+						}
+						&:hover{
+							.item{
+								Transform : empty;
+							}
+						}
+					}
+					&.locked{
+						.lock{
+							Visibility : True;
+						}
+					}
+					&.owned{
+						.sold-out{
+							Visibility : True;
+						}
+					}
+					.loot-currency{
+						BackgroundColor : $20000000;
+						BoxSizing : bsMargin;
+						Margin: 2% 6% 6% 6%;
+						.amount{
+							Size-Y : 70%;
+						}
+					}
+				}
+			}
+		}
+	}
+}

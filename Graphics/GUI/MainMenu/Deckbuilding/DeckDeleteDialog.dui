@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<wrapper class="deck-delete-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diDeckDelete)" dxml-on:click="deckbuilder.DeckToDelete := nil">
+	<div class="window">
+		<div class="window-caption">§decklist_delete_dialog_caption</div>
+		<div class="text">§decklist_delete_dialog_text</div>
+		<div dxml-include="MainMenu/Deckbuilding/Deck.dui" dxml-with="deck=deckbuilder.DeckToDelete"></div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-danger btn-deck-delete"  dxml-on:click="deckbuilder.DeletePreparedDeck">§delete</btn>
+			<btn class="btn-xl btn-primary btn-deck-delete-cancel"  dxml-on:click="deckbuilder.DeckToDelete := nil">§cancel</btn>
+		</stack>
+	</div>
+</wrapper>

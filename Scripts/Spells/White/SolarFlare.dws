@@ -1,0 +1,80 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; League : integer);
+var EffectGroup, DurationGroup : integer;
+begin
+  EffectGroup := Entity.ReserveFreeGroup();
+  DurationGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [DurationGroup], 10000); //Buff-Duration
+
+  Entity.Blackboard.SetValue(eiWelaRange, [EffectGroup], 8.0);
+  Entity.Blackboard.SetValue(eiCooldown, [EffectGroup], 200);
+
+  {$IFDEF SERVER}
+    // After eiCooldown Buff is removed
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [DurationGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [DurationGroup], [btPositive]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [DurationGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [DurationGroup])
+      .TargetGroup([DurationGroup, EffectGroup]);
+
+    // apply heal to surrounding allied units
+    TThinkImpulseImmediateComponent.CreateGrouped(Entity, [EffectGroup]);
+    TBrainWelaFightComponent.CreateGrouped(Entity, [EffectGroup])
+      .DisableTargetLock()
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [EffectGroup], False) // delay
+      .Cooldown(3000)
+      .Once;
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [EffectGroup], True);
+    TWelaTargetingRadialComponent.CreateGrouped(Entity, [EffectGroup])
+      .SetTargetTeamConstraint(tcAllies)
+      .PicksRandomTargets();
+    TWelaTargetConstraintAlliesComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaTargetConstraintNotSelfComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [EffectGroup])
+      .MustHave([upUnit])
+      .MustNotHave([upUnhealable]);
+
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [EffectGroup]);
+  {$ENDIF}
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [EffectGroup], 'Spells\White\SolarFlareSubFlare.dws')
+    .PassIntValue(League);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [DurationGroup], '\White\solar_flare_cast.pfx', 2.0)
+      .ActivateNow();
+
+    TParticleEffectComponent.CreateGrouped(Entity, [EffectGroup], '\White\solar_flare_field.pfx', 5.0)
+      .Delay(100)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiWelaRange);
+
+    TCameraShakerComponent.CreateGrouped(Entity, [EffectGroup])
+      .Delay(100)
+      .PresetRotationLight
+      .ActivateNow;
+
+    TCameraShakerComponent.CreateGrouped(Entity, [EffectGroup])
+      .Delay(100)
+      .PresetVectorLight
+      .ActivateNow;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [EffectGroup], '\White\white_border_wide.pfx', 4.5)
+      .Delay(1000)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiWelaRange)
+      .FixedHeightGround
+      .VisibleWithOption(coGameplayShowEffectRadius);
+
+    TSoundComponent.CreateGrouped(Entity, [EffectGroup], 'event:/card/white/spell/solar_flare/cast')
+      .TriggerNow()
+      .StopOnFree;
+  {$ENDIF}
+end;

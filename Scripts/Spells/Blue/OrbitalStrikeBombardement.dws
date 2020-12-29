@@ -1,0 +1,50 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var EffectGroup : integer;
+begin
+  EffectGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [EffectGroup], 174); //Delay
+  Entity.Blackboard.SetValue(eiWelaDamage, [EffectGroup], 11.0);
+  Entity.Blackboard.SetValue(eiDamageType, [EffectGroup], [dtSpell, dtSplash]);
+  Entity.Blackboard.SetValue(eiWelaAreaOfEffect, [EffectGroup], 2.0);
+
+  {$IFDEF SERVER}
+    TThinkImpulseTimerCooldownComponent.CreateGrouped(Entity, [EffectGroup]);
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [EffectGroup])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [EffectGroup], False);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [EffectGroup])
+      .MustHaveAny([upUnit, upBuilding])
+      .MustNotHave([upBanished, upSpellImmune]);
+    TWelaTargetConstraintAlliesComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [EffectGroup], eiDamageable);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWarheadSplashDamageComponent.CreateGrouped(Entity, [EffectGroup]);
+
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [EffectGroup]);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [EffectGroup], '\Blue\orbital_strike_bombardement.pfx', 1.5)
+      .ActivateNow;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [EffectGroup], '\Blue\blue_border_wide_once.pfx', 5.0)
+      .ActivateOnFire
+      .FixedOrientationDefault
+      .ScaleWith(eiWelaAreaOfEffect)
+      .FixedOffsetGround
+      .VisibleWithOption(coGameplayShowEffectRadius);
+
+     TCameraShakerComponent.CreateGrouped(Entity, [EffectGroup])
+      .PresetRotationLight
+      .ActivateOnFire;
+
+    TCameraShakerComponent.CreateGrouped(Entity, [EffectGroup])
+      .PresetVectorLight
+      .ActivateOnFire;
+
+    TSoundComponent.CreateGrouped(Entity, [EffectGroup], 'event:/card/blue/spell/orbital_strike/bombardement_fire')
+      .TriggerNow;
+  {$ENDIF}
+end;

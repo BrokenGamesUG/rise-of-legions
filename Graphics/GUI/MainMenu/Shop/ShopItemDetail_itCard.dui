@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<div class="shopitem detail shopitem-detail-card">
+	<div dxml-include="MainMenu/Shared/Card/CardTemplate.dui" dxml-with="card=item.Card.CardInfo"></div>
+</div>

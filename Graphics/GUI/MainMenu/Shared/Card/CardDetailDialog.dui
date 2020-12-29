@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="card-dialog backdrop dialog" :show="menu.CardInstanceShowcase <> nil" dxml-on:click="menu.CardInstanceShowcase := nil">
+	<div class="showcase" dxml-with="card=menu.CardInstanceShowcase">
+		<div dxml-include="MainMenu/Shared/Card/Card.dui"></div>
+	</div>
+</div>

@@ -1,0 +1,74 @@
+{$INCLUDE 'CardTemplate.dws'};
+
+procedure InitBuildingCardData(Entity : TEntity; IsLegendary : boolean; Tier : integer);
+begin
+  InitCardData(
+    Entity,      // Entity
+    [],          // Group
+    [],          // ChargeGroup
+    IsLegendary, // IsLegendary
+    False,       // IsSpawner
+    False,       // IsSpell
+    Tier         // Tier
+  );
+  Entity.Blackboard.SetValue(eiUnitProperties, [], [upBuildingCard]);
+
+  {$IFDEF CLIENT}
+    TWelaEventRedirecter.CreateGrouped(Entity, [GROUP_DROP_SPAWNER]); // fetches missing data from unit
+  {$ENDIF}
+end;
+
+procedure InitBuildingCardMeta(Entity : TEntity);
+begin
+  {$IFDEF CLIENT}
+    TProductionPreviewComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER]);  // show units
+    TTextureRangeIndicatorComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER]);  // show drop zone
+  {$ENDIF}
+end;
+
+procedure InitBuildingCardEntity(Entity : TEntity; HasOwnSpawnEffect : boolean = False);
+{$IFDEF CLIENT}
+  var SoundKey : string;
+      ColorIdentity : integer;
+{$ENDIF}
+begin
+  {$IFDEF SERVER}
+    TWelaEffectFactoryComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER])
+      .PassCardValues;   // place building
+    TWelaEffectSuicideComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER]);   // and suicide
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER]);
+    TThinkImpulseOnceComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER]);    // at creation
+  {$ENDIF}
+
+  if not HasOwnSpawnEffect then
+    TWarheadApplyScriptComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER], 'Modifiers\SummoningSickness.dws')
+      .ApplyToProducedUnits()
+      .PassIntValue(1000);
+
+  {$IFDEF CLIENT}
+    if not HasOwnSpawnEffect then
+    begin
+      TWarheadApplyScriptComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER], 'Modifiers\Drop.dws')
+        .ApplyToProducedUnits();
+
+      ColorIdentity := Entity.ColorIdentity([GROUP_DROP_SPAWNER]);
+      if ColorIdentity = ecGreen then
+      begin
+        if Entity.ReadCollisionRadius([GROUP_DROP_SPAWNER]) > 0.7 then
+          SoundKey := 'event:/card/green/drop_big'
+        else
+          SoundKey := 'event:/card/green/drop_small';
+      end
+      else if ColorIdentity = ecBlack then
+        SoundKey := 'event:/card/black/drop'
+      else if ColorIdentity = ecBlue then
+        SoundKey := 'event:/card/blue/drop'
+      else if ColorIdentity = ecColorless then
+        SoundKey := 'event:/card/colorless/drop'
+      else
+        SoundKey := 'event:/card/white/drop';
+      TSoundComponent.CreateGrouped(Entity, [GROUP_DROP_SPAWNER], SoundKey)
+        .TriggerOnFire();
+    end;
+  {$ENDIF}
+end;

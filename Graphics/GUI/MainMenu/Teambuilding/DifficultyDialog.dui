@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<wrapper class="difficulty-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diMatchmakingScenarioDifficulty)" dxml-on:click="dialogs.CloseDialog(diMatchmakingScenarioDifficulty)">
+	<div class="window {{ league if not matchmaking.IsPvE }}">
+		<div class="window-caption {{ small if not matchmaking.IsPvE }}">{{ §scenario_difficulty_dialog_caption if matchmaking.IsPvE else §league_plural }}</div>
+		<stack vertical class="difficulties">
+			<btn dxml-for="instance in matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.LevelsOfDifficulty" :enabled="(matchmaking.ChosenScenario = esSpecial) or not matchmaking.IsPvE or ((matchmaking.ChosenScenario = es1vE) and (profile.Profile.UnlockedPvELeague >= instance.League)) or ((matchmaking.ChosenScenario = es2vE) and (profile.Profile.Unlocked2vELeague >= instance.League))" class="difficulty" dxml-on:click="matchmaking.ChooseScenarioInstance(instance.)" title="§scenario_difficulty_loot_hint_{{ instance.League }}">
+				<div class="caption">
+					§scenario_difficulty_{{ instance.League }}
+					<img class="league-icon" :src="HClient.GetLeagueIcon(instance.League)"></img>
+				</div>
+				<div class="loot">
+					§scenario_difficulty_loot_{{ instance.League }}
+				</div>
+				<div class="best-time">
+					{{ F._(§scenario_difficulty_best_time, F.IntToTime(instance.Ranking.PersonalBestTime)) if instance.Ranking.PersonalBestTime > 0 else F._(§scenario_difficulty_best_time, '-') }}
+				</div>
+				<div class="mode-league-lock" :title="F._d(§mode_league_unlock_requirement, instance.League - 1)">
+					<icon class="lock"></icon>
+				</div>
+			</btn>
+		</stack>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diMatchmakingScenarioDifficulty)">§close</btn>
+		</stack>
+	</div>
+</wrapper>

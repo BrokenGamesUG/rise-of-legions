@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<wrapper class="tutorial-videos-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diTutorialVideos)" dxml-on:click="dialogs.CloseDialog(diTutorialVideos)">
+	<div class="window">
+		<div class="window-caption">§tutorial_video_dialog_caption</div>
+		<btn class="btn-small btn-window-close fa fa-times" dxml-on:click="dialogs.CloseDialog(diTutorialVideos)"></btn>
+		
+		<stack class="tutorial-video-list">
+			<div dxml-for="tutorial_video in profile.TutorialVideoPage" class="tutorial-video-item">
+				<div class="title">{{ tutorial_video.title }}</div>
+				<img src="MainMenu/Tutorial/tutorial_video_thumbnail_{{ tutorial_video.identifier }}.png" dxml-on:click="tutorial_video.Play"></img>
+				<icon class="checkmark-success {{ unseen if not tutorial_video.Seen }}"></icon>
+			</div>
+		</stack>
+		
+		<div class="btn btn-left pop-out big" :visible="profile.TutorialVideoPaginator.HasPrevious" dxml-on:click="profile.TutorialVideoPaginator.Previous"></div>
+		<div class="btn btn-right pop-out big" :visible="profile.TutorialVideoPaginator.HasNext" dxml-on:click="profile.TutorialVideoPaginator.Next"></div>
+	</div>
+</wrapper>

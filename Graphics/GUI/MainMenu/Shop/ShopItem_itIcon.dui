@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-icon">
+	<div class="framed-icon">
+		<img class="framed-icon-icon" src="{{ HClient.GetPlayerIcon(item.Icon) }}"></img>
+	</div>
+</div>

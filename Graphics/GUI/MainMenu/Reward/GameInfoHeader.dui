@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="game-info">
+	<div class="win-state {{ victory if statistics.GameData.Won else defeat}}">{{ §Victory if statistics.GameData.Won else §Defeat}}</div>
+	<div class="map">§scenario_{{ statistics.GameData.ScenarioInstance.Scenario.UID }} {{ (0x28 + §league_ + F.IntToStr(statistics.GameData.ScenarioInstance.League) + 0x29) if statistics.GameData.ScenarioInstance.Scenario.LevelsOfDifficulty.Count > 1 }}</div>
+	<div class="duration">{{ F._(§rewardscreen_matchtime,F.IntToTime(statistics.GameData.Statistics.Duration)) }}</div>
+</div>

@@ -1,0 +1,367 @@
+﻿.deck-delete-dialog{
+	.window{
+		Size : 40vw 32vh;
+		.text{
+			Position : 0 20;
+			Size : 100% 20%;
+			FontSize : 18;
+			FontFlags : [ffCenter,ffWordWrap,ffVerticalCenter];
+		}
+		.deck{
+			Position : 0 -33%;
+			Anchor : caCenter;
+			ParentAnchor : caBottom;
+			Size : 74.8% auto;
+			.hover{
+				Visibility : False;
+			}
+		}
+	}
+}
+
+.skin-choose-dialog{
+	.window{
+		Size : auto 33.5vh;
+		.skins{
+			Size : auto 100%;
+			Padding : 20 10;
+			.skin{
+				Size : auto 100%;
+				Margin : 0 20;
+				Enabled : True;
+				*{
+					MouseEvents : mePassClick;
+				}
+				&:disabled{
+					BackgroundColorOverride : $override-darken-soft;
+				}
+				&.chosen{
+					BackgroundColorOverride : 0;
+					.selected{
+						Opacity : 1.0;
+					}
+				}
+				&:enabled:hover{
+					.hover{
+						Visibility : True;
+					}
+				}
+				&.disabled{
+					Enabled : False;
+					.lock{
+						Visibility : True;
+					}
+				}
+				.lock{
+					ParentAnchor : caCenter;
+					Anchor : caCenter;
+					Size : auto 20%;
+					Background : Shared/Lock.png;
+					BackgroundColorOverrideInheritance : False;
+					ZOffset : 100;
+					Visibility : False;
+					Enabled : True;
+					MouseEvents : meAll;
+				}
+				.card{
+					Anchor : caTop;
+					ParentAnchor : caTop;
+					Size : auto 95%;
+					.icon-frame{
+						Size : 100% auto;
+						.league-icon{
+							Visibility : False;
+						}
+					}
+				}
+				.name{
+					Anchor : caBottom;
+					ParentAnchor : caBottom;
+					Background : MainMenu/Shop/card_header.png;
+					Size : 100% auto;
+					ZOffset : 100;
+					$big-font;
+					Fontsize : 100%;
+					Padding : 15% 5% 20% 5%;
+					Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+				}
+			}
+		}
+	}
+}
+
+.card-detail-dialog{
+	Background : MainMenu/Deckbuilding/CardDetailBackground.png;
+	Anchor : caCenter;
+	ParentAnchor : caCenter;
+	Size : auto 100bh;
+	.showed-card{
+		Anchor : caCenter;
+		Position : 20.3% 34.5%;
+		Size : auto 56%;
+		.card{
+			.ascension-progress, .level-progress{
+				bar{
+					TransitionProperty : gtTransform;
+					TransitionDuration : 300;
+					TransitionTimingFunction : 0 0 .3 1;
+					TransformKeepBackground : True;
+					TransitionWithInheritance : False;
+				}
+			}
+		}
+	}
+	.card-detail-stats{
+		Position : 1.78% 38.5%; 
+		Size : 38.2% 57.9%;
+		stack{
+			Overflow : ohScrollY;
+			MouseEvents : meAll;
+			& > *{
+				Size : 100% 9%;
+				&:even{
+					BackgroundColor : $FF243434;
+				}
+				*{
+					Padding : 10% 0 10% 5%;
+					FontFlags : [ffVerticalCenter];
+				}
+			}
+			.key{
+				Size : 60% 100%;
+			}
+			.value{
+				Position : 60% 0;
+				Size : 40% 100%;
+				$small-font;
+				&.change{
+					Visibility : False;
+				}
+			}
+			.armor, .cost{
+				.value{
+					Padding-Left : 110ch;
+					.icon{
+						Position : -10ch 0;
+						Size : auto 100%;
+						Anchor : caTopRight;
+					}
+				}
+			}
+			.changing{
+				.value{
+					Visibility : False;
+					FontColor : $font-color-reward;
+				}
+				.value.change{
+					Visibility : True;
+				}
+			}
+		}
+	}
+	.ascension{
+		.glow{
+			ZOffset : 100;
+			Position : 33.29% -1.1%;
+			Size : auto 100bh;
+			Background : MainMenu/Deckbuilding/CardAscensionGlow.tga;
+			MouseEvents : mePass;
+		}
+		.material, .material-pool{
+			.material-item{
+				Enabled : True;
+				Margin : 5cw 0;
+				&:hover:enabled{
+					.hover{
+						Visibility : True;
+					}
+					.arrow{
+						Visibility : True;
+					}
+				}
+				&.in-deck{
+					Enabled : False;
+					.in-deck-hint{
+						Visibility : True;
+					}
+				}
+				&:disabled{
+					.card{
+						BackgroundColorOverride : $override-darken;
+					}
+				}
+				*{
+					MouseEvents : mePassClick;
+				}
+				.card{
+					Size : 100% auto;
+					.icon-frame{
+						Size : 100% auto;
+					}
+				}
+				.in-deck-hint{
+					Visibility : False;
+					ZOffset : 100;
+					Size : 100% 100%;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+					FontSize : 24;
+				}
+				.arrow{
+					ZOffset : 100;
+					Position : 12% -1%;
+					Size : auto 50%;
+					ParentAnchor : caLeft;
+					Anchor : caRight;
+					Background : MainMenu/Deckbuilding/sacrifice_arrow.png;
+					Visibility : False;
+				}
+				.currency{
+					Position : 0 2.5cw;
+					Size : 100% 16cw;
+					ParentAnchor : caBottom;
+					Anchor : caTop;
+					.amount.doubled{
+						FontColor : $font-color-reward;
+					}
+				}
+			}
+		}
+		.material{
+			Position : 41.77% 3.8%;
+			Size : 14.81% 80.5%;
+			StackColumns : 1 0;
+			Padding : 1cw auto;
+			ScrollbarWidth : 24;
+			Overflow : ohScrollY;
+			ScrollbarPadding : 0 2 0 4;
+			MouseEvents : meAll;
+			&:scrollable{
+				Padding : 1cw 12cw;
+			}
+			.material-item{
+				Size : auto 23.8%;
+				.card{
+					Size : auto 100%;
+				}
+				&.empty{
+					Enabled : False;
+					BackgroundColorOverride : $override-darken;
+					.stats{
+						.league-icon{
+							FontColor : $00000000;
+						}
+						.league-upgrade, .level-progress, .level-number{
+							Opacity : 0;
+						}
+					}
+				}
+				.arrow{
+					Position-X : -12%;
+					ParentAnchor : caRight;
+					Anchor : caLeft;
+					BackgroundAnchor : baTopRight;
+				}
+			}
+		}
+		.material-pool-wrapper{
+			Position : 58.63% 3.8%;
+			Size : 36.8% 92.2%;
+			.material-pool{
+				Position : 0 0;
+				StackColumns : 3 4;
+				Padding : auto auto;
+				.material-item{
+					Size : auto 20.7%;
+					Margin : 8cw 5cw;
+				}
+			}
+			.btn-left, .btn-right{
+				Size : auto 50bh;
+				ZOffset : 1000;
+			}
+			.btn-left{
+				Position-X : 0%;
+			}
+			.btn-right{
+				Position-X : -0%;
+			}
+		}
+		.btn-ascend, .btn-push{
+			Anchor : caCenter;
+		}
+		.btn-push{
+			Position : 49.08% 91.5%;
+			&:enabled{
+				$jello-horizontal;
+			}
+		}
+		.btn-ascend{
+			Position : 49.08% 91.5%;
+			&:disabled{
+				BackgroundColorOverride : $override-darken-soft;
+			}
+			&.free{
+				&:enabled{
+					$jello-horizontal;
+				}
+				caption{
+					Position : 0 5%;
+					Anchor : caCenter;
+					ParentAnchor : caCenter;
+				}
+			}
+			caption{
+				Size : 100% 65%;
+			}
+			.cost{
+				Size : 100% 45%;
+				Anchor : caBottom;
+				ParentAnchor : caBottom;
+				.currency{
+					&.centered{
+						.amount{
+							Position : 0 0;
+						}
+					}
+					.icon{
+						Position-X : 10ch;
+						Anchor : caLeft;
+						Size : auto 120%;
+					}
+				}
+			}
+		}
+	}
+	.btn-back{
+		Anchor : caTopLeft;
+		ParentAnchor : caTopRight;
+		Position : -3.12% -0.8%;
+	}
+}
+
+.ascend-dialog{
+	.window-shine{
+		ZOffset : -2;
+		Transform : scale(3.8);
+		Opacity : 0.45;
+	}
+	.showcase{
+		.league-before, .league-after, .arrow{
+			Size : auto 70%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+		}
+		.league-before{
+			Position : -35%;
+		}
+		.arrow{
+			Size : 30% auto;
+			Transform : rotateZ(90deg);
+			Background : Shared/Arrow.png;
+			$jello-horizontal;
+		}
+		.league-after{
+			Position : 35%;
+		}
+	}
+}

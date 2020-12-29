@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<div class="window message-window loot-window items-{{ notification.Msg.Attachments.Count }} {{ wide if notification.Msg.HasWideItems }} {{ scrolling if notification.Msg.Attachments.Count > 6 }}">
+	<div class="notification notification-message">
+		<div class="caption {{ centered if notification.Msg.Attachments.Count <= 0 }}">{{ notification.Msg.Text }}</div>
+		<div class="loot amount-{{ notification.Msg.Attachments.Count }}">
+			<stack class="loot-list">
+				<div class="loot-item" dxml-for="item in notification.Msg.Attachments">
+					<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}.dui"></div>
+				</div>
+			</stack>
+		</div>
+	</div>
+	<div class="window-caption">{{ notification.Msg.Subject }}</div>
+	<stack class="window-buttons">
+		<btn class="btn-xl btn-success btn-notification-close" dxml-on:click="notification.Msg.MarkAsReadAndCollectItems; notifications.Close">{{ §notification_message_loot_and_close if notification.Msg.Attachments.Count > 0 else §notification_close }}</btn>
+	</stack>
+</div>

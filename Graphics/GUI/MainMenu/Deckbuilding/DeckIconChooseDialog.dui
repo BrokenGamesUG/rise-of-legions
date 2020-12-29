@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<wrapper class="deck-icon-dialog icon-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diDeckIcon)" dxml-on:click="dialogs.CloseDialog(diDeckIcon)">
+	<div class="window">
+		<div class="window-caption">
+			§deckbuilding_deckicon_list_caption
+		</div>
+		<stack class="icons">
+			<div dxml-for="icon in profile.Profile.UnlockedIcons" class="btn framed-icon pop-out big {{ selected if icon. = deckbuilder.Deck.Icon }}" dxml-on:click="deckbuilder.ChooseDeckIcon(icon.)">
+				<img class="framed-icon-icon" src="{{ HClient.GetDeckIcon(icon.) }}"></img>
+			</div>
+		</stack>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diDeckIcon)">§close</btn>
+			<btn class="btn-xl btn-success" dxml-on:click="dialogs.CloseDialog(diDeckIcon); menu.CurrentMenu := mtShop; shop.ShopItemFilter.Category := scIcons">§to_shop</btn>
+		</stack>
+	</div>
+</wrapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- Parameters | card : TCardInfo -->
+<div class="card card-icon {{ card.CardType }} {{ special if card.IsLegendary or card.IsEpic }}" dxml-on:click="menu.CardShowcase := card." dxml-on:rightclick="menu.CardShowcase := card.">
+	<img class="icon-frame" src="{{ HClient.GetCardIconBackground(card.) }}">
+		<div class="legendary" :visible="card.IsLegendary"></div>
+		<div class="epic" :visible="card.IsEpic"></div>
+		<img class="icon" src="{{ HClient.GetCardIcon(card.) }}"></img>
+		<wrapper class="stats">
+			<img class="league-icon" :src="HClient.GetLeagueIcon(card.League)" :title="F._d(§league_card_hint, card.League)"></img>
+		</wrapper>
+	</img>
+	<div class="hover"></div>
+	<div class="selected"></div>
+</div>

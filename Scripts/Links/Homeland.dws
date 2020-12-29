@@ -1,0 +1,49 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 10.0); // Health is on death = 0, so set it to 10
+  Entity.Blackboard.SetValue(eiWelaUnitPattern, [Group], 'Projectiles\White\HomelandProjectile');
+
+  {$IFDEF SERVER}
+    TAutoBrainPreventDeathComponent.CreateGrouped(Entity, [Group]);
+    // set health to 1
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [Group])
+      .SetResourceType(reHealth)
+      .SetsResourceToValue();
+    TWarheadSpottyRemoveBuffComponent.CreateGrouped(Entity, [Group])
+      .All
+      .MustNotHave([btDivine, btSummoningSickness]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Rescue')
+      .TriggerOnFire;
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upRescued]);
+
+  // prevent effect to be applied again
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\ImmuneToRescued.dws');
+
+  {$IFDEF SERVER}
+    TWarheadSpottyRemoveBuffComponent.CreateGrouped(Entity, [Group])
+      .MustHaveAny([btState]);
+    TWarheadSpottyTeleportComponent.CreateGrouped(Entity, [Group])
+      .Offset(1.0)
+      .OffsetByCollisionRadius
+      .AsProjectile
+      .ToNexus;
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\homeland_aura_buff.pfx', 0.6)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .FixedOrientationDefault;
+  {$ENDIF}
+
+  Result := [Group];
+end;

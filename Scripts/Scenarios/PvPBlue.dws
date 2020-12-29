@@ -1,0 +1,64 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TGame{$ENDIF});
+begin
+  {$IFDEF SERVER}
+    // spawn world entities
+    if Game.IsTwoLane then
+    begin
+      Game.ServerEntityManager.SpawnUnit(-92, 0, 'Units\Neutral\NexusLevel1', 1); // Blue Nexus centered between lanes
+      Game.ServerEntityManager.SpawnUnit(-48, 23, 'Units\Neutral\LanetowerLevel1', 1); // Blue left Lanetower
+    end
+    else
+      Game.ServerEntityManager.SpawnUnit(-96, -23, 'Units\Neutral\NexusLevel1', 1); // Blue Nexus direct on right lane
+
+    Game.ServerEntityManager.SpawnUnit(-48, -23, 'Units\Neutral\LanetowerLevel1', 1); // Blue right Lanetower
+  {$ENDIF}
+
+  if Game.IsTwoLane then
+  begin
+    Game.Map.BuildZones
+      .AddBuildZone( // Blue left Buildgrid
+        TBuildZone.Create(1)
+          .SetTeam(1)
+          .SetPosition(-102, 17)
+          .SetSize(8, 3)
+          .SetFront(1, 0)
+          .SetSpawnTarget(-86, 6, -1, -1)
+          .Block(0, 0)
+          .Block(7, 0)
+          .Block(0, 2)
+          .Block(7, 2)
+      ).AddBuildZone( // Blue right Buildgrid
+        TBuildZone.Create(0)
+          .SetTeam(1)
+          .SetPosition(-102, -17)
+          .SetSize(8, 3)
+          .SetFront(1, 0)
+          .SetSpawnTarget(-86, -6, -1, 1)
+          .Block(0, 0)
+          .Block(7, 0)
+          .Block(0, 2)
+          .Block(7, 2)
+      );
+  end
+  else
+  begin
+    Game.Map.BuildZones
+    .AddBuildZone( // Blue right Buildgrid
+      TBuildZone.Create(0)
+        .SetTeam(1)
+        .SetPosition(-106.7, -23)
+        .SetSize(8, 3)
+        .SetFront(1, 0)
+        .SetSpawnTarget(-90, -23, -1, 0)
+        .Block(0, 0)
+        .Block(7, 0)
+        .Block(0, 2)
+        .Block(7, 2)
+    );
+  end;
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

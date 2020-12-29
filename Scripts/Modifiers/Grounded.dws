@@ -1,0 +1,92 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : integer;
+const GROUND_DURATION = 15000;
+var Group, ImmuneGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Result := Group;
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], GROUND_DURATION); //Grounded-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], GROUND_DURATION + 10000); //GroundedImmunity-Duration
+
+  {$IFDEF SERVER}
+    // Stop unit at grounding
+    Entity.Eventbus.Trigger(eiStand, []);
+    // After eiCooldown root is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Grounded')
+      .TriggerOnKilled;
+
+    // Immunity
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upFlying])
+    .Remove;
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upGround]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upGrounded]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToGrounded]);
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\GroundedEnds.dws');
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\grounded.pfx', 1.0)
+      .ActivateNow
+      .ScaleWith(eiCollisionRadius)
+      .FixedHeightGround
+      .FixedOrientationDefault;
+
+    TPositionerOffsetComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .Offset(0, -FLYING_HEIGHT, 0)
+      .Transition(500);
+  {$ENDIF}
+end;
+
+procedure ApplyGreen(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Apply(Entity);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\spore_grounded.pfx', 0.7)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault;
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/green/effect/grounded')
+      .TriggerNow();
+  {$ENDIF}
+end;
+
+procedure ApplyBlue(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Apply(Entity);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\inverse_gravity_grounded.pfx', 0.6)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault;
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/blue/effect/grounded')
+      .TriggerNow();
+  {$ENDIF}
+end;

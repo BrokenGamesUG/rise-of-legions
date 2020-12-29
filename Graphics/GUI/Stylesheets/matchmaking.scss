@@ -1,0 +1,601 @@
+﻿.teambuilding{
+	Position: 0 0;
+	Size : 100% 100%;
+	&.disabled{
+		.btn-nav, .scenario-type, .scenario-option{
+			Enabled: False;
+			MouseEvents : mePass;
+		}
+		.scenario-type, .scenario-option{
+			Opacity : 0.6;
+		}
+	}
+	.layout{
+		ParentAnchor : caTop;
+		Anchor : caTop;
+		Stackorientation : soVertical;
+		Size : 0 auto;
+		& > *{
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			Margin-Bottom : 20;
+		}
+	}
+	.scenario-type-description{
+		Size : 80vw 24;
+		FontFlags : [ffCenter,ffVerticalCenter];
+		.league-hint{
+			Position : 0 10;
+			Size : text 100%;
+			Anchor : caTop;
+			ParentAnchor : caBottom;
+			FontWeight : 700;
+			FontFlags : [ffCenter,ffVerticalCenter];
+			.exclamation{
+				Position : -10 0;
+				Size : auto 200%;
+				Anchor : caRight;
+				ParentAnchor : caLeft;
+				Background : Shared/exclamation_success.png;
+				$jello-horizontal;
+				&.right{
+					Position : 10 0;
+					Anchor : caLeft;
+					ParentAnchor : caRight;
+				}
+			}
+		}
+	}
+	.scenario-options-section{
+		Margin-Top : 20;
+		Size : 70vw auto;
+		.scenario-options{
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Size : auto 100bh;
+			Stackpartitioning : auto;
+			.scenario-option{
+				Size : auto 35;
+				Background : MainMenu/Teambuilding/button_sub.png;
+				Margin : 10;
+				Padding : 3;
+				.text{
+					Size : text 100%;
+					Anchor : caCenter;
+					ParentAnchor : caCenter;
+					FontFlags : [ffVerticalCenter];
+					FontBorder : 0 0;
+					&.with-icon{
+						Position : 35ch;
+					}
+				}
+				&:enabled:hover{
+					Background : MainMenu/Teambuilding/button_sub_hover.png;
+				}
+				.league-icon{
+					Size : auto 100%;
+					Anchor : caRight;
+					ParentAnchor : caLeft;
+				}
+				.caption{
+					Size : 100% 60%;
+					Anchor : caBottom;
+					ParentAnchor : caTop;
+					ParentBox : pbPadding;
+					FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+				}
+				.rank{
+					Position : -20ch 0;
+					Size : auto 120%;
+					Anchor : caLeft;
+					ParentAnchor : caLeft;
+				}
+			}
+		}
+	}
+	.scenario-team{
+		Position : 0 -5%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : 75vw 148;
+		&.duel{
+			Position-Y : -0.55%;
+			&.teamsize-2{
+				.teamlist{
+					.team-member.index-0{
+						Margin-Bottom : 60;
+					}
+				}
+			}
+			&.teamsize-4{
+				.selected-deck{
+					Visibility : False;
+				}
+				.teamlist{
+					.team-member.index-1{
+						Margin-Bottom : 60;
+					}
+				}
+			}
+			&.teamsize-6{
+				.teamlist{
+					Position : -32% 74%;
+					StackColumns : 3 2;
+					.team-member.index-3, .team-member.index-4, .team-member.index-5{
+						Margin-Left : 15;
+					}
+				}
+			}
+			&.teamsize-8{
+				.teamlist{
+					Position : -32% 100%;
+					StackColumns : 4 2;
+					.team-member.index-4, .team-member.index-5, .team-member.index-6, .team-member.index-7{
+						Margin-Left : 15;
+					}
+				}
+			}
+			.duel-versus{
+				Size : auto 50;
+				Parentanchor : caCenter;
+				Anchor : caCenter;
+				Background : LoadingScreen/loadingscreen_vs.tga;
+				Visibility : True;
+			}
+		}
+		.duel-versus{
+			Visibility : False;
+		}
+		&.no-deck-required{
+			.teamlist{
+				& > *{
+					.member-wrapper{
+						Stackpartitioning : 243 383;
+					}
+				}
+				.selected-deck{
+					Visibility : False;
+				}
+			}
+			.member-info{
+				Position : 33%;
+			}
+			.deck-info{
+				Visibility : False;
+			}
+		}
+		.teamlist{
+			Anchor: caCenter;
+			ParentAnchor: caCenter;
+			Size : 65% auto;
+			Stackorientation : soVertical;
+			Stackpartitioning : auto;
+			.selected-deck{
+				Position: 5.2% 0;
+				Size : auto 100bh;
+				Anchor : caBottom;
+				ParentAnchor : caTop;
+				Background : MainMenu/Teambuilding/selected_deck_banner.png;
+				Padding : 10% 10% 30% 10%;
+				FontFlags : [ffCenter,ffVerticalCenter];
+			}
+			& > *{
+				Size : 100% 64;
+				Margin : 5;
+				.member-wrapper{
+					Stackpartitioning : 100% 383;
+				}
+				.member-info{
+					&:hover{
+						.btn-member{
+							Visibility : True;
+						}
+					}
+					&.add{
+						.icon{
+							Enabled : True;
+						}
+					}
+					.name{
+						Position-X : 5;
+						Padding-Left : 100ch;
+						Padding-Right : 10ch;
+						Size : 100% 100%;
+						Fontsize : 40%;
+						Fontflags : [ffVerticalCenter,ffAutoShrink];
+						MouseEvents : mePass;
+					}
+					& > .icon{
+						Size : auto 100%;
+					}
+					.leader{
+						ParentAnchor : caBottomLeft;
+						Anchor : caBottomLeft;
+						Size : 100% 30%;
+						Fontsize : 100%;
+						Opacity : 0.6;
+					}
+					.btn-member{
+						Position : 0 -9%;
+						Size : auto 60%;
+						Visibility : False;
+					}
+					.btn-close{
+						ParentAnchor : caTopLeft;
+						Anchor : caTopRight;
+					}
+					.btn-warning{
+						Position : 0 8%;
+						ParentAnchor : caBottomLeft;
+						Anchor : caBottomRight;
+					}
+				}
+				.deck-info{
+					Size : auto 100%;
+					.deck{
+						Size : auto 100%;
+					}
+					&:hover{
+						.choose-overlay{
+							Visibility : True;
+						}
+					}
+					&.disabled{
+						Opacity : 0.6;
+						&:hover{
+							.choose-overlay{
+								Visibility : False;
+							}
+						}
+						.hover{
+							Visibility : False;
+						}
+					}
+					.name{
+						DefaultText : §teambuilding_deck_not_set;
+					}
+					.icon-placeholder{
+						FontFlags : [ffCenter,ffVerticalCenter];
+						Size : 100% 100%;
+						FontWeight : 500;
+					}
+					.choose{
+						Padding-Left : 20%;
+						Margin : 0 0 0 100ch;
+						FontFlags : [ffVerticalCenter];
+						FontSize : 40%;
+						FontWeight : 500;
+						Background : MainMenu/Teambuilding/ChooseDeck.png;
+					}
+					.choose-overlay{
+						Visibility : False;
+						Position: 0 -18%;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						Size : 106% auto;
+						Background : MainMenu/Teambuilding/Deck_Hover.tga;
+						MouseEvents : mePass;
+					}
+				}
+			}
+		}
+	}
+	.scenario-queue{
+		Position : 0 -10%;
+		Anchor : caBottom;
+		ParentAnchor : caBottom;
+		Size : 80vw 30;
+		.queue{
+			.btn-queue{
+				HintAnchor : caBottom;
+				HintOffset : 0 -5;
+				&:enabled{
+					$pulsate;
+				}
+				&.btn-tier-1{
+					Background : MainMenu/Teambuilding/enter_queue_tier_0.png;
+					&:enabled:hover{
+						Background : MainMenu/Teambuilding/enter_queue_tier_0_hover.png;
+					}
+				}
+				&.btn-tier-2{
+					Background : MainMenu/Teambuilding/enter_queue_tier_1.png;
+					&:enabled:hover{
+						Background : MainMenu/Teambuilding/enter_queue_tier_1_hover.png;
+					}
+				}
+				&.btn-tier-3{
+					Background : MainMenu/Teambuilding/enter_queue_tier_2.png;
+					&:enabled:hover{
+						Background : MainMenu/Teambuilding/enter_queue_tier_2_hover.png;
+					}
+				}
+				&.btn-tier-4{
+					Background : MainMenu/Teambuilding/enter_queue_tier_3.png;
+					&:enabled:hover{
+						Background : MainMenu/Teambuilding/enter_queue_tier_3_hover.png;
+					}
+				}
+			}
+			.queue-window{
+				Anchor : caBottom;
+			}
+		}
+	}
+	.scenario-detail{
+		.map-description{
+			Position : 0% 10%;
+			Size : 20% 90%;
+			BackgroundColor : $dark-background;
+			.description{
+				Size : 100% 40%;
+				FontSize : 20;
+				FontFlags : [ffWordWrap];
+			}
+			.image{
+				Size : auto 60%;
+				Position : 50% 40%;
+				Anchor : caTop;
+			}
+		}
+		.caption{
+			Position : 22% 0;
+			Size : 58% 15%;
+			BackgroundColor : $dark-background;
+			FontFlags : [ffAutoShrink,ffVerticalCenter];
+			.difficulty{
+				ParentAnchor : caBottomLeft;
+				Size : 100% 30%;
+				FontFlags : [ffCenter];
+			}
+		}
+		.ranking{
+			Position : 82% 0;
+			Size : 18% 15%;
+			BackgroundColor : $dark-background;
+		}
+	}
+	.queue{
+		ParentAnchor : caBottom;
+		Anchor : caTop;
+		MouseEvents : mePass;
+	}
+	.btn-gamemode, .btn-difficulty, .btn-queue{
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Position : 0 -4%;
+		Size : auto 70;
+	}
+}
+
+.deck-dialog{
+	.window{
+		Size : 80vw 74vh;
+		.decks{
+			Size : 86% 100%;
+			Padding : 0 4cw;
+		}
+	}
+}
+
+.difficulty-dialog{
+	.window{
+		Size : 30% 70%;
+		&.league{
+			Size : 25% 55%;
+			.difficulties{
+				.difficulty{
+					.caption{
+						Size-Y : 100%;
+					}
+					.loot, .best-time{
+						Visibility : False;
+					}
+				}
+			}
+		}
+		.difficulties{
+			Position : 0 5%;
+			Size : 100% 90%;
+			.difficulty{
+				Size : 100% 18.9%;
+				Padding : 5% 5%;
+				BackgroundColor : $40000000;
+				Enabled : True;
+				Margin-Bottom : 5;
+				&:hover{
+					.scenario-info{
+						Visibility : True;
+					}
+				}
+				&:disabled{
+					BackgroundColorOverride : $override-darken;
+					.mode-league-lock{
+						Visibility : True;
+					}
+				}
+				.mode-league-lock{
+					Size : 100% 100%;
+					Visibility : False;
+					BackgroundColorOverrideInheritance : False;
+					icon {
+						Size : auto 100bh;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						MouseEvent : mePass;
+					}
+				}
+				.caption{
+					Size: 100% 70%;
+					Fontsize : 100%;
+					FontWeight : 700;
+					Fontflags : [ffVerticalCenter];
+					Padding-Left : 100ch;
+					.league-icon{
+						Position : -10ch 0;
+						Anchor : caTopRight;
+						Size : auto 100%;
+						
+					}
+				}
+				.loot{
+					Size: 30% 70%;
+					Position : 3% 0;
+					ParentAnchor : caTopRight;
+					Anchor : caTopRight;
+					FontSize : 80%;
+					Fontflags : [ffVerticalCenter];
+				}
+				.best-time{
+					Size: 100% 30%;
+					ParentAnchor : caBottomLeft;
+					Anchor : caBottomLeft;
+					Opacity : 0.6;
+					Fontflags : [ffLeft,ffVerticalCenter];
+				}
+			}
+		}
+	}
+}
+
+.scenario-dialog{
+	.window{
+		Size : 50% 60%;
+		.scenarios{
+			Size : 100% 100%;
+			Overflow : ohScrollY;
+			MouseEvents : meAll;
+			ScrollbarWidth : 0;
+			.scenario{
+				Size : 50% 15%;
+				Padding : 15% 5%;
+				BackgroundColor : $40000000;
+				Enabled : True;
+				Margin-Bottom : 5;
+				&:hover{
+					.scenario-info{
+						Visibility : True;
+					}
+				}
+				&:disabled{
+					BackgroundColor : $80A08080;
+					Visibility : False;
+				}
+				.caption{
+					MouseEvents : mePass;
+					Size: 100% 100%;
+					Fontsize : 80%;
+					FontWeight : 700;
+					Fontflags : [ffVerticalCenter];
+				}
+				.teamsize{
+					MouseEvents : mePass;
+					Size: 30% 80%;
+					Position : 8% 0;
+					ParentAnchor : caRight;
+					Anchor : caRight;
+					Fontsize : 100%;
+					*{
+						Size : 50% 100%;
+						Fontflags : [ffRight,ffVerticalCenter];
+						Padding: 0 0 0 10;
+					}
+					.count{
+						ParentAnchor : caTopRight;
+						Anchor : caTopRight;
+						Fontflags : [ffLeft,ffVerticalCenter];
+					}
+				}
+				.scenario-info{
+					ParentAnchor : caTopRight;
+					Anchor : caTopRight;
+					Size : 50% 100%;
+					ParentOffset : 2;
+					Margin : 0 0 0 5;
+					Padding : 5cw;
+					BoxSizing : bsMargin;
+					Visibility : False;
+					BackgroundColor : $40000000;
+					.description{
+						Size : 100% 100%;
+						FontSize : 20;
+						FontFlags : [ffWordWrap];
+					}
+				}
+			}
+		}
+	}
+}
+
+.queue{
+	Anchor: caBottom;
+	ParentAnchor : caBottom;
+	Size : 300 0;
+	ZOffset : 10;
+	.queue-hint{
+		Padding : 10;
+		Position : 30 0;
+		ParentAnchor : caRight;
+		Anchor : caLeft;
+		FontSize : 18;
+		Size : 200 text;
+		FontFlags : [ffWordWrap];
+	}
+	.match-hint{
+		Position : 0 -34;
+		ParentAnchor : caLeft;
+		Anchor : caRight;
+	}
+	.league-hint{
+		Size : text 38;
+		Position : 0 -140;
+		ParentAnchor : caTop;
+		Anchor : caBottom;
+		FontFlags : [];
+	}
+	.queue-window{
+		ZOffset : 50;
+		Size : 300 130;
+		Border : 2 $FF47b3b3;
+		.window-headline{
+			Position-Y : -25;
+			Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+		}
+		.panel{
+			Size : 60% 80%;
+			Anchor : caCenter;
+			HintAnchor : caLeft;
+			.fa{
+				Position : 10%;
+				Size : 100ch 100%;
+				Fontsize : 60%;
+				Fontflags : [ffCenter,ffVerticalCenter];
+			}
+			.display{
+				Position : 100% 0;
+				Size : 70% 100%;
+				Anchor : caTopRight;
+				Fontsize : 40%;
+				Fontflags : [ffCenter,ffVerticalCenter];
+			}
+			&.time{
+				Position : 50% 42%;
+			}
+			&.online{
+				Position : 50% 85%;
+				.display{
+					Size : 100%;
+				}
+			}
+			&.count{
+				Position : 50% 60%;
+				Visibility : False;
+			}
+		}
+		.match-hint{
+			Position : -30 0;
+			ParentAnchor : caLeft;
+			Anchor : caRight;
+		}
+	}
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<wrapper class="player-level-up-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diPlayerLevelUp)" dxml-on:click="player_level.ReceiveReward">
+	<div class="window {{ has_text if player_level.AdditionalLevelUpText <> ''}}">
+		<div class="window-shine"></div>
+		<div class="window-caption">§gui_player_level_up_caption</div>
+		<div class="new-level">
+			<div class="level-number {{ big if player_level.LevelUpRewards.RewardForPlayerLevel <= 9 }}" src="MainMenu/PlayerLevel/{{ player_level.LevelUpRewards.RewardForPlayerLevel }}.png"></div>
+		</div>
+		<div class="content">
+			<div class="level-text">{{ player_level.AdditionalLevelUpText }}</div>
+			<div class="loot">
+				<div class="loot-caption">§gui_player_level_up_loot_receive_caption</div>
+				<stack class="loot-list">
+					<div class="loot-item col-{{ player_level.LevelUpRewards.Content.Count }}" dxml-for="item in player_level.LevelUpRewards.Content">
+						<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}.dui"></div>
+					</div>
+				</stack>
+			</div>
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success btn-receive" dxml-on:click="player_level.ReceiveReward">§continue</btn>
+			<btn class="btn-xl btn-primary" dxml-on:click="dialogs.OpenDialog(diPlayerLevelUpOverView)">§gui_player_level_up_show_overview</btn>
+		</stack>
+	</div>
+</wrapper>

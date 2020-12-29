@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<wrapper class="settings graphics">
+	<stack class="column">
+		<div class="caption">
+			§settings_graphics_display
+		</div>
+		<div class="combo-caption">
+			§settings_graphics_display_mode
+		</div>
+		<select class="form-control">
+			<caption>§settings_graphics_display_mode_{{ settings.DisplayMode }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.DisplayMode := dmBorderlessFullscreenWindow">
+					§settings_graphics_display_mode_dmBorderlessFullscreenWindow
+				</div>
+				<div dxml-on:click="settings.DisplayMode := dmWindowed">
+					§settings_graphics_display_mode_dmWindowed
+				</div>
+			</stack>
+		</select>
+		<check dxml-on:change="settings.SetBoolean(coGraphicsVSync)" checked="{{ settings.GetBoolean(coGraphicsVSync) }}" title="§settings_graphics_vsync_hint">
+			§settings_graphics_vsync
+		</check>
+		
+		<div class="spacer"></div>
+		
+		<div class="caption">
+			§settings_graphics_quality
+		</div>
+		<select class="form-control primary">
+			<caption>§settings_graphics_quality_{{ settings.GraphicsQuality }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.GraphicsQuality := gqVeryLow">
+					§settings_graphics_quality_gqVeryLow
+				</div>
+			<div dxml-on:click="settings.GraphicsQuality := gqLow">
+					§settings_graphics_quality_gqLow
+				</div>
+			<div dxml-on:click="settings.GraphicsQuality := gqMedium">
+					§settings_graphics_quality_gqMedium
+				</div>
+			<div dxml-on:click="settings.GraphicsQuality := gqHigh">
+					§settings_graphics_quality_gqHigh
+				</div>
+			<div dxml-on:click="settings.GraphicsQuality := gqVeryHigh">
+					§settings_graphics_quality_gqVeryHigh
+				</div>
+			<div dxml-on:click="settings.GraphicsQuality := gqCustom">
+					§settings_graphics_quality_gqCustom
+				</div>
+			</stack>
+		</select>
+		
+		<div class="spacer"></div>
+		
+		<check dxml-on:change="settings.SetBoolean(coGraphicsDeferredShading)" checked="{{ settings.GetBoolean(coGraphicsDeferredShading) }}">
+			§gui_settings_menu_graphics_deferred_shading
+		</check>
+		<div class="combo-caption">
+			<div class="need-restart" >
+				§settings_graphics_texture_quality
+				<div class="icon" title="§settings_need_restart_hint"></div>
+			</div>
+		</div>
+		<select class="form-control">
+			<caption>§settings_graphics_texture_quality_{{ settings.TextureQuality }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.TextureQuality := tqMaximum">
+					§settings_graphics_texture_quality_tqMaximum
+				</div>
+				<div dxml-on:click="settings.TextureQuality := tqHigh">
+					§settings_graphics_texture_quality_tqHigh
+				</div>
+				<div dxml-on:click="settings.TextureQuality := tqMedium">
+					§settings_graphics_texture_quality_tqMedium
+				</div>
+				<div dxml-on:click="settings.TextureQuality := tqLow">
+					§settings_graphics_texture_quality_tqLow
+				</div>
+				<div dxml-on:click="settings.TextureQuality := tqMinimum">
+					§settings_graphics_texture_quality_tqMinimum
+				</div>
+			</stack>
+		</select>
+		<div class="combo-caption">
+			§gui_settings_menu_graphics_shadows
+		</div>
+		<select class="form-control">
+			<caption>§gui_settings_menu_graphics_shadowmode_{{ settings.ShadowQuality }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.ShadowQuality := sqOff">
+					§gui_settings_menu_graphics_shadowmode_sqoff
+				</div>
+				<div dxml-on:click="settings.ShadowQuality := sqVeryLow">
+					§gui_settings_menu_graphics_shadowmode_sqverylow
+				</div>
+				<div dxml-on:click="settings.ShadowQuality := sqLow">
+					§gui_settings_menu_graphics_shadowmode_sqlow
+				</div>
+				<div dxml-on:click="settings.ShadowQuality := sqMedium">
+					§gui_settings_menu_graphics_shadowmode_sqmedium
+				</div>
+				<div dxml-on:click="settings.ShadowQuality := sqHigh">
+					§gui_settings_menu_graphics_shadowmode_sqhigh
+				</div>
+				<div dxml-on:click="settings.ShadowQuality := sqUltraHigh">
+					§gui_settings_menu_graphics_shadowmode_squltrahigh
+				</div>
+			</stack>
+		</select>
+		<check dxml-on:change="settings.SetBoolean(coGraphicsPostEffectFXAA)" checked="{{ settings.GetBoolean(coGraphicsPostEffectFXAA) }}">
+			§gui_settings_menu_graphics_fxaa
+		</check>
+		<check dxml-on:change="settings.SetBoolean(coGraphicsPostEffectGlow)" checked="{{ settings.GetBoolean(coGraphicsPostEffectGlow) }}">
+			§gui_settings_menu_graphics_glow
+		</check>
+		<check dxml-on:change="settings.SetBoolean(coGraphicsPostEffectUnsharpMasking)" checked="{{ settings.GetBoolean(coGraphicsPostEffectUnsharpMasking) }}">
+			§gui_settings_menu_graphics_unsharp_masking
+		</check>
+		<check dxml-on:change="settings.SetBoolean(coGraphicsPostEffectDistortion)" checked="{{ settings.GetBoolean(coGraphicsPostEffectDistortion) }}">
+			§gui_settings_menu_graphics_distortion
+		</check>
+		<check dxml-on:change="settings.SetBoolean(coGraphicsGUIBlurBackgrounds)" checked="{{ settings.GetBoolean(coGraphicsGUIBlurBackgrounds) }}">
+			§gui_settings_menu_graphics_gui_blur
+		</check>
+		<check :class="deactivated if not settings.GetBoolean(coGraphicsDeferredShading)" dxml-on:change="settings.SetBoolean(coGraphicsPostEffectToon)" checked="{{ settings.GetBoolean(coGraphicsPostEffectToon) }}">
+			§gui_settings_menu_graphics_toon
+		</check>
+		<check :class="deactivated if not settings.GetBoolean(coGraphicsDeferredShading)" title="§gui_settings_menu_graphics_experimental" dxml-on:change="settings.SetBoolean(coGraphicsPostEffectSSAO)" checked="{{ settings.GetBoolean(coGraphicsPostEffectSSAO) }}">
+			§gui_settings_menu_graphics_ssao
+		</check>
+	</stack>
+	<btn class="btn-xl btn-revert" dxml-on:click="settings.RevertCategory(otGraphics)">§RevertSettings</btn>
+</wrapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<wrapper class="settings graphics">
+	<stack class="column">
+		<div class="caption">
+			§settings_menu_language
+		</div>
+		<select class="form-control">
+			<caption>{{ settings.CurrentLanguage.DisplayText }}</caption>
+			<arrow></arrow>
+			<stack class="options language-chooser">
+				<div dxml-for="language in settings.AvailableLanguages" dxml-on:click="settings.CurrentLanguage := language.">
+					{{ language.ProgressWithColoring }} - {{ language.EnglishName }} ({{ language.NativeName }}) 
+				</div>
+			</stack>
+		</select>
+		<!--stack class="lang-hint" dxml-on:click="client.BrowseTo(weTranslation)">
+			<img class="icon" src="MainMenu/Dashboard/crowdin_logo.png"></img>
+			<div class="text">§home_translation_text</div>
+		</div-->
+		
+		<div class="spacer"></div>
+		
+		<div class="caption">
+			§settings_menu_display
+		</div>
+		<div class="combo-caption">
+			§settings_menu_scaling_mode
+		</div>
+		<select class="form-control">
+			<caption>§settings_menu_scaling_mode_{{ settings.MenuScaling }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.MenuScaling := msDownscaling">
+					§settings_menu_scaling_mode_msDownscaling
+				</div>
+				<div dxml-on:click="settings.MenuScaling := msFullscreen">
+					§settings_menu_scaling_mode_msFullscreen
+				</div>
+				<div dxml-on:click="settings.MenuScaling := msDisabled">
+					§settings_menu_scaling_mode_msDisabled
+				</div>
+			</stack>
+		</select>
+		<div class="combo-caption {{ deactivated if settings.MenuScaling = msFullscreen}}">
+			§settings_menu_resolution
+		</div>
+		<select class="form-control {{ deactivated if settings.MenuScaling = msFullscreen}}">
+			<caption>§settings_menu_resolution_{{ settings.MenuResolution }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.MenuResolution := mr1024x576">
+					§settings_menu_resolution_mr1024x576
+				</div>
+				<div dxml-on:click="settings.MenuResolution := mr1280x720">
+					§settings_menu_resolution_mr1280x720
+				</div>
+				<div dxml-on:click="settings.MenuResolution := mr1600x900">
+					§settings_menu_resolution_mr1600x900
+				</div>
+				<div dxml-on:click="settings.MenuResolution := mr1920x1080">
+					§settings_menu_resolution_mr1920x1080
+				</div>
+				<div dxml-on:click="settings.MenuResolution := mr2560x1440">
+					§settings_menu_resolution_mr2560x1440
+				</div>
+			</stack>
+		</select>
+		<check dxml-on:change="settings.SetBoolean(coMenuClientFullscreenFrame)" checked="{{ settings.GetBoolean(coMenuClientFullscreenFrame) }}">
+			§settings_menu_fullscreen_frame
+		</check>
+		
+		<div class="spacer"></div>
+		
+		<check dxml-on:change="settings.SetBoolean(coMenuBringToFrontOnMatchFound)" checked="{{ settings.GetBoolean(coMenuBringToFrontOnMatchFound) }}">
+			§settings_menu_bringtofront_on_match_found
+		</check>
+	</stack>
+	<btn class="btn-xl btn-revert" dxml-on:click="settings.RevertCategory(otMenu)">§RevertSettings</btn>
+</wrapper>

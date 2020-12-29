@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<wrapper class="shop {{ shop.ShopItemFilter.Category }} items-{{ shop.ShopItemsCurrentObjects.Count }}" :visible="menu.CurrentMenu = mtShop">
+	<div class="navbar navbar-sub">
+		<stack>
+			<!--btn class="btn btn-nav {{ selected if shop.ShopItemFilter.Category = scCards }}" dxml-on:click="shop.ShopItemFilter.Category := scCards">§shop_nav_scCards</btn-->
+			<btn class="btn btn-nav {{ selected if shop.ShopItemFilter.Category = scSkins }}" dxml-on:click="shop.ShopItemFilter.Category := scSkins">§shop_nav_scSkins</btn>
+			<btn class="btn btn-nav {{ selected if shop.ShopItemFilter.Category = scIcons }}" dxml-on:click="shop.ShopItemFilter.Category := scIcons">§shop_nav_scIcons</btn>
+			
+			<btn class="btn btn-nav {{ selected if shop.ShopItemFilter.Category = scBundles }}" dxml-on:click="shop.ShopItemFilter.Category := scBundles">§shop_nav_scBundles</btn>
+			<!--<btn class="btn btn-nav btn-credits {{ selected if shop.ShopItemFilter.Category = scCredits }}" dxml-on:click="shop.ShopItemFilter.Category := scCredits">§shop_nav_scCredits</btn>-->
+			<btn class="btn btn-nav btn-premium {{ selected if shop.ShopItemFilter.Category = scPremiumTime }}" dxml-on:click="shop.ShopItemFilter.Category := scPremiumTime">§shop_nav_scPremiumTime</btn>
+			<btn class="btn btn-nav btn-diamonds {{ selected if shop.ShopItemFilter.Category = scDiamonds }}" dxml-on:click="shop.ShopItemFilter.Category := scDiamonds">§shop_nav_scDiamonds</btn>
+			<btn class="btn btn-nav {{ selected if shop.ShopItemFilter.Category = scBonuscode }}" dxml-on:click="shop.ShopItemFilter.Category := scBonuscode">§shop_nav_scBonuscode</btn>
+		</stack>
+	</div>
+	<div dxml-include="MainMenu/Shop/ShopItemDialog.dui"></div>
+	<wrapper class="content-sub">
+		<div dxml-include="MainMenu/Shop/RedeemTab.dui"></div>
+		<div class="balances">
+			<stack>
+				<div dxml-for="balance in shop.Shop.Balances" class="col-2 row-4 currency" title="§{{ balance.Currency.UID }}">
+					<div class="amount">{{ balance.Balance }}</div>
+					<img class="icon" src="{{ HClient.CurrencyIcon(balance.Currency.UID) }}"></img>
+				</div>
+			</stack>
+		</div>
+		<div class="shopitem-filter" :visible="(shop.ShopItemFilter.Category = scCards)">
+			<div dxml-include="MainMenu/Shared/CardFilter/CardFilter.dui" dxml-with="filter=shop.ShopItemFilter"></div>
+		</div>
+		<div class="shop-message" :visible="False and (shop.ShopItemFilter.Category = scDiamonds)">
+			§shop_message_diamonds
+		</div>
+		<div class="shop-message" :visible="(shop.ShopItemFilter.Category = scPremiumTime)">
+			§shop_message_premium
+		</div>
+		<div class="first-crystal-bonus" :visible="(shop.ShopItemFilter.Category = scDiamonds) and not shop.FirstCrystalsBought">
+			<div class="caption">§shop_first_crystal_bonus_caption</div>
+			<div class="text">§shop_first_crystal_bonus_text</div>
+			<stack class="content">
+				<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=CardInfoManager.ResolveCardUID(62ef3759-94df-4511-bcb1-663f5b0088b7, 1, 1)"></div>
+				<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=CardInfoManager.ResolveCardUID(3a45787b-1ae9-4c2e-b886-b3d61c61f132, 1, 1)"></div>
+				<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=CardInfoManager.ResolveCardUID(009951cc_1bc1_43d6_83d4_1f15cd98d33a, 1, 1)"></div>
+				<div class="crystals"></div>
+			</stack>
+		</div>
+		<div class="filtered-item-pool shopitem-pool" :visible="(shop.ShopItemFilter.Category <> scBonuscode) and (shop.ShopItemFilter.Category <> scBooster)">
+			<stack class="shop-page">
+				<div dxml-cache="enabled" dxml-for="item in shop.ShopItemsCurrentObjects" class="shoppool-item index-{{ index.}}">
+					<div class="shopitem-wrapper {{ owned if item.MaxPurchasesReached }}" dxml-on:click="shop.SelectShopItem(item.)" dxml-on:rightclick="shop.SelectShopItem(item.)" animate-on="" :animation-delay="index. * 25">
+						<div class="hover"></div>
+						<div class="sold-out">§shop_item_sold_out</div>
+						<div dxml-include="MainMenu/Shop/ShopItem_{{ item.ItemType }}.dui"></div>
+						<stack class="offers {{ single if item.Offers.Count = 1 }}">
+							<div dxml-for="offer in item.Offers" class="offer {{ locked if not item.PurchasableBySoftcurrency and not offer.HasHardCurrency }}">
+								<div class="price" :visible="offer.RealMoney">{{ offer.RealMoneyString }}</div>
+								<img class="lock" src="Shared/Lock.png" title="§shop_item_card_offer_locked_hint"  dxml-on:click="menu.CurrentMenu := mtCollection; collection.tab := item.Card.GetSingleColor; collection.ChosenCard := item.Card"></img>
+								<stack class="offer-buttons" :visible="not offer.RealMoney">
+									<div dxml-for="cost in offer.Costs" class="currency">
+										<div class="amount">{{ cost.Amount }}</div>
+										<img class="icon" src="{{ HClient.CurrencyIcon(cost.Currency.UID) }}"></img>
+									</div>
+								</stack>
+							</div>
+						</stack>
+					</div>
+				</div>
+			</stack>
+			<div class="btn btn-left pop-out big" :visible="shop.ShopItems.HasPrevious" dxml-on:click="shop.ShopItems.Previous"></div>
+			<div class="btn btn-right pop-out big" :visible="shop.ShopItems.HasNext" dxml-on:click="shop.ShopItems.Next"></div>
+		</div>
+	</wrapper>
+</wrapper>

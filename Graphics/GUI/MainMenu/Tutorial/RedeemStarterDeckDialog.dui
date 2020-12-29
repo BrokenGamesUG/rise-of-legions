@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<wrapper class="redeem-starterdecks-dialog backdrop dialog disabled" :show="dialogs.IsDialogVisible(diMetaTutorial) and metatutorial.RewardStage">
+	<div class="window redeem-starterdecks-window {{ metatutorial.stage }}">
+	    <div class="window-shine"></div>
+		<div class="window-caption">§starterdeck_redeem_{{  metatutorial.ReceivedStarterDeckColor }}_dialog_caption</div>
+		<img class="starter-deck" src="MainMenu/Tutorial/splash_{{  metatutorial.ReceivedStarterDeckColor }}.png"></img>
+		<div class="text">§starterdeck_redeem_{{  metatutorial.ReceivedStarterDeckColor }}_dialog_text</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-primary" dxml-on:click="metatutorial.CompleteCurrentStage">§starterdeck_redeem_{{  metatutorial.ReceivedStarterDeckColor }}_dialog_redeem</btn>
+		</stack>
+	</div>
+</wrapper>

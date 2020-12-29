@@ -1,0 +1,58 @@
+﻿.access-block-page{
+	Padding : 20;
+	.content{
+		ParentAnchor : caCenter;
+		Anchor : caTop;
+		Size : 39% auto;
+		Position : 0 -10%;
+		.info-box{
+			Size : 100% 190;
+			BoxSizing : bsMargin;
+			BackgroundColor : $background-state-tile;
+			Margin-Bottom : 10;
+			.title{
+				Size : 100% 30%;
+				Padding : 10;
+				FontFlags : [ffCenter,ffAutoShrink];
+				BackgroundColor : $background-state-tile-header;
+				FontColor : $font-color-highlight;
+			}
+			.text{
+				Padding : 30ph 5 5 5;
+				Size : 100% 100%;
+				FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+				FontSize : 18;
+			}
+			.timer{
+				Anchor : caBottom;
+				ParentAnchor : caBottom;
+				Size : 100% 30%;
+				.timer-text, .time{
+					FontFlags : [ffCenter];
+				}
+				.timer-text{
+					Size : 100% 50%;
+				}
+				.time{
+					Anchor : caBottom;
+					ParentAnchor : caBottom;
+					Size : 100% 50%;
+				}
+			}
+		}
+		.news-tile{
+			BackgroundColor : $background-state-tile;
+			OutlineSides : [];
+		}
+	}
+	.social-media{
+		Size : auto 30;
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+		& > *{
+			Size : auto 100%;
+			Margin-Left : 10;
+			Enabled : True;
+		}
+	}
+}

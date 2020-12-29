@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<wrapper class="loading":visible="client.State = csLoadCoreGame">
+	<div class="background">
+		<progress class="loading-progress">
+			<bar width="{{ loading.Progress * 100 }}%"></bar>
+			<div class="loading-state">{{ loading.State }}</div>
+			<div class="first-time-hint" :visible="loading.FirstLoading">§loading_first_time_hint</div>
+		</progress>
+		<wrapper class="tutorial" :visible="loading.Stage = lsHint">
+			<div class="tutorial-slide" src="Shared/Tutorial/tut{{ loading.SlideIndex }}.png">
+				<div class="logo"></div>
+				<div class="text">§loading_tutorial_text_{{ loading.SlideIndex }}</div>
+			</div>
+		</wrapper>
+		<wrapper class="match" :visible="loading.Stage = lsMatch">
+			<stack class="left">
+				<div dxml-for:static="player in loading.GameData.players" :visible="player.team_id = 1">
+					<div class="username">
+						{{ player.username }}
+					</div>
+					<div class="deck">
+						<img class="icon" src="{{ HClient.GetDeckIcon(player.deck_icon) }}"></img>
+						<div class="info">
+							<div class="name">{{ player.deckname }}</div>
+						</div>
+					</div>
+				</div>
+			</stack>
+			<stack class="right">
+				<div dxml-for:static="player in loading.GameData.players" :visible="player.team_id = 2">
+					<div class="username">
+						{{ player.username }}
+					</div>
+					<div class="deck">
+						<img class="icon" src="{{ HClient.GetDeckIcon(player.deck_icon) }}"></img>
+						<div class="info">
+							<div class="name">{{ player.deckname }}</div>
+						</div>
+					</div>
+				</div>
+			</stack>
+			<div class="vs-icon"></div>
+		</wrapper>
+	</div>
+</wrapper>

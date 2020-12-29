@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<wrapper class="tutorial-game-dialog backdrop disabled dialog" :visible="profile.IsTutorialGameDialogOpen">
+	<div class="window">
+		<div class="window-caption">§tutorial_game_dialog_caption</div>
+		<div class="text">§tutorial_game_dialog_text</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success btn-tutorial-play" dxml-on:click="matchmaking.StartTutorialGame">§tutorial_game_dialog_play</btn>
+		</stack>
+	</div>
+	<btn anchor="caBottomLeft" parentanchor="caBottomLeft" width="10" height="10" dxml-on:click="profile.TutorialFinished"></btn>
+</wrapper>

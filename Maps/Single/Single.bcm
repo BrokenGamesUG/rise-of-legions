@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<TMap type="BaseConflict.Map.TMap">
+  <TeamCount>2</TeamCount>
+  <MapBoundaries>
+    <Left>-150</Left>
+    <Top>-150</Top>
+    <Right>150</Right>
+    <Bottom>150</Bottom>
+  </MapBoundaries>
+  <Zones type="System.Generics.Collections.TObjectDictionary&lt;System.string,Engine.Math.Collision2D.TMultipolygon&gt;" dict_loader_version="1.0" ownerships="[doOwnsValues]">
+    <Item>
+      <Key>Spell1</Key>
+      <Value type="Engine.Math.Collision2D.TMultipolygon">
+        <FPolygons type="System.Generics.Collections.TList&lt;Engine.Math.Collision2D.TMultipolygon.RMultipolygon&gt;" list_loader_version="1.0">
+          <Item>
+            <Subtractive>False</Subtractive>
+            <Polygon type="Engine.Math.Collision2D.TPolygon">
+              <FNodes type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" list_loader_version="1.0">
+                <Item>
+                  <X>-104</X>
+                  <Y>-11</Y>
+                </Item>
+                <Item>
+                  <X>104</X>
+                  <Y>-11</Y>
+                </Item>
+                <Item>
+                  <X>104</X>
+                  <Y>-35</Y>
+                </Item>
+                <Item>
+                  <X>-104</X>
+                  <Y>-35</Y>
+                </Item>
+              </FNodes>
+              <FClosed>True</FClosed>
+            </Polygon>
+          </Item>
+        </FPolygons>
+      </Value>
+    </Item>
+    <Item>
+      <Key>Camera</Key>
+      <Value type="Engine.Math.Collision2D.TMultipolygon">
+        <FPolygons type="System.Generics.Collections.TList&lt;Engine.Math.Collision2D.TMultipolygon.RMultipolygon&gt;" list_loader_version="1.0">
+          <Item>
+            <Subtractive>False</Subtractive>
+            <Polygon type="Engine.Math.Collision2D.TPolygon">
+              <FNodes type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" list_loader_version="1.0">
+                <Item>
+                  <X>-107</X>
+                  <Y>0</Y>
+                </Item>
+                <Item>
+                  <X>-107</X>
+                  <Y>-56</Y>
+                </Item>
+                <Item>
+                  <X>107</X>
+                  <Y>-56</Y>
+                </Item>
+                <Item>
+                  <X>107</X>
+                  <Y>0</Y>
+                </Item>
+              </FNodes>
+              <FClosed>True</FClosed>
+            </Polygon>
+          </Item>
+        </FPolygons>
+      </Value>
+    </Item>
+    <Item>
+      <Key>Drop</Key>
+      <Value type="Engine.Math.Collision2D.TMultipolygon">
+        <FPolygons type="System.Generics.Collections.TList&lt;Engine.Math.Collision2D.TMultipolygon.RMultipolygon&gt;" list_loader_version="1.0">
+          <Item>
+            <Subtractive>False</Subtractive>
+            <Polygon type="Engine.Math.Collision2D.TPolygon">
+              <FNodes type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" list_loader_version="1.0">
+                <Item>
+                  <X>-104</X>
+                  <Y>-12</Y>
+                </Item>
+                <Item>
+                  <X>104</X>
+                  <Y>-12</Y>
+                </Item>
+                <Item>
+                  <X>104</X>
+                  <Y>-34</Y>
+                </Item>
+                <Item>
+                  <X>-104</X>
+                  <Y>-34</Y>
+                </Item>
+              </FNodes>
+              <FClosed>True</FClosed>
+            </Polygon>
+          </Item>
+        </FPolygons>
+      </Value>
+    </Item>
+    <Item>
+      <Key>Walkzone</Key>
+      <Value type="Engine.Math.Collision2D.TMultipolygon">
+        <FPolygons type="System.Generics.Collections.TList&lt;Engine.Math.Collision2D.TMultipolygon.RMultipolygon&gt;" list_loader_version="1.0">
+          <Item>
+            <Subtractive>False</Subtractive>
+            <Polygon type="Engine.Math.Collision2D.TPolygon">
+              <FNodes type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" list_loader_version="1.0">
+                <Item>
+                  <X>-107</X>
+                  <Y>-36</Y>
+                </Item>
+                <Item>
+                  <X>107</X>
+                  <Y>-36</Y>
+                </Item>
+                <Item>
+                  <X>107</X>
+                  <Y>-10</Y>
+                </Item>
+                <Item>
+                  <X>-107</X>
+                  <Y>-10</Y>
+                </Item>
+              </FNodes>
+              <FClosed>True</FClosed>
+            </Polygon>
+          </Item>
+        </FPolygons>
+      </Value>
+    </Item>
+    <Item>
+      <Key>Spell2</Key>
+      <Value type="Engine.Math.Collision2D.TMultipolygon">
+        <FPolygons type="System.Generics.Collections.TList&lt;Engine.Math.Collision2D.TMultipolygon.RMultipolygon&gt;" list_loader_version="1.0">
+          <Item>
+            <Subtractive>False</Subtractive>
+            <Polygon type="Engine.Math.Collision2D.TPolygon">
+              <FNodes type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" list_loader_version="1.0">
+                <Item>
+                  <X>-104</X>
+                  <Y>-11</Y>
+                </Item>
+                <Item>
+                  <X>104</X>
+                  <Y>-11</Y>
+                </Item>
+                <Item>
+                  <X>104</X>
+                  <Y>-35</Y>
+                </Item>
+                <Item>
+                  <X>-104</X>
+                  <Y>-35</Y>
+                </Item>
+              </FNodes>
+              <FClosed>True</FClosed>
+            </Polygon>
+          </Item>
+        </FPolygons>
+      </Value>
+    </Item>
+  </Zones>
+  <PlayerCount>4</PlayerCount>
+</TMap>

@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<wrapper class="settings-dialog dialog backdrop" :show="dialogs.IsDialogVisible(diSettings)" :visible="client.State <> csLoadCoreGame" dxml-on:click="settings_menu.DeactivateAndDiscardSettings">
+	<div class="window">
+		<div class="window-caption">§settings_caption</div>
+		<div class="menu">
+			<stack class="categories">
+				<div class="category-headline {{ selected if (settings_menu.Category = otMenu) or (settings_menu.Category = otSoundMeta) }}">
+					§settings_menu_category_descriptor_menu
+				</div>
+				<div :enabled="hud. = nil" class="category {{ selected if settings_menu.Category = otMenu }}" dxml-on:click="settings_menu.Category := otMenu">
+					§settings_menu_category_graphics
+				</div>
+				<div :enabled="hud. = nil" class="category {{ selected if settings_menu.Category = otSoundMeta }}" dxml-on:click="settings_menu.Category := otSoundMeta">
+					§settings_menu_category_sound
+				</div>
+				<div class="category-divider"></div>
+				<div class="category-headline {{ selected if not (settings_menu.Category = otMenu) and not (settings_menu.Category = otSoundMeta) }}">
+					§settings_menu_category_descriptor_ingame
+				</div>
+				<div class="category {{ selected if settings_menu.Category = otGraphics }}" dxml-on:click="settings_menu.Category := otGraphics">
+					§settings_menu_category_graphics
+				</div>
+				<div class="category {{ selected if settings_menu.Category = otSound }}" dxml-on:click="settings_menu.Category := otSound">
+					§settings_menu_category_sound
+				</div>
+				<div class="category {{ selected if settings_menu.Category = otGameplay }}" dxml-on:click="settings_menu.Category := otGameplay">
+					§settings_menu_category_gameplay
+					</div>
+				<div class="category {{ selected if settings_menu.Category = otKeybinding }}" dxml-on:click="settings_menu.Category := otKeybinding">
+					§settings_menu_category_keybinding
+				</div>
+			</stack>
+		</div>
+		<div class="content">
+			<wrapper :show="settings_menu.Category = otGameplay">
+				<div dxml-include="SettingsMenu/GameplaySettings.dui"></div>
+			</wrapper>
+			<wrapper :show="settings_menu.Category = otGraphics">
+				<div dxml-include="SettingsMenu/GraphicsSettings.dui"></div>
+			</wrapper>
+			<wrapper :show="settings_menu.Category = otMenu">
+				<div dxml-include="SettingsMenu/MenuSettings.dui"></div>
+			</wrapper>
+			<wrapper :show="settings_menu.Category = otSound">
+				<div dxml-include="SettingsMenu/SoundSettings.dui"></div>
+			</wrapper>
+			<wrapper :show="settings_menu.Category = otSoundMeta">
+				<div dxml-include="SettingsMenu/MenuSoundSettings.dui"></div>
+			</wrapper>
+			<wrapper :show="settings_menu.Category = otKeybinding">
+				<div dxml-include="SettingsMenu/KeybindingSettings.dui"></div>
+			</wrapper>
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success" dxml-on:click="settings_menu.DeactivateAndSaveSettings">§Save</btn>
+			<btn class="btn-xl btn-danger" dxml-on:click="settings_menu.DeactivateAndDiscardSettings">§Cancel</btn>
+		</stack>
+	</div>
+</wrapper>

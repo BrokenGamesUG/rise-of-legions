@@ -1,0 +1,19 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TGame{$ENDIF});
+var EffectGroup : integer;
+begin
+  EffectGroup := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+    TAutoBrainUnitSpawnComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [EffectGroup]);
+    TWelaTargetConstraintTeamIDComponent.CreateGrouped(Entity, [EffectGroup])
+      .SetTargetTeam(2);
+  {$ENDIF}
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [EffectGroup], 'Scenarios\Mutators\HighlyExplosiveBuff.dws');
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

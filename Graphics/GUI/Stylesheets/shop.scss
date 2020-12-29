@@ -1,0 +1,386 @@
+﻿.shop{
+	Margin : 0;
+	.content-sub{
+		Padding-Top : 46;
+	}
+	&.scIcons{
+		.shopitem-pool{
+			.shop-page{
+				.shoppool-item{
+					.shopitem-wrapper{
+						&:enabled:hover{
+							.shopitem{
+								Transform : scale(1.10);
+							}
+							& > .hover{
+								Visibility : False;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	&.scPremiumTime, &.scDiamonds{
+		.shopitem-pool{
+			.shop-page{
+				.shoppool-item{
+					.shopitem-wrapper{
+						&:enabled:hover{
+							.shopitem{
+								Transform : scale(1.0);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	&.scCards, &.scSkins{
+		.shopitem-filter{
+			Visibility : True;
+		}
+		.shopitem-pool{
+			Size : 80.2% 100%;
+			Padding : 0 3%;
+			.shop-page{
+				Stackcolumns : 5 3;
+				.shoppool-item{
+					Size : 20% 33.3%;
+					.shopitem-wrapper{
+						Size-X : 100%;
+						$scale-in;
+						&:hover{
+							& > .hover{
+								Visibility : False;
+							}
+							.name{
+								FontResolution : 1.50;
+							}
+						}
+					}
+					.offers{
+						Position-Y : 12%;
+					}
+				}
+			}
+		}
+	}
+	&.scSkins{
+		.shopitem-pool{
+			Size : 95.9% 98.8%;
+			Padding : 0;
+			.shop-page{
+				Stackcolumns : 6 3;
+				.shoppool-item{
+					Size : 15.8% 33.3%;
+				}
+			}
+		}
+	}
+	&.scDiamonds, &.scCredits, &.scPremiumTime, &.scBundles{
+		.shopitem-pool{
+			.shop-page{
+				StackColumns : 5 1;
+			}
+			.btn-left, .btn-right, .page-counter{
+				Visibility : False;
+			}
+		}
+		&.items-6{
+			.shopitem-pool{
+				.shop-page{
+					StackColumns : 6;
+				}
+			}
+		}
+	}
+	&.scDiamonds{
+		.shoppool-item{
+			.shopitem-diamonds{
+				.badge{
+					Visibility : False;
+					ZOffset : -100;
+					Size : 100% auto;
+					ParentAnchor : caTop;
+					Anchor : caBottom;
+				}
+			}
+			&.index-2{
+				.shopitem-diamonds{
+					.badge{
+						Background : MainMenu/Shop/badge_most_popular.png;
+						Visibility : True;
+					}
+				}
+			}
+			&.index-4{
+				.shopitem-diamonds{
+					.badge{
+						Background : MainMenu/Shop/badge_best_value.png;
+						Visibility : True;
+					}
+				}
+			}
+		}
+	}
+	&.scBundles{
+		.shopitem-pool{
+			.shop-page{
+				StackColumns : 1 2;
+				.shoppool-item{
+					Size : 80% 50%;
+					.shopitem-wrapper{
+						Size : 100% 100%;
+						Padding : 9ch;
+						TransitionProperty : gtTransform;
+						TransitionDuration : 50;
+						&:hover{
+							Transform : scale(1.05);
+							TransformAnchor : caCenter;
+						}
+						.hover{
+							Visibility : False;
+						}
+						.offers{
+							Size : 30% 15%;
+							Anchor : caRight;
+							ParentAnchor : caTopLeft;
+							Position : 82% 17.5%;
+							.offer{
+								.price{
+									BackgroundColor : 0;
+									FontFlags : [ffRight];
+									FontColor : $font-color-reward;
+									FontWeight : 1000;
+									FontBorder : 1 $FF0B0B21;
+								}
+							}
+						}
+					}
+					&.index-0, &.index-1{
+						Position-X : -108;
+					}
+					&.index-2{
+						Position : 69% -4.5%;
+						Size : 35% 109%;
+						.shopitem-wrapper{
+							.sold-out{
+								Size-Y : 13%;
+							}
+							.offers{
+								Size : 80% 6.857%;
+								Anchor : caTop;
+								ParentAnchor : caTop;
+								Position : 0 17.5%;
+								.offer{
+									.price{
+										FontFlags : [ffCenter];
+									}
+								}
+							}
+							.shopitem-bundle{
+								.plate{
+									.content{
+										Padding : 0ch 15ch 18ch 15ch;
+										.info{
+											Size : text 7.5%;
+											&.info-1{
+												Size-Y : 15.5%;
+											}
+										}
+									}
+									.chest{
+										Position : -24% 25%;
+										Size : auto 70%;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.shop-message{
+		Position : 0 15%;
+		ParentAnchor : caTop;
+		Anchor : caCenter;
+		Size : 60% 12%;
+		FontSize : 30%;
+		FontFlags : [ffVerticalCenter,ffCenter,ffWordWrap];
+	}
+	.first-crystal-bonus{
+		Position : 0 -0.5%;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Size : auto 100bh;
+		Background : MainMenu/Shop/first_crystal_buy_reward_background.png;
+		.caption, .text{
+			Size : 100%;
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			FontWeight : 700;
+			FontFlags: [ffCenter,ffVerticalCenter];
+		}
+		.caption{
+			Position : 0 22%;
+			Size-Y : 14%;
+			FontColor : $font-color-reward;
+			TextTransform : ttUppercase;
+		}
+		.text{
+			Position : 0 40%;
+			Size-Y : 11%;
+			FontColor : $font-color-real-white;
+		}
+		.content{
+			Position : 0 5%;
+			Anchor : caBottom;
+			ParentAnchor : caCenter;
+			Size : auto 49.5%;
+			& > *{
+				Margin-Right : 5;
+			}
+			.card-icon{
+				Size : auto 100%;
+				.icon-frame{
+					Size : auto 100%;
+					.stats{
+						Visibility : False;
+					}
+				}
+			}
+			.crystals{
+				Size : auto 100%;
+				Background : MainMenu/Shop/first_crystal_buy_reward_crystals.png;
+			}
+		}
+	}
+	.shopitem-pool{
+		Position : 1.9% -2.5%;
+		Size : 95.9% 98.8%;
+		MouseEvents : meBlock;
+		.shop-page{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Size : 95% 100%;
+			Padding : auto auto;
+			BoxSizing : bsMargin;
+			Margin : 3% -1%;
+			Stackcolumns : 6 3;
+			.shoppool-item{
+				Size : 16.6% 33.3%;
+				.shopitem-wrapper{
+					Size : 100% 83%;
+					Padding : 7cw 7cw;
+					Enabled : True;
+					*{
+						MouseEvents : mePassClick;
+					}
+					&:enabled:hover{
+						.hover{
+							Visibility : True;
+						}
+						.shopitem{
+							Transform : scale(1.05);
+						}
+					}
+					& > .hover{
+						Anchor : caTop;
+						ParentAnchor : caTop;
+						Position-Y : -9%;
+						Size : 116.2% auto;
+						Visibility : False;
+						Background : MainMenu/Shop/item_hover.png;
+						ZOffset : -1;
+						$glow;
+					}
+					.shopitem, .hover{
+						TransitionProperty : gtTransform;
+						TransitionDuration : 50;
+						TransitionWithInheritance : False;
+						TransformAnchor : caCenter;
+						.offers{
+							TransformInheritance : False;
+						}
+					}
+					&.owned{
+						MouseEvents : mePass;
+						BackgroundColorOverride : $override-darken;
+						*{
+							MouseEvents : mePass;
+						}
+						.sold-out{
+							Visibility : True;
+							BackgroundColorOverrideInheritance : False;
+						}
+					}
+					.sold-out{
+						ZOffset : 100;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						Size : 100% 25%;
+						FontFlags : [ffCenter];
+						Transform : rotate(28deg);
+						Visibility : False;
+					}
+				}
+			}
+		}
+		.btn-left, .btn-right{
+			Size : 4.0% auto;
+		}
+		.btn-left{
+			Position-X: -0.5%;
+		}
+		.btn-right{
+			Position-X: 0.3%;
+		}
+		.page-counter{
+			Position : -5 -3;
+			Anchor : caBottomRight;
+			ParentAnchor : caBottomRight;
+			Size : 20% 2.9%;
+			fontflags : [ffRight];
+			fontsize : 100%;
+		}
+	}
+	.balances{
+		Position: 84.6% -2%;
+		Size : 15% 16%;
+		Visibility : False;
+		stack{
+			Stackcolumns : 2;
+			& > *{
+				BoxSizing : bsMargin;
+				Margin : 15ch;
+				BackgroundColor : $dark-background;
+				Padding-Left : 100ch;
+				FontFlags : [ffVerticalCenter];
+				HintAnchor : caRight;
+				HintOffset : -10 0;
+				&:even{
+					Margin-Left : 0;
+				}
+				&:odd{
+					Margin-Right : 0;
+				}
+			}
+		}
+	}
+	.shopitem-filter{
+		ParentAnchor : caTopRight;
+		Anchor : caTopRight;
+		Position: 10 -0.8%;
+		Size : 210 auto;
+		Visibility : False;
+		Background : MainMenu/Shop/ShopFilterbar.png;
+		.filter{
+			Anchor : caTopRight;
+			Position: 100% 1%;
+			Background : ;
+			Size : 206 397;
+		}
+	}
+}

@@ -1,0 +1,45 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 10.0);
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 0.0);
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TAutoBrainOnTakeDamageComponent.CreateGrouped(Entity, [Group])
+      .ModifiesAmount
+      .FireSelfInGroup([Group])
+      .ThinksPassively;
+    TWelaTriggerCheckTakeDamageThresholdComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Shieldblock')
+      .TriggerOnFire;
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasShieldBlock]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\shield_block.pfx', 1.7)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\shield_block_trigger.pfx', 1.0)
+      .ActivateOnFire()
+      .IgnoreModelSize
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\shield_block_apply.pfx', 1.7)
+      .ActivateNow()
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/white/effect/shield_block')
+      .TriggerOnFire();
+  {$ENDIF}
+end;

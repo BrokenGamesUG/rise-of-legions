@@ -1,0 +1,221 @@
+﻿root{
+	Fontcolor : $font-color-default;
+	BlurColor : $blur-color $blur-color-fallback;
+	Fontfamily : $font;
+	FontWeight : 500;
+	FontSize : 100%;
+	BackgroundMipMapLodBias : -0.5;
+}
+
+stack{
+	Size : 100% 100%;
+	StackPartitioning : auto;
+	MouseEvents : meBlock;
+	ScrollbarWidth : 14; 
+	ScrollbarPadding : 2;
+	ScrollbarBackgroundColor : $FF1F2D2D; 
+	ScrollbarBackgroundColorElementHover : $FF1F2D2D;  
+	ScrollbarBackgroundColorHover : $FF1F2D2D; 
+    ScrollbarColor : $FF1c5c6d; 
+	ScrollbarColorElementHover : $FF1c5c6d; 
+	ScrollbarColorHover : $FF00688A; 
+	& > *{
+		Position : inherit inherit;
+		Size : inherit inherit;
+		&.col-1{
+			Width : 100%;
+		}
+		&.col-2{
+			Width : 50%;
+		}
+		&.col-3{
+			Width : 33.3%;
+		}
+		&.col-4{
+			Width : 25%;
+		}
+		&.col-5{
+			Width : 20%;
+		}
+		&.col-6{
+			Width : 16.6%;
+		}
+		&.col-7{
+			Width : 14.28%;
+		}
+		&.col-8{
+			Width : 12.5%;
+		}
+		&.col-9{
+			Width : 11.1%;
+		}
+		&.col-10{
+			Width : 10%;
+		}
+		&.row-1{
+			Height : 100%;
+		}
+		&.row-2{
+			Height : 50%;
+		}
+		&.row-3{
+			Height : 33.3%;
+		}
+		&.row-4{
+			Height : 25%;
+		}
+		&.row-5{
+			Height : 20%;
+		}
+		&.row-6{
+			Height : 16.6%;
+		}
+		&.row-7{
+			Height : 14.28%;
+		}
+		&.row-8{
+			Height : 12.5%;
+		}
+		&.row-9{
+			Height : 11.1%;
+		}
+		&.row-10{
+			Height : 10%;
+		}
+	}
+}
+
+wrapper{
+	Size : 100% 100%;
+	MouseEvents : meBlock;
+}
+
+select{
+	Enabled : True;
+	Size : 100% 100%;
+	&.form-control{
+		Size : 100% 24;
+		$field-frame;
+		Padding : 3 0 3 6;
+	}
+	&:hover{
+		& > arrow{
+			Opacity : 1.0;
+		}
+	}
+	& > *{
+		MouseEvents : mePass;
+	}
+	& > caption{
+		Size : 100% 100%;
+		Padding-Right : 100ch;
+		Fontflags : [ffVerticalCenter,ffAutoShrink];
+	}
+	& > arrow{
+		$fa
+		ParentBox : pbPadding;
+		DefaultText : $fa-chevron-down;
+		ParentAnchor : caRight;
+		Anchor : caRight;
+		Position-Y : -1;
+		Size : 100ch 100ch;
+		FontSize : 60%;
+		FontFlags : [ffCenter,ffVerticalCenter];
+		Opacity : 0.7;
+	}
+	& > .options{
+		ParentBox : pbPadding;
+		Size : 100% auto;
+		Visibility : False;
+		ZOffset : 100;
+		ParentAnchor : caBottomRight;
+		Anchor : caTopRight;
+		Stackorientation : soVertical;
+		$field-frame;
+		BackgroundColor : $field-background;
+		Padding : 0;
+		& > *{
+			Size : 100% 24;
+			Padding : 5 7;
+			Enabled : True;
+			Fontsize : 100%;
+			Fontflags : [ffVerticalCenter];
+		}
+		*:hover{
+			BackgroundColor : $40808080;
+		}
+		*:down{
+			BackgroundColor : $80AAAAAA;
+		}
+		*.disabled{
+			BackgroundColor : $40404040;
+			FontColor : $font-color-disabled;
+		}
+	}
+	&:focus{
+		& > .options{
+			Visibility : True;
+		}
+	}
+}
+
+input{
+	Enabled : True;
+	Padding : 2 2 2 2;
+	BackgroundColor : $A0FFFFFF;
+	Fontflags : [ffVerticalCenter];
+	Fontsize : 100%;
+	FontColor : $FF202020;
+	&.password{
+		Padding : 0 0 0 2;
+		ObscureDefaultText : •;
+	}
+	&:hover:focus{
+		BackgroundColor : $FFFFFFFF;
+	}
+	&:down{
+		BackgroundColor : $EFFFFFFF;
+	}
+	&:disabled{
+		BackgroundColor : $80FFFFFF;
+	}
+}
+
+check{
+	Padding: 0 0 0 120ch;
+	Background : Shared\Checkbox.tga;
+	Enabled : True;
+	Fontsize : 90%;
+	Fontflags : [ffVerticalCenter];
+	BackgroundRepeat : brAuto brStretch;
+	&:hover{
+		Background : Shared\CheckboxHover.tga;
+	}
+	&:hover:down{
+		Background : Shared\CheckboxDownHover.tga;
+	}
+	&:down{
+		Background : Shared\CheckboxDown.tga;
+	}
+}
+
+progress{
+	bar{
+		Size : 100% 100%;
+		MouseEvents : mePass;
+	}
+	.caption{
+		Size : 100% 100%;
+		Fontflags : [ffVerticalCenter,ffCenter];
+	}
+}
+
+icon{
+	MouseEvents : mePass;
+}
+
+caption{
+	Size : 100% 100%;
+	Fontflags : [ffVerticalCenter,ffCenter];
+	MouseEvents : mePass;
+}

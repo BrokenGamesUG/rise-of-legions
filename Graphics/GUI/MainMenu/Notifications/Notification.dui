@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<wrapper class="notification-dialog dialog" :show="dialogs.IsDialogVisible(diNotification)">
+	<wrapper class="backdrop {{ disabled if notifications.Notification.NotificationType = ntMessage }}" dxml-on:click="notifications.Close">
+		<div dxml-include="MainMenu/Notifications/Notification_{{ notifications.Notification.NotificationType }}.dui" dxml-with="notification=notifications.Notification"></div>
+	</wrapper>
+</wrapper>

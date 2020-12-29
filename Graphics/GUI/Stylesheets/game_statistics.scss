@@ -1,0 +1,412 @@
+﻿.game-rewards, .game-statistics{
+	.game-info{
+		Anchor : caTop;
+		ParentAnchor : caTop;
+		Size : 100% 17.5%;
+		BackgroundColor : $FF222f35;
+		& > *{
+			Fontflags : [ffCenter,ffVerticalCenter];
+		}
+		.win-state{
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Position : 0 10%;
+			Size : 100% 60%;
+			FontWeight : 700;
+			&.victory{
+				FontColor : $font-color-gold;
+			}
+			&.defeat{
+				FontColor : $font-color-warning;
+			}
+		}
+		.map{
+			Anchor : caBottom;
+			ParentAnchor : caBottom;
+			Position : 0 -5%;
+			Size : 100% 30%;
+		}
+		.duration{
+			Parentanchor : caBottom;
+			Anchor : caTop;
+			Position : 0 5%;
+			Size : 100% 15%;
+			FontWeight : 700;
+			Opacity : 0.5;
+		}
+	}
+	.btn-next, .btn-prev{
+		Position : -10 -10;
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+	}
+	.btn-prev{
+		Position : 10 -10;
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+	}
+}
+
+.game-statistics{
+	Background : MainMenu/Statistics/reward_background.png;
+	&.inverted{
+		BackgroundAnchor : baTopRight;
+	}
+	.players{
+		Position: 0 22%;
+		Size : 100% 70%;
+		.vs{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			FontWeight : 700;
+			Size : 100 70;
+			Fontflags : [ffCenter,ffVerticalCenter];
+		}
+		.team{
+			Position : 30 0;
+			ParentAnchor : caLeft;
+			Anchor : caLeft;
+			Size : 35% auto;
+			&.red{
+				Position : -90 0;
+				ParentAnchor : caRight;
+				Anchor : caRight;
+			}
+			.player{
+				Size : 100% 210;
+				Padding-Left : 50;
+				Margin-Bottom : 20;
+				.header{
+					Size : 100% 50;
+					.add-friend{
+						Position : -40ch 0;
+						Size : auto 60%;
+						Anchor : caRight;
+						ParentAnchor : caLeft;
+						Background : MainMenu/Statistics/AddFriend.png;
+						&:hover{
+							Background : MainMenu/Statistics/AddFriend_Hover.png;
+						}
+					}
+					.player-icon{
+						Size : auto 100%;
+						Margin-Right : 10;
+					}
+					.name{
+						Size : text 100%;
+						FontSize : 60%;
+						FontFlags : [ffVerticalCenter];
+					}
+					.ranking{
+						Position-Y : -26%;
+						Size : auto 170ch;
+					}
+				}
+				.cards{
+					Position : 0 60;
+					Size : 100% 150;
+					StackColumns : 6 2;
+					& > *{
+						Size : auto 43%;
+						Margin : 5ch;
+					}
+				}
+			}
+		}
+	}
+	.ranking-dialog{
+		&.backdrop{
+			ZOffset : $zoffset-dialog;
+			Size : 100% 82.5%;
+			ParentAnchor : caBottomLeft;
+			Anchor : caBottomLeft;
+		}
+		.window{
+			ParentOffset : 1;
+			Size : 28% 27%;
+			.rank{
+				Size : auto 70%;
+				Anchor : caTop;
+				ParentAnchor : caTop;
+			}
+			.stars{
+				Position : 0 -2%;
+				Size : auto 35%;
+				ParentAnchor : caBottom;
+				Anchor : caBottom;
+				.star{
+					Size : auto 100%;
+					Background : MainMenu/Statistics/shield_inactive.png;
+					&.filled{
+						Background : MainMenu/Statistics/shield_active.png;
+					}
+					&.new{
+						Background : MainMenu/Statistics/shield_increase.png;
+					}
+					&.broken{
+						Background : MainMenu/Statistics/shield_decrease.png;
+					}
+				}
+			}
+			.events{
+				Position : 0 -15;
+				ParentAnchor : caTop;
+				Anchor : caBottom;
+				Size : 100 auto;
+				.rank-up{
+					Position-X : 50%;
+					Anchor : caTop;
+					Size : text 30;
+					FontWeight : 700;
+					Visibility : False;
+					&.ascend{
+						FontColor : $font-color-gold;
+						Visibility : True;
+					}
+					&.descend{
+						FontColor : $font-color-warning;
+						Visibility : True;
+					}
+				}
+				.streak{
+					Position-X : 50%;
+					Anchor : caTop;
+					Size : text 30;
+					FontWeight : 700;
+					Visibility : False;
+					&.win{
+						FontColor : $font-color-gold;
+						Visibility : True;
+					}
+					&.lose{
+						FontColor : $font-color-warning;
+						Visibility : True;
+					}
+				}
+			}
+		}
+	}
+}
+
+.game-rewards{
+	.loader{
+		*{
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+		}
+		.spinner{
+			Position : 0 0;
+			Size : auto 5%;
+		}
+		div{
+			Position : 0 6%;
+			Size : 50% 5%;
+			Fontflags : [ffCenter,ffVerticalCenter];
+		}
+	}
+	.card-exp{
+		Position : 0 -4%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : 100% 38%;
+		.cards{
+			StackColumns : 6 2;
+			Padding : 0 auto;
+			& > *{
+				Size : auto 43%;
+				Margin : 15ch 10ch;
+			}
+			.level-progress{
+				bar{
+					BackgroundRepeat : brMask;
+				}
+				.new, .premium{
+					$stretch-in;
+					AnimationDuration : 1000;
+				}
+				.premium{
+					AnimationDelay : 1000;
+				}
+			}
+		}
+		&.premium-disabled{
+			.card{
+				.stats{
+					.level-progress{
+						.premium{
+							MouseEvents : meAll;
+							Opacity : 0.6;
+							BackgroundColor : $font-color-premium-disabled;
+							HintAnchor : caTop;
+							HintOffset : 0 5;
+							&:hover{
+								Opacity : 0.8;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	.experience-rewards{
+		Position : 0 -4%;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Size : 50% 10%;
+		.level{
+			Size : auto 100%;
+			Anchor : caLeft;
+			ParentAnchor : caLeft;
+			Background : MainMenu/Shared/LevelProgress/LevelCircle.png;
+			Padding-Top : 5%;
+			FontFlags : [ffCenter,ffVerticalCenter];
+			FontSize : 60%;
+			FontWeight : 700;
+			FontBorder : 1 %FF000000;
+			ZOffset : 10;
+			&.next{
+				Anchor : caRight;
+				ParentAnchor : caRight;
+			}
+		}
+		.experience-progress{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Size : 100% 40%;
+			BoxSizing : bsMargin;
+			Margin : 0 100ch;
+			Padding : 3 6%;
+			BackgroundColor : $FF222F35;
+			&.premium-disabled{
+				progress{
+					bar.gained.premium{
+						MouseEvents : meAll;
+						Opacity : 0.6;
+						BackgroundColor : $font-color-premium-disabled;
+						&:hover{
+							Opacity : 0.8;
+						}
+						.xp-reward{
+							FontColor : $font-color-premium-disabled;
+						}
+					}
+				}
+			}
+			progress{
+				Size : 100% 100%;
+				BackgroundColor : $FF30505C;
+				bar{
+					Background : MainMenu/Shared/LevelProgress/XPBarFill.png;
+					BackgroundRepeat-X : brMask;
+					&.before{
+						ZOffset : 10;
+					}
+					&.gained{
+						$stretch-in;
+						ZOffset : 50;
+						BackgroundColor : $FF00FF00;
+						AnimationDuration : 1000;
+					}
+					&.premium{
+						Background : MainMenu/Shared/LevelProgress/XPBarFillNeutral.png;
+						BackgroundColor : $font-color-premium;
+						HintAnchor : caBottom;
+						HintOffset : 0 -100%;
+						AnimationDelay : 1000;
+						&.intersected{
+							.xp-reward{
+								Position : 0 -70%;
+							}
+						}
+					}
+					.xp-reward{
+						ParentAnchor : caTopRight;
+						Anchor : caBottom;
+						Size : text 100%;
+						FontColor : $font-color-reward;
+						&.premium{
+							FontColor : $font-color-premium;
+						}
+					}
+				}
+			}
+		}
+		.experience-to-go{
+			Size : 70% 30%;
+			Anchor : caBottom;
+			ParentAnchor : caBottom;
+			FontFlags : [ffCenter,ffVerticalCenter];
+			Padding-Top : 5%;
+		}
+		&.level-up{
+			.level.current{
+				FontColor : $font-color-reward;
+			}
+			.experience-progress{
+				.before{
+					Visibility : False;
+				}
+			}
+		}
+	}
+	.resource-rewards{
+		Position : 0 -16%;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Size : 36% 8%;
+		.resource-reward{
+			Size : 50% 100%;
+			BackgroundColor : rgba($field-background, 0.6);
+			Margin : 0 10ch;
+			BoxSizing : bsMargin;
+			Padding : 3;
+			caption, .amount{
+				FontWeight : 700;
+				FontFlags : [ffCenter,ffVerticalCenter];
+			}
+			caption{
+				Size : 100% 32%;
+				TextTransform : ttUppercase;
+			}
+			.amount{
+				Position-X : -50ch;
+				ParentAnchor : caBottom;
+				Anchor : caBottom;
+				Size : text 68%;
+				.icon{
+					Position : 45ch 0;
+					Anchor : caCenter;
+					ParentAnchor : caRight;
+					Size : auto 100%;
+				}
+			}
+			.checkmark{
+				Size : auto 100%;
+				Anchor : caRight;
+				ParentAnchor : caRight;
+				Visibility : False;
+			}
+			&.active{
+				.checkmark{
+					Visibility : True;
+				}
+			}
+			&.disabled{
+				& > *{
+					Opacity : 0.4;
+				}
+			}
+			&.premium{
+				FontColor : $font-color-premium;
+				&.disabled{
+					FontColor : $font-color-premium-disabled;
+					&:hover{
+						& > *{
+							Opacity : 0.8;
+						}
+					}
+				}
+			}
+		}
+	}
+}

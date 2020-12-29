@@ -1,0 +1,96 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group, FrenzyGroup, FrenzyGroupTargets, FrenzyGroupHeal, FrenzyGroupHealTrigger : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  FrenzyGroup := Entity.ReserveFreeGroup();
+  FrenzyGroupTargets := Entity.ReserveFreeGroup();
+  FrenzyGroupHeal := Entity.ReserveFreeGroup();
+  FrenzyGroupHealTrigger := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [FrenzyGroup], 10000); //Buff-Duration
+  if Entity.HasDamageType(dtMelee) then
+	Entity.Blackboard.SetValue(eiWelaModifier, [FrenzyGroup], 0.5)
+  else
+	Entity.Blackboard.SetValue(eiWelaModifier, [FrenzyGroup], 0.75);
+  Entity.Blackboard.SetValue(eiWelaModifier, [FrenzyGroupTargets], 1); // add an additional target
+  Entity.Blackboard.SetValue(eiDamageType, [FrenzyGroupHeal], [dtFlatHeal]);
+  Entity.Blackboard.SetValue(eiWelaDamage, [FrenzyGroupHeal], 70.0);
+
+  {$IFDEF SERVER}
+    // blessing
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group]);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Enchanted')
+      .TriggerOnTakeDamage;
+
+    // frenzy buff
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [FrenzyGroup], [btPositive]);
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [FrenzyGroup])
+      .ThinksPassively();
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [FrenzyGroup])
+      .TargetGroup([FrenzyGroup, FrenzyGroupTargets, FrenzyGroupHeal, FrenzyGroupHealTrigger]);
+
+    if Entity.HasDamageType(dtMelee) then
+    begin
+      TWelaEffectFireComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, FrenzyGroupHealTrigger])
+        .TargetGroup([FrenzyGroupHeal])
+        .RedirectToSelf;
+      TWelaEffectInstantComponent.CreateGrouped(Entity, [FrenzyGroupHeal]);
+      TWarheadSpottyHealComponent.CreateGrouped(Entity, [FrenzyGroupHeal]);
+      TWelaEffectStatisticsComponent.CreateGrouped(Entity, [FrenzyGroupHeal])
+        .Name('FrenzyHeal')
+        .TriggerOnHealDone;
+    end;
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [FrenzyGroup])
+      .Name('Frenzy')
+      .TriggerOnKill;
+  {$ENDIF}
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedFrenzy, upImmuneToStateEffects]);
+
+  // duration of buff
+  TWelaReadyCooldownComponent.CreateGrouped(Entity, [FrenzyGroup], False);
+
+  // Attack speed buff for primary weapon (1)
+  TModifierMultiplyCooldownComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, FrenzyGroup])
+    .SetValueGroup([FrenzyGroup]);
+  if Entity.HasDamageType(dtRanged) then
+    TModifierWelaTargetCountComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, FrenzyGroupTargets])
+      .SetValueGroup([FrenzyGroupTargets]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Black\frenzy_cast.pfx', 1.5)
+      .ActivateNow;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\state_immunity.pfx', 0.7)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault
+      .ScaleWith(eiCollisionRadius)
+      .FixedHeightGround;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [FrenzyGroup, FrenzyGroupHealTrigger], '\Black\frenzy_buff.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1])
+      .FixedOrientationDefault;
+
+    TParticleEffectComponent.CreateGrouped(Entity, [FrenzyGroupHealTrigger], '\Black\frenzy_heal.pfx', 1.0)
+      .ActivateOnFire()
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TIndicatorCooldownCircleComponent.CreateGrouped(Entity, [FrenzyGroup])
+      .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+      .SetRadius(1.5)
+      .ScaleWith(eiCollisionRadius)
+      .SetThickness(0.1)
+      .SetLinearBlend
+      .Color($60000000)
+      .Invert;
+  {$ENDIF}
+end;

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<div class="requirement currency-spent {{ blocked if not card.IsUnlockable }} {{ done if requirement.IsFulfilled or card.Unlocked }}">
+	<div class="description">{{ F._2(§card_requirement_currency_spent, F.IntToStr(requirement.Amount), requirement.Currency.Name) }}</div>
+	<div class="overlay">
+		<div class="done"></div>
+		<div class="block" title="§collection_quest_block_hint"></div>
+	</div>
+	<progress>
+		<bar width="{{ requirement.Progress * 100}}%"></bar>
+		<div class="caption">{{ requirement.CurrentValue if not card.Unlocked else requirement.TargetValue }} / {{ requirement.TargetValue }}</div>
+	</progress>
+</div>

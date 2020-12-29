@@ -1,0 +1,32 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group, BuildingGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  BuildingGroup  := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 3.0);
+  Entity.Blackboard.SetValue(eiWelaModifier, [BuildingGroup], 2.0);
+
+  {$IFDEF SERVER}
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, Group])
+      .Name('RangeUpgrade')
+      .TriggerOnDamageDone;
+  {$ENDIF}
+
+  TModifierWelaRangeComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, Group])
+    .AddModifier;
+
+  TWelaReadyUnitPropertyComponent.CreateGrouped(Entity, [BuildingGroup])
+    .MustHave([upBuilding]);
+  TModifierWelaRangeComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, BuildingGroup])
+    .AddModifier
+    .ReadyGroup([BuildingGroup]);
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upRangeAuraBuffed]);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+
+  Result := [Group, BuildingGroup];
+end;

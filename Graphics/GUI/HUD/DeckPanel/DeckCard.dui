@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<div class="build-slot-wrapper pop-out {{ ready if slot.IsReady else deactivated }}" id="BuildButton{{ slot.Slot }}" dxml-with="card=slot.CardInfo" dxml-on:click="hud.ClickDeckslot(slot.)" dxml-on:mouse_down="hud.MousedownDeckslot(slot.)"
+dxml-on:mouse_enter="hud.CardHintCardInfo := slot.CardInfo" dxml-on:mouse_leave="hud.CardHintCardInfo := nil">
+	<div class="card card-icon {{ card.CardType }} {{ special if card.IsLegendary or card.IsEpic }}">
+		<img class="icon-frame" src="{{ HClient.GetCardIconBackground(card.) }}">
+			<div class="legendary" :visible="card.IsLegendary"></div>
+			<div class="epic" :visible="card.IsEpic"></div>
+			<img class="icon" src="{{ HClient.GetCardIcon(card.) }}">
+				<progress class="cooldown" :visible="slot.CurrentCharges < slot.MaxCharges">
+					<bar :clip-progress="1 - slot.ChargeProgress"></bar>
+				</progress>
+				<div class="numeric-cooldown" :visible="not slot.CardInfo.IsEpic and (slot.CurrentCharges < 1) and hud.ShowCardNumericChargeProgress">{{ F.FloatToCooldown(slot.CooldownSeconds) }}</div>
+			</img>		
+			<div class="ready-highlight"></div>
+		</img>
+		<div class="charge-text">{{ slot.CurrentCharges }}</div>
+		<div class="hotkey" :visible="(slot.Hotkey <> '') and hud.ShowCardHotkeys">{{ slot.Hotkey }}</div>
+		<div class="hover"></div>
+	</div>
+</div>

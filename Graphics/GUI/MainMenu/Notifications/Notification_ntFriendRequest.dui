@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<div class="window">
+	<div class="window-caption">§notification_caption_{{ notifications.Notification.NotificationType }}</div>
+	<div class="notification notification-friend-request">
+		<div class="caption">§notification_friend_request</div>
+		<stack class="requester">
+			<img class="icon" src="{{ HClient.GetPlayerIcon(notification.Requester.Icon) }}"></img>
+			<div class="name">{{ notification.Requester.name }}</div>
+		</div>
+	</div>
+	<stack class="window-buttons">
+		<btn class="btn-xl btn-notification-close" dxml-on:click="notifications.Close">§notification_close</btn>
+	</stack>
+</div>

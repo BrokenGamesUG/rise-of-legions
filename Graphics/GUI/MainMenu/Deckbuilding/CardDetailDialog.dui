@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<wrapper class="backdrop clickable dialog" :show="dialogs.IsDialogVisible(diCardDetails)" dxml-on:click="deckbuilder.CloseCardDetails">
+	<div dxml-include="Mainmenu/Deckbuilding/AscendDialog.dui"></div>
+	<div class="card-detail-dialog dialog-content">
+		<div class="showed-card">
+			<div dxml-include="MainMenu/Shared/Card/CardWithReward.dui" dxml-with="card=deckbuilder.Card"></div>
+		</div>
+		<div class="card-detail-stats" dxml-with="card=deckbuilder.Card.CardInfoAfter;cardBefore=deckbuilder.Card.CardInfoBefore">
+			<stack vertical>
+				<!-- Shared -->
+				<div :class="changing if deckbuilder.Card.CardInstance.IsLeagueUpgradable">
+					<div class="key">§card_stats_charge_count</div>
+					<div class="value">{{ card.ChargeCount }}</div>
+					<div class="value change">{{ card.ChargeCount }} (+{{ card.ChargeCount - cardBefore.ChargeCount }})</div>
+				</div>
+				<div :class="changing if cardBefore.ChargeCooldown <> card.ChargeCooldown">
+					<div class="key">§card_stats_charge_cooldown</div>
+					<div class="value">{{ card.ChargeCooldown / 1000 }}s</div>
+					<div class="value change">{{ card.ChargeCooldown / 1000 }}s ({{ (card.ChargeCooldown - cardBefore.ChargeCooldown) / 1000 }}s)</div>
+				</div>
+				<div class="spacer"></div>
+				<div class="cost">
+					<div class="key">§card_stats_cost</div>
+					<div class="value">
+						{{ card.MaxCost }}
+						<img class="icon" src="HUD/RessourcePanel/{{ essence if card.IsSpawner else mana }}.png"></img>
+					</div>
+				</div>
+				<div :visible="not card.IsSpawner">
+					<div class="key">§card_stats_tier</div>
+					<div class="value">{{ card.Techlevel }}</div>
+				</div>
+				<!-- Drop/Spawner -->
+				<div :visible="not card.IsSpell">
+					<div class="key">§card_stats_squad_size</div>
+					<div class="value">{{ card.SquadSize }}</div>
+				</div>
+				<div :visible="not card.IsSpell">
+					<div class="key">§card_stats_health</div>
+					<div class="value">{{ card.Health }}</div>
+				</div>
+				<div :visible="card.HasEnergy">
+					<div class="key">§card_stats_energy</div>
+					<div class="value">{{ card.Energy }} / {{ card.EnergyCap }}</div>
+				</div>
+				<div class="armor" :visible="not card.IsSpell">
+					<div class="key">§card_stats_armor</div>
+					<div class="value" title="§armortype_{{ card.ArmorType }}_hint">
+						§armortype_{{ card.ArmorType }}
+						<img class="icon" src="MainMenu/Shared/Card/Armor{{ card.ArmorType }}.png"></img>
+					</div>
+				</div>
+				<div :visible="not card.IsSpell">
+					<div class="key">§card_stats_attack_range</div>
+					<div class="value">{{ card.AttackRange if card.AttackRange >= 2 else §melee }}</div>
+				</div>
+				<div :visible="not card.IsSpell">
+					<div class="key">§card_stats_attack_damage</div>
+					<div class="value">{{ F.FloatToStr(card.AttackDamage) if card.AttackDamage > 0 else '-' }}</div>
+				</div>
+				<div :visible="not card.IsSpell">
+					<div class="key">§card_stats_attack_cooldown</div>
+					<div class="value">{{ card.AttackCooldown / 1000 }}s</div>
+				</div>
+				<div :visible="false">
+					<div class="key">§card_stats_dps</div>
+					<div class="value">
+						{{ F.FloatToStr(card.DPS) if card.DPS <> 0 else '-'}}
+					</div>
+				</div>
+			</stack>
+		</div>
+		<wrapper class="ascension" dxml-with="card=deckbuilder.Card.CardInstance">
+			<div class="glow" :visible="card.IsLeagueUpgradable"></div>
+			<div class="material" :visible="(deckbuilder.SacrificeList.Count <= 0) and card.IsLeagueUpgradable">
+				<div class="empty empty-text">{{ §card_detail_ascension_empty_sacrifice_list_ready if deckbuilder.CanAscendWithCredits else §card_detail_ascension_empty_sacrifice_list }}</div>
+			</div>
+			<stack class="material">
+				<div class="material-item pop-out" dxml-for="card in deckbuilder.SacrificeList" dxml-on:click="deckbuilder.RemoveMaterial(card.)"> 
+					<div dxml-include="MainMenu/Shared/Card/CardIcon.dui"></div>
+					<div class="arrow {{ highlighted if (card.OriginCard.UID = deckbuilder.card.CardInstance.OriginCard.UID) and card.IsLeagueUpgradable }}"></div>
+				</div>
+			</stack>
+			<div class="material-pool-wrapper">
+				<div class="empty empty-text" :visible="card.IsMaxLeague and card.IsMaxLevel">§card_detail_ascension_max_league</div>
+				<div class="btn btn-left pop-out big" :visible="deckbuilder.SacrificePool.HasPrevious and not (card.IsMaxLeague and card.IsMaxLevel)" dxml-on:click="deckbuilder.SacrificePool.Previous"></div>
+				<div class="btn btn-right pop-out big" :visible="deckbuilder.SacrificePool.HasNext and not (card.IsMaxLeague and card.IsMaxLevel)" dxml-on:click="deckbuilder.SacrificePool.Next"></div>
+				<stack class="material-pool" :visible="not card.IsMaxLeague or not card.IsMaxLevel">
+					<div class="empty empty-text" :visible="deckbuilder.SacrificePoolCurrentObjects.Count <= 0">§card_detail_no_{{ ascension if card.IsLeagueUpgradable else push }}_material</div>
+					<div class="material-item pop-out index-{{ index. }} {{ disabled if (card.IsMaxLevel and ((card.TotalUpgradePoints - card.CurrentUpgradePoints) <= deckbuilder.SacrificeListValue)) or (not card.IsMaxLevel and ((card.TotalExperiencePointsRequiredForNextLeague - card.ExperiencePoints) <= deckbuilder.SacrificeListExperienceValue)) }} {{ in-deck if deckbuilder.DeckManager.IsCardInAnyDeck(material_card.) }}" dxml-for="material_card in deckbuilder.SacrificePoolCurrentObjects" dxml-on:click="deckbuilder.PickMaterial(material_card.)"> 
+						<div dxml-include="MainMenu/Shared/Card/CardIcon.dui" dxml-with="card=material_card."></div>
+						<div class="arrow"></div>
+						<div class="in-deck-hint">§card_detail_material_in_deck</div>
+					</div>
+				</stack>
+			</div>
+			<btn class="btn-xxl btn-ascend {{ free if deckbuilder.CanAscendWithSacrificeList }}" dxml-on:click="deckbuilder.Ascend" :visible="not card.IsMaxLeague and card.IsLeagueUpgradable">
+				<caption>§card_detail_ascend</caption>
+				<stack class="cost" :visible="not deckbuilder.CanAscendWithSacrificeList">
+					<div class="col-1 currency centered" dxml-with="cost=deckbuilder.AscensionCreditCost">
+						<div class="amount">
+							(         {{ cost.amount }})
+							<img class="icon" src="{{ HClient.CurrencyIcon(cost.Currency.UID) }}"></img>
+						</div>
+					</div>
+				</stack>
+			</btn>
+			<btn class="btn-xl btn-push {{ disabled if deckbuilder.SacrificeList.Count = 0 }}" :visible="not card.IsMaxLevel" dxml-on:click="deckbuilder.PushCardXP">§card_detail_level</btn>
+		</wrapper>
+		<btn class="btn-small btn-back fa fa-times" dxml-on:click="deckbuilder.CloseCardDetails"></btn>
+	</div>
+</wrapper>

@@ -1,0 +1,572 @@
+﻿.hint, #Hintbox, .popup, .frame{
+	Border : 2 $FF5c8989;
+	Outline : 4 $20000000 $00000000;
+	& > *{
+		Position : 0 0;
+		Size : 100% 100%;
+	}
+}
+
+.custom-hint:important{
+	TransformInheritance : False;
+	MouseEvents : mePass;
+	*{
+		MouseEvents : mePass;
+	}
+}
+
+.options{
+	Border : 2 $FF4B6E74;
+	Outline : 4 $20000000 $00000000;
+}
+
+.hint, #Hintbox, .popup, .options{
+	Fontcolor : $FFE9FEFF;
+	BackgroundColor : $FF3C5757;
+}
+
+stack#Hintbox{
+	& > *{
+		Position: inherit inherit;
+	}
+}
+
+.hint, #Hintbox{
+	Position : 200 500;
+	Size : 220 auto;
+	Padding : 4 7;
+	StackOrientation : soVertical;
+	StackPartitioning : auto;
+	&.hint-lg{
+		Size-X : 260;
+	}
+	&.hint-xl{
+		Size-X : 400;
+	}
+	&.small{
+		Size : auto 23;
+		.hint-text, #Hint{
+			Size : text 100%;
+			Fontflags : [];
+		}
+	}
+	.hint-text, #Hint{
+		Size : 100% text;
+		Fontsize : 15;
+		Fontflags : [ffWordWrap];
+	}
+	#Caption{
+		Height: 18;
+		Margin-Bottom : 7;
+		Fontsize : 18;
+		Fontweight : 700;
+	}
+}
+
+.popup{
+	Size : 180 auto;
+	& > *{
+		Size : 100% auto;
+		Stackorientation : soVertical;
+		Stackpartitioning : auto;
+		*{
+			Position : inherit inherit;
+			Size : 100% 28;
+			Padding : 5 7;
+			BackgroundColor : $20000000;
+			Enabled : True;
+			Fontsize : 100%;
+			Fontflags : [ffVerticalCenter];
+		}
+		*:hover{
+			BackgroundColor : $40808080;
+		}
+		*:down{
+			BackgroundColor : $80AAAAAA;
+			Margin : 2;
+			BoxSizing : bsMargin;
+		}
+	}
+}
+
+icon{
+	&.checkmark{
+		Background : Shared/IconCheckmark.png;
+	}
+	&.checkmark-success{
+		Background : Shared/checkmark_success.png;
+	}
+	&.sign-warning{
+		Background : Shared/sign_warning.png;
+	}
+	&.sign-danger{
+		Background : Shared/sign_danger.png;
+	}
+	&.sign-info{
+		Background : Shared/sign_info.png;
+	}
+	&.wobble{
+		$jello-horizontal;
+	}
+	&.lock{
+		Background : Shared/lock.png;
+	}
+}
+
+.debug{
+	Size : 100% 100%;
+	BackgroundColor : $80000000;
+	FontSize : 15;
+	FontFlags : [ffWordWrap];
+	ZOffset : 1000;
+	&.white{
+		BackgroundColor : $80FFFFFF;
+	}
+}
+
+.scrollbox{
+	&.x{
+		Overflow : ScrollX;
+	}
+	&.y{
+		Overflow : ScrollY;
+	}
+}
+
+.frame{
+	Blur : True;
+	BlurColor : $FF6E9FAF;
+	Padding : 10;
+}
+
+.empty-text{
+	Position : 0 0;
+	Size : 100% 50%;
+	Anchor : caCenter;
+	ParentAnchor : caCenter;
+	Padding : 5cw;
+	Opacity : 0.65;
+	FontSize : 20;
+	FontFlags : [ffWordWrap,ffCenter,ffVerticalCenter];
+}
+
+.dialog{
+	$fade-in;
+	.showcase{
+		$scale-in;
+	}
+	.window, .dialog-content{
+		$scale-in;
+	}
+	&:hiding{
+		$fade-out;
+		.showcase{
+			$scale-out;
+		}
+		.window, .dialog-content{
+			$scale-out;
+		}
+	}
+}
+
+.window{
+	ZOffset : 10;
+	BackgroundColor : $window-background;
+	Anchor : caCenter;
+	ParentAnchor : caCenter;
+	$frame;
+	Padding : 30 10;
+	&.window-warning{
+		BackgroundColor : $window-warning-background;
+		Border : $frame-warning-border;
+	}
+	&.window-danger{
+		BackgroundColor : $window-danger-background;
+		Border : $frame-danger-border;
+	}
+	.window-icon{
+		Size : 25bw auto;
+		ParentAnchor : caTopLeft;
+		Anchor : caCenter;
+		ParentBox : pbPadding;
+	}
+	.window-caption{
+		ZOffset : 500;
+		Position : 0 -35;
+		Size : auto 100bh;
+		Padding : 20% 5% 28% 5%;
+		FontWeight : 700;
+		ParentAnchor : caTop;
+		Anchor : caCenter;
+		Background : Shared/dialog_header.tga;
+		FontFlags: [ffCenter,ffVerticalCenter,ffAutoShrink];
+		&.small{
+			Background : Shared/dialog_header_small.png;
+		}
+	}
+	.window-buttons{
+		ZOffset : 500;
+		Position : 0 35;
+		Size : auto 58;
+		ParentAnchor : caBottom;
+		Anchor : caCenter;
+		& > *{
+			Margin : 0 10;
+		}
+	}
+	.btn-window-close{
+		Position : -15 -10;
+		ParentBox : pbPadding;
+		Anchor : caTopLeft;
+		ParentAnchor : caTopRight;
+	}
+}
+
+.window-shine{
+	Size : auto 100%;
+	ZOffset : -5;
+	Anchor : caCenter;
+	ParentAnchor : caCenter;
+	Background : Shared/shine.png;
+	MouseEvents : mePass;
+	Transform : scale(4.8);
+	BackgroundMipMapLodBias : -2.0;
+	$rotate;
+	&.subtile{
+		Opacity : 0.35;
+	}
+}
+
+.pop-out{
+	TransitionProperty : gtTransform;
+	TransitionDuration : 50;
+	TransitionWithInheritance : False;
+	TransformAnchor : caCenter;
+	&:enabled:down{
+		TransitionDuration : 25;
+		Transform : scale(0.95);
+	}
+	&:enabled:hover{
+		Transform : scale(1.05);
+	}
+	&.big{
+		&:enabled:down{
+			Transform : scale(0.95);
+		}
+		&:enabled:hover{
+			Transform : scale(1.10);
+		}
+	}
+}
+
+.faded{
+	TransitionProperty : gtOpacity;
+	TransitionDuration : 50;
+	Opacity : 0.0;
+}
+
+.window-legacy{
+	Padding : 10;
+	Blur : True;
+	BlurColor : $FF6EA4AF;
+	BorderImage : Shared/Frame/ingame_menu_frame.png -5 -116 -6 -116;
+	ParentAnchor : caCenter;
+	Anchor : caCenter;
+}
+
+.backdrop{
+	Position : 0 0;
+	Size : 100% 100%;
+	ZOffset : $zoffset-dialog;
+	Blur : True;
+	BlurLayer : True;
+	BlurColor : $FFFFFFFF;
+	BackgroundColor : $background-backdrop;
+	MouseEvents : meAll;
+	Enabled : True;
+	&.disabled{
+		Enabled : False;
+		MouseEvents : meBlock;
+	}
+	&.filled{
+		Blur : False;
+		BlurLayer : False;
+		BackgroundColor : $field-background;
+	}
+}
+
+.spinner{
+	Background : Shared/Spinner.png;
+	BackgroundColor : $font-color-default;
+	BackgroundMipMapping : mhGenerate;
+}
+
+.clickable:important{
+	Enabled : True;
+}
+
+.window-headline{
+	Position : 50% 0;
+	Size : 100% 40;
+	Anchor : caTop;
+	Fontsize : 21;
+	Fontweight : 500;
+	Fontflags : [ffCenter,ffVerticalCenter];
+	MouseEvents : mePass;
+}
+
+.hidden:important{
+	Visibility : False;
+}
+
+.invisible:important{
+	Opacity : 0;
+	Enabled : False;
+	MouseEvents : mePass;
+}
+
+.btn, btn{
+	$btn(&);
+	Fontsize : 80%;
+	Fontflags : [ffCenter,ffVerticalCenter];
+	Fontcolor : $font-color-white;
+	*{
+		MouseEvents : mePassClick;
+		Fontcolor : $font-color-white;
+	}
+}
+
+.btn-small, .btn-xl, .btn-xxl{
+	FontBorder : 1 $FF3a3f3f;
+	*{
+		FontBorder : 1 $FF3a3f3f;
+	}
+}
+
+.btn-small, .btn.btn-small, btn.btn-small{
+	$big-font;
+	Size : auto 58;
+	Padding : 14% 15% 32% 15%;
+	Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+	Background : Shared/button_small_primary.tga;
+	HintClasses : small;
+	HintAnchor : caBottom;
+	&:hover:enabled{
+		Background : Shared/button_small_primary_hover.tga;
+	}
+	&:disabled{
+		BackgroundColorOverride : $override-darken;
+	}
+	&.btn-danger{
+		Background : Shared/button_small_danger.tga;
+		&:hover:enabled{
+			Background : Shared/button_small_danger_hover.tga;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+	&.btn-warning{
+		Background : Shared/button_small_warning.tga;
+		&:hover:enabled{
+			Background : Shared/button_small_warning_hover.tga;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+	&.btn-success{
+		Background : Shared/button_small_success.tga;
+		&:hover:enabled{
+			Background : Shared/button_small_success_hover.tga;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+}
+
+.btn-xl, .btn.btn-xl, btn.btn-xl{
+	$big-font;
+	Size : auto 58;
+	Padding : 17% 15% 29% 15%;
+	Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+	Background : Shared/button_xl.tga;
+	*{
+		$big-font;
+	}
+	&:hover:enabled{
+		Background : Shared/button_xl_hover.tga;
+	}
+	&:disabled{
+		BackgroundColorOverride : $override-darken;
+	}
+	&.btn-danger{
+		Background : Shared/button_xl_danger.tga;
+		&:hover:enabled{
+			Background : Shared/button_xl_danger_hover.tga;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+	&.btn-warning{
+		Background : Shared/button_xl_warning.png;
+		&:hover:enabled{
+			Background : Shared/button_xl_warning_hover.png;
+		}
+	}
+	&.btn-success{
+		Background : Shared/button_xl_success.tga;
+		&:hover:enabled{
+			Background : Shared/button_xl_success_hover.tga;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+}
+
+.btn-xxl, .btn.btn-xxl, btn.btn-xxl{
+	$big-font;
+	Size : auto 75;
+	Padding : 10% 7% 25% 7%;
+	Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+	Background : Shared/button_xxl_primary.png;
+	*{
+		$big-font;
+	}
+	&:hover:enabled{
+		Background : Shared/button_xxl_primary_hover.png;
+	}
+	&:disabled{
+		BackgroundColorOverride : $override-darken;
+	}
+}
+
+.btn-broad, .btn.btn-broad, btn.btn-broad{
+	$big-font;
+	Size : auto 58;
+	Padding : 17% 15% 29% 15%;
+	Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+	Background : Shared/button_broad.png;
+	*{
+		$big-font;
+	}
+	&:hover:enabled{
+		Background : Shared/button_broad_hover.png;
+	}
+	&:disabled{
+		BackgroundColorOverride : $override-darken;
+	}
+	&.btn-danger{
+		Background : Shared/button_broad_danger.png;
+		&:hover:enabled{
+			Background : Shared/button_broad_danger_hover.png;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+	&.btn-warning{
+		Background : Shared/button_broad_warning.png;
+		&:hover:enabled{
+			Background : Shared/button_broad_warning_hover.png;
+		}
+	}
+	&.btn-success{
+		Background : Shared/button_broad_success.png;
+		&:hover:enabled{
+			Background : Shared/button_broad_success_hover.png;
+		}
+		&:disabled{
+			BackgroundColorOverride : $override-darken;
+		}
+	}
+}
+
+.btn-left, .btn-right{
+	ZOffset : 100;
+	Background : Shared/button_left.png;
+	&:hover:enabled{
+		Background : Shared/button_left_hover.png;
+	}
+	&:disabled{
+		Background : Shared/button_left_disabled.png;
+	}
+}
+
+.btn-hint{
+	Background : Shared/button_hint.tga;
+	&:hover{
+		Zoom: 4;
+	}
+}
+
+.btn-left{
+	ParentAnchor : caLeft;
+	Anchor : caCenter;
+}
+
+.btn-right{
+	ParentAnchor : caRight;
+	Anchor : caCenter;
+	BackgroundAnchor : baTopRight;
+}
+
+.btn-accept{
+	$fa;
+	DefaultText : $fa-check;
+	&.btn-small{
+		Padding : 14% 10% 32% 4%;
+	}
+}
+
+.btn-cancel, .btn-close{
+	$fa;
+	DefaultText : $fa-times;
+	&.btn-small{
+		Padding : 14% 10% 32% 4%;
+	}
+}
+
+.disabled:important{
+	Enabled : False;
+}
+
+bar.default{
+	BackgroundColor : $progress-cyan;
+}
+
+.anchor-bottom-left{
+	ParentAnchor : caBottomLeft;
+	Anchor : caBottomLeft;
+}
+.anchor-top-left{
+	ParentAnchor : caTopLeft;
+	Anchor : caTopLeft;
+}
+.anchor-bottom-right{
+	ParentAnchor : caBottomRight;
+	Anchor : caBottomRight;
+}
+.anchor-top-right{
+	ParentAnchor : caTopRight;
+	Anchor : caTopRight;
+}
+.anchor-top{
+	ParentAnchor : caTop;
+	Anchor : caTop;
+}
+.anchor-right{
+	ParentAnchor : caRight;
+	Anchor : caRight;
+}
+.anchor-left{
+	ParentAnchor : caLeft;
+	Anchor : caLeft;
+}
+.anchor-bottom{
+	ParentAnchor : caBottom;
+	Anchor : caBottom;
+}

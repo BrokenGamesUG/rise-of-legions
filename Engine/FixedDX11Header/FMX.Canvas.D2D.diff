@@ -1,0 +1,501 @@
+ Engine/FixedDX11Header/FMX.Canvas.D2D.pas | 273 ++++++++++++++++++++++++++----
+ 1 file changed, 242 insertions(+), 31 deletions(-)
+
+diff --git a/Engine/FixedDX11Header/FMX.Canvas.D2D.pas b/Engine/FixedDX11Header/FMX.Canvas.D2D.pas
+index e42ac28..7b047b3 100644
+--- a/Engine/FixedDX11Header/FMX.Canvas.D2D.pas
++++ b/Engine/FixedDX11Header/FMX.Canvas.D2D.pas
+@@ -42,6 +42,9 @@ type
+     FDirect3DLevel: TDirect3DLevel;
+     FDirect3DSupport: TDirect3DSupport;
+     FDirect3DHardware: Boolean;
++     //rnelson added
++    FCustomFontCollection : IDWriteFontCollection;
++    FFontCollectionLoader : IDWriteFontCollectionLoader;
+   private
+     class procedure UpdateDirect3DLevel; static;
+     class function TryCreateDirect3DDevice: Boolean; static;
+@@ -54,10 +57,16 @@ type
+     class function GetSharedDXGIFactory: IDXGIFactory; static;
+     class function GetSharedDWriteFactory: IDWriteFactory; static;
+     class function GetSharedFactory: ID2D1Factory; static;
++     //rnelson added
++    class function GetCustomFontCollection: IDWriteFontCollection; static;
++    class procedure CreateD2DFontLoader; static;
++    class procedure DestroyD2DFontLoader; static;
+   protected
+     class procedure CreateSharedResources; virtual;
+     class procedure DestroySharedResources; virtual;
+   public
++    class procedure LoadFontFromFile(Filename : string);
++    class property CustomFontCollection: IDWriteFontCollection read GetCustomFontCollection;
+     class property Direct3DLevel: TDirect3DLevel read GetDirect3DLevel;
+     class property Direct3DSupport: TDirect3DSupport read FDirect3DSupport;
+     class property Direct3DHardware: Boolean read FDirect3DHardware;
+@@ -70,6 +79,7 @@ type
+ procedure RegisterCanvasClasses;
+ procedure UnregisterCanvasClasses;
+ 
++
+ implementation
+ 
+ uses
+@@ -80,6 +90,30 @@ uses
+   FMX.Utils, FMX.Helpers.Win;
+ 
+ type
++ //rnelson added Font support
++ TDWFontFileEnum   = class(TInterfacedObject,IDWriteFontFileEnumerator)
++             FFontFileEnum: TObjectDictionary<string, IDWriteFontFile>.TPairEnumerator;
++             function MoveNext(var hasCurrentFile: BOOL): HResult; stdcall;
++             function GetCurrentFontFile(out fontFile: IDWriteFontFile): HResult; stdcall;
++             constructor Create( const AFontFileEnum: TObjectDictionary<string, IDWriteFontFile>.TPairEnumerator);
++             destructor Destroy;override;
++ end;
++
++ TDWFontLoader = class(TInterfacedObject,IDWriteFontCollectionLoader)
++      FFontEnum       : IDWriteFontFileEnumerator;
++      FFontFiles      : TDictionary<string, IDWriteFontFile>;
++    function CreateEnumeratorFromKey(const factory: IDWriteFactory;
++      collectionKey: Pointer; collectionKeySize: Cardinal;
++      out fontFileEnumerator: IDWriteFontFileEnumerator): HResult; stdcall;
++    public
++      constructor Create;
++      destructor Destroy; override;
++      procedure AddFontFile(FontFileName : string);
++ end;
++
++//rnelson
++
++
+   TBitmapCodecWIC = class(TCustomBitmapCodecWIC)
+   private
+     function DecodeFrame(const Frame: IWICBitmapFrameDecode; const Bitmap: TBitmapSurface;
+@@ -219,14 +253,19 @@ type
+   end;
+ 
+   TTextLayoutD2D = class(TTextLayout)
++  strict private
++    FColorsInitialized : boolean;
+   private type
+     TDWriteFontDescriptor = record
+       FamilyName: string;
+       Weight: TDWriteFontWeight;
+       Style: TDWriteFontStyle;
+       Stretch: TDWriteFontStretch;
++       //rnelson added
++      FontColl : IDWriteFontCollection;
++       //rnelson added
+       class function Create(const AFamilyName: string; const AWeight: TDWriteFontWeight; const AStyle: TDWriteFontStyle;
+-        const AStretch: TDWriteFontStretch): TDWriteFontDescriptor; static; inline;
++        const AStretch: TDWriteFontStretch; const aFontColl : IDWriteFontCollection = nil): TDWriteFontDescriptor; static; inline;
+     end;
+   private class var
+     FFontCollection: IDWriteFontCollection;
+@@ -487,6 +526,7 @@ begin
+     raise ECannotCreateDWriteFactory.CreateFmt(SCannotCreateDWriteFactory, [ClassName]);
+ end;
+ 
++
+ class procedure TCustomCanvasD2D.CreateSharedResources;
+ begin
+   UpdateDirect3DLevel;
+@@ -497,10 +537,18 @@ begin
+   end;
+   if FSharedFactory = nil then
+     CreateDirect2DFactory;
++  //rnelson added
++  if FFontCollectionLoader = nil then
++         CreateD2DFontLoader;
++    //rnelson added
+ end;
+ 
+ class procedure TCustomCanvasD2D.DestroySharedResources;
+ begin
++  //rnelson added
++  DestroyD2DFontLoader;
++  FCustomFontCollection := nil;
++  //rnelson added
+   FSharedDWriteFactory := nil;
+   FSharedFactory := nil;
+   FSharedDXGIFactory := nil;
+@@ -847,7 +895,7 @@ var
+ begin
+   Stream := TFileStream.Create(AFileName, fmCreate);
+   try
+-    Result := SaveToStream(Stream, Bitmap, ExtractFileExt(AFileName).ToLower, SaveParams);
++    Result := SaveToStream(Stream, Bitmap, ExtractFileExt(AFileName).ToLowerInvariant, SaveParams);
+   finally
+     Stream.Free;
+   end;
+@@ -1142,7 +1190,7 @@ begin
+       else
+         FTarget.SetAntialiasMode(D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
+       end;
+-      FTarget.SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_DEFAULT);
++      FTarget.SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
+     end;
+   end
+ end;
+@@ -1788,6 +1836,7 @@ begin
+   RHeight := ARect.Height;
+ 
+   WS := FFont.Family;
++  //rnelson might need pass in the collection here
+   SharedDWriteFactory.CreateTextFormat(PChar(WS), nil, FontWeightToDWrite(FFont.StyleExt.Weight),
+     FontSlantToDWrite(FFont.StyleExt.Slant), FontStretchToDWrite(FFont.StyleExt.Stretch), FFont.Size,
+ 	PChar(FLocaleName), TextFormat);
+@@ -2374,12 +2423,13 @@ end;
+ { TTextLayoutD2D.TDWriteFontDescriptor }
+ 
+ class function TTextLayoutD2D.TDWriteFontDescriptor.Create(const AFamilyName: string; const AWeight: TDWriteFontWeight;
+-  const AStyle: TDWriteFontStyle; const AStretch: TDWriteFontStretch): TDWriteFontDescriptor;
++  const AStyle: TDWriteFontStyle; const AStretch: TDWriteFontStretch; const AFontColl : IDWriteFontCollection = nil ): TDWriteFontDescriptor;
+ begin
+   Result.FamilyName := AFamilyName;
+   Result.Weight := AWeight;
+   Result.Style := AStyle;
+   Result.Stretch := AStretch;
++  Result.FontColl := AFontColl;
+ end;
+ 
+ { TTextLayoutD2D }
+@@ -2402,6 +2452,8 @@ begin
+   FFontDescriptors.Free;
+ end;
+ 
++
++
+ function TTextLayoutD2D.GetFontStyles(const AFont: TFont): TDWriteFontDescriptor;
+ 
+   function GetDWriteLocalizedName(const Names: IDWriteLocalizedStrings; const LocaleName: string): string;
+@@ -2431,15 +2483,26 @@ var
+   DWriteFamily: IDWriteFontFamily;
+   Names: IDWriteLocalizedStrings;
+   LocaleName: array [0..LOCALE_NAME_MAX_LENGTH] of Char;
++  LDC: HDC;
+ begin
+   Result := TDWriteFontDescriptor.Create(AFont.Family, FontWeightToDWrite(AFont.StyleExt.Weight),
+     FontSlantToDWrite(AFont.StyleExt.Slant), FontStretchToDWrite(AFont.StyleExt.Stretch));
+ 
+   if FFontCollection = nil then
+     TCanvasD2D.SharedDWriteFactory.GetSystemFontCollection(FFontCollection);
++
+   FFontCollection.FindFamilyName(PChar(AFont.Family), FamilyIndex, FamilyExists);
++  //rnelson
++  if not FamilyExists then
++  begin      //check custom fonts
++    TCanvasD2D.CustomFontCollection.FindFamilyName(PChar(AFont.Family), FamilyIndex, FamilyExists);
++    if FamilyExists then
++         Result.FontColl := TCanvasD2D.CustomFontCollection;
++  end;
++
+   if not FamilyExists then
+   begin
++
+     if FFontDescriptors = nil then
+       FFontDescriptors := TDictionary<string, TDWriteFontDescriptor>.Create;
+     if not FFontDescriptors.ContainsKey(AFont.Family) then
+@@ -2449,7 +2512,12 @@ begin
+         ZeroMemory(@LogFont, SizeOf(LogFont));
+         Move(PChar(AFont.Family)^, LogFont.lfFaceName, Length(AFont.Family) * SizeOf(Char));
+         LogFont.lfCharSet := DEFAULT_CHARSET;
+-        EnumFontFamiliesEx(GetDC(0), LogFont, @EnumFontFamExProc, NativeInt(@LogFont), 0);
++        LDC := GetDC(0);
++        try
++          EnumFontFamiliesEx(LDC, LogFont, @EnumFontFamExProc, NativeInt(@LogFont), 0);
++        finally
++          ReleaseDC(0, LDC);
++        end;
+         if Succeeded(DWriteGdiInterop.CreateFontFromLOGFONT(LogFont, DWriteFont)) then
+         try
+           if Succeeded(DWriteFont.GetFontFamily(DWriteFamily)) then
+@@ -2517,7 +2585,11 @@ begin
+ end;
+ 
+ procedure TTextLayoutD2D.DoDrawLayout(const ACanvas: TCanvas);
+-
++  procedure Check(hres : HResult; CallName : string);
++  begin
++    if hres <> S_OK then
++          raise EInvalidOperation.CreateFmt('TTextLayoutD2D.DoRenderLayout: ' + CallName + ' returned %d', [hres]);
++  end;
+   function SameColor: Boolean;
+   var
+     LColor: TD2D1ColorF;
+@@ -2528,7 +2600,10 @@ procedure TTextLayoutD2D.DoDrawLayout(const ACanvas: TCanvas);
+       SameValue(LColor.g, TAlphaColorRec(Color).G / $FF, TEpsilon.Vector) and
+       SameValue(LColor.a, TAlphaColorRec(Color).A / $FF * Opacity, TEpsilon.Vector);
+   end;
+-
++var i : integer;
++    TextRange: TDWriteTextRange;
++    Attr: TTextAttributedRange;
++    Brush: ID2D1Brush;
+ begin
+   if (ACanvas = nil) or not (ACanvas is TCanvasD2D) or Text.IsEmpty or (FLayout = nil) then
+     Exit;
+@@ -2540,12 +2615,33 @@ begin
+       TCanvasD2D(ACanvas).FTarget.CreateSolidColorBrush(D2Color(Color, Opacity), nil, ID2D1SolidColorBrush(FBrush));
+     end;
+ 
++  if (FLayout <> nil) and not FColorsInitialized then
++  begin
++    FColorsInitialized := True;
++    for I := 0 to AttributesCount - 1 do
++      begin
++        Attr := Attributes[I];
++        if Attr.Attribute.Color <> Color then
++        begin
++          TextRange.startPosition := Attr.Range.Pos;
++          TextRange.length := Attr.Range.Length;
++          TCanvasD2D(ACanvas).FTarget.CreateSolidColorBrush(D2Color(Attr.Attribute.Color, Opacity), nil, ID2D1SolidColorBrush(Brush));
++          Check(FLayout.SetDrawingEffect(Brush, TextRange), 'SetDrawingEffect');
++        end;
++      end;
++  end;
++
+   if (FLayout <> nil) and (FBrush <> nil) then
+     TCanvasD2D(ACanvas).FTarget.DrawTextLayout(D2Point(TopLeft.X + Padding.Left, TopLeft.Y + Padding.Top), FLayout,
+       FBrush, D2D1_DRAW_TEXT_OPTIONS_CLIP);
+ end;
+ 
+ procedure TTextLayoutD2D.DoRenderLayout;
++procedure Check(hres : HResult; CallName : string);
++begin
++  if hres <> S_OK then
++        raise EInvalidOperation.CreateFmt('TTextLayoutD2D.DoRenderLayout: ' + CallName + ' returned %d', [hres]);
++end;
+ var
+   TextRange: TDWriteTextRange;
+   TextFormat: IDWriteTextFormat;
+@@ -2555,12 +2651,15 @@ var
+   TrimmingSign: IDWriteInlineObject;
+   FontDescriptor: TDWriteFontDescriptor;
+ begin
++  FColorsInitialized := False;
+   FLayout := nil;
+   FTextRect := TRectF.Empty;
+ 
+   FontDescriptor := GetFontStyles(Font);
+-
+-  if Succeeded(TCanvasD2D.SharedDWriteFactory.CreateTextFormat(PChar(FontDescriptor.FamilyName), FFontCollection,
++    //rnelson changed to pass in the font collection using nil as the system collection is better as
++    // it is more dynamic ie it will query the font caching mechanism rather then using the
++    // font collection snapshot.
++  if Succeeded(TCanvasD2D.SharedDWriteFactory.CreateTextFormat(PChar(FontDescriptor.FamilyName), FontDescriptor.FontColl,
+     FontDescriptor.Weight, FontDescriptor.Style, FontDescriptor.Stretch, Font.Size, PChar(FLocaleName), TextFormat)) then
+   try
+     if RightToLeft then
+@@ -2594,9 +2693,9 @@ begin
+     begin
+       TextRange.StartPosition := 0;
+       TextRange.Length := Text.Length;
+-      FLayout.SetStrikethrough(TFontStyle.fsStrikeOut in Font.StyleExt.SimpleStyle, TextRange);
+-      FLayout.SetUnderline(TFontStyle.fsUnderline in Font.StyleExt.SimpleStyle, TextRange);
+-      FLayout.SetFontWeight(FontDescriptor.Weight, TextRange);
++      Check(FLayout.SetStrikethrough(TFontStyle.fsStrikeOut in Font.StyleExt.SimpleStyle, TextRange), 'SetStrikethrough');
++      Check(FLayout.SetUnderline(TFontStyle.fsUnderline in Font.StyleExt.SimpleStyle, TextRange), 'SetUnderline');
++      Check(FLayout.SetFontWeight(FontDescriptor.Weight, TextRange), 'SetFontWeight');
+ 
+       for I := 0 to AttributesCount - 1 do
+       begin
+@@ -2606,37 +2705,37 @@ begin
+           TextRange.startPosition := Attr.Range.Pos;
+           TextRange.length := Attr.Range.Length;
+ 
+-          FLayout.SetStrikethrough(TFontStyle.fsStrikeOut in Attr.Attribute.Font.StyleExt.SimpleStyle, TextRange);
+-          FLayout.SetUnderline(TFontStyle.fsUnderline in Attr.Attribute.Font.StyleExt.SimpleStyle, TextRange);
++          Check(FLayout.SetStrikethrough(TFontStyle.fsStrikeOut in Attr.Attribute.Font.StyleExt.SimpleStyle, TextRange), 'SetStrikethrough');
++          Check(FLayout.SetUnderline(TFontStyle.fsUnderline in Attr.Attribute.Font.StyleExt.SimpleStyle, TextRange), 'SetUnderline');
+           if not SameValue(Attr.Attribute.Font.Size, Font.Size, TEpsilon.FontSize) then
+-            FLayout.SetFontSize(Attr.Attribute.Font.Size, TextRange);
++            Check(FLayout.SetFontSize(Attr.Attribute.Font.Size, TextRange), 'SetFontSize');
+ 
+           FontDescriptor := GetFontStyles(Attr.Attribute.Font);
+-          FLayout.SetFontWeight(FontDescriptor.Weight, TextRange);
+-          FLayout.SetFontStyle(FontDescriptor.Style, TextRange);
+-          FLayout.SetFontStretch(FontDescriptor.Stretch, TextRange);
+-          FLayout.SetFontFamilyName(PChar(FontDescriptor.FamilyName), TextRange);
++          Check(FLayout.SetFontWeight(FontDescriptor.Weight, TextRange), 'SetFontWeight');
++          Check(FLayout.SetFontStyle(FontDescriptor.Style, TextRange), 'SetFontStyle');
++          Check(FLayout.SetFontStretch(FontDescriptor.Stretch, TextRange), 'SetFontStretch');
++          Check(FLayout.SetFontFamilyName(PChar(FontDescriptor.FamilyName), TextRange), 'SetFontFamilyName');
+         end;
+       end;
+ 
+       case HorizontalAlign of
+         TTextAlign.Center:
+-          FLayout.SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
++          Check(FLayout.SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER), 'SetTextAlignment');
+         TTextAlign.Leading:
+-          FLayout.SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
++          Check(FLayout.SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING), 'SetTextAlignment');
+         TTextAlign.Trailing:
+-          FLayout.SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
++          Check(FLayout.SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING), 'SetTextAlignment');
+       end;
+       case VerticalAlign of
+         TTextAlign.Center:
+-          FLayout.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
++          Check(FLayout.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER), 'SetParagraphAlignment');
+         TTextAlign.Leading:
+-          FLayout.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
++          Check(FLayout.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR), 'SetParagraphAlignment');
+         TTextAlign.Trailing:
+-          FLayout.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
++          Check(FLayout.SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR), 'SetParagraphAlignment');
+       end;
+-      FLayout.GetMetrics(FMetrics);
+-      FLayout.GetOverhangMetrics(FOverhangMetrics);
++      Check(FLayout.GetMetrics(FMetrics), 'GetMetrics');
++      Check(FLayout.GetOverhangMetrics(FOverhangMetrics), 'GetOverhangMetrics');
+       UpdateTextRect;
+     end;
+   finally
+@@ -2650,8 +2749,11 @@ var
+   LFont: PLogFont;
+ begin
+   LFont := Pointer(lParam);
+-  Move(lpelfe, LFont^, SizeOf(TLogFont));
+-  Result := 0;
++  //Move(lpelfe, LFont^, SizeOf(TLogFont));
++//  Result := 1;
++  LFont^ := lpelfe;
++//  if lpelfe.lfFaceName = 'Assimilate' then
++      Result := 0;
+ end;
+ 
+ function TTextLayoutD2D.GetTextHeight: Single;
+@@ -2775,20 +2877,129 @@ begin
+ 
+   PathRendering := TTextRendering.Create;
+   try
+-                                                                                       
+     FLayout.Draw(APath, PathRendering, 0, 0);
+   finally
+     PathRendering.Free;
+   end;
+ end;
+ 
++
++//rnelson
++constructor TDWFontFileEnum.Create(const AFontFileEnum: TObjectDictionary<string, IDWriteFontFile>.TPairEnumerator);
++begin
++   inherited Create;
++   FFontFileEnum := AFontFileEnum;
++end;
++
++function TDWFontFileEnum.MoveNext(var hasCurrentFile: BOOL): HResult; stdcall;
++begin
++  hasCurrentFile := FFontFileEnum.MoveNext;
++  Result := S_OK;
++end;
++
++destructor TDWFontFileEnum.Destroy;
++begin
++  FFontFileEnum.Free;
++  inherited;
++end;
++
++function TDWFontFileEnum.GetCurrentFontFile(out fontFile: IDWriteFontFile): HResult; stdcall;
++begin
++    fontFile := FFontFileEnum.Current.Value;
++    Result := S_OK;
++end;
++
++constructor TDWFontLoader.Create;
++begin
++    inherited Create;
++    FFontFiles := TDictionary<string, IDWriteFontFile>.Create;
++end;
++
++procedure TDWFontLoader.AddFontFile(FontFileName : string);
++var
++  FDWriteFontFile : IDWriteFontFile;
++begin
++  if FileExists(FontFileName) then
++     if Succeeded(TCustomCanvasD2D.SharedDWriteFactory.CreateFontFileReference(PChar(FontFileName),nil,FDWriteFontFile)) then
++        FFontFiles.Add(FontFileName, FDWriteFontFile);
++end;
++
++
++function TDWFontLoader.CreateEnumeratorFromKey(const factory: IDWriteFactory;
++       collectionKey: Pointer; collectionKeySize: Cardinal;
++      out fontFileEnumerator: IDWriteFontFileEnumerator): HResult; stdcall;
++begin
++  // might have to use the factory here... but it will
++  fontFileEnumerator := nil;
++  Result := E_FAIL;
++  //release the enum if we get called a second time?
++  if FFontEnum <> nil then FFontEnum := nil;
++      FFontEnum := TDWFontFileEnum.Create(FFontFiles.GetEnumerator);
++  if FFontEnum <> nil then
++  begin
++    fontFileEnumerator := FFontEnum;
++    Result := S_OK;
++  end;
++end;
++
++destructor TDWFontLoader.Destroy;
++begin
++  FFontEnum := nil;
++  FFontFiles.Free;
++  inherited;
++end;
++
++class function TCustomCanvasD2D.GetCustomFontCollection: IDWriteFontCollection;
++var
++  fontFileRefKey : Pointer;
++begin
++  // we have scope for several enumerators
++  Result := FCustomFontCollection;
++  fontFileRefKey := Pointer(42);
++  if Result = nil then
++    if Succeeded(TCustomCanvasD2D.SharedDWriteFactory.CreateCustomFontCollection( FFontCollectionLoader,
++                @fontFileRefKey,sizeof(pointer) ,FCustomFontCollection)) then
++                    Result := FCustomFontCollection;
++end;
++
++//rnelson
++class procedure TCustomCanvasD2D.LoadFontFromFile(Filename : string);
++begin
++    if FFontCollectionLoader <> nil then
++      (FFontCollectionLoader as TDWFontLoader).AddFontFile(Filename);
++end;
++
++class procedure TCustomCanvasD2D.CreateD2DFontLoader;
++begin
++    FFontCollectionLoader := TDWFontLoader.Create;
++    OleCheck(TCustomCanvasD2D.SharedDWriteFactory.RegisterFontCollectionLoader(FFontCollectionLoader));
++end;
++
++class procedure TCustomCanvasD2D.DestroyD2DFontLoader;
++begin
++ if assigned(FFontCollectionLoader) then
++
++  OleCheck(TCustomCanvasD2D.SharedDWriteFactory.UnRegisterFontCollectionLoader(FFontCollectionLoader));
++  FFontCollectionLoader := nil;
++end;
++
++//rnelson
++
+ procedure RegisterCanvasClasses;
+ begin
+   if GlobalUseDirect2D and (TCustomCanvasD2D.Direct3DLevel >= TCustomCanvasD2D.TDirect3DLevel.Direct3D10) and
+-    InitThemeLibrary and UseThemes and TCustomCanvasD2D.TryCreateDirect3DDevice then
++  { InitThemeLibrary and UseThemes and }TCustomCanvasD2D.TryCreateDirect3DDevice then
+   begin
+     TCustomCanvasD2D.DestroyDirect3DDevice;
+     TCanvasManager.RegisterCanvas(TCanvasD2D, True, False);
++  end
++  else
++  begin
++    raise ENotSupportedException.CreateFmt('D2D.RegisterCanvasClasses: D2D is not supported! (%d %d %d)', [
++      ord(GlobalUseDirect2D),
++      ord(TCustomCanvasD2D.Direct3DLevel),
++      ord(TCustomCanvasD2D.TryCreateDirect3DDevice)
++      ]);
+   end;
+ end;
+ 

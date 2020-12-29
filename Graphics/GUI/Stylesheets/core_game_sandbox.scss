@@ -1,0 +1,107 @@
+﻿.hud{
+	.commander-switch{
+		ParentAnchor : caTopRight;
+		Anchor : caTopRight;
+		Size : 136 44;
+		MouseEvents : mePass;
+		stack{
+			ParentAnchor : caTopRight;
+			Anchor : caTopRight;
+			Size : auto 100%;
+			Stackpartitioning : auto;
+			& > * {
+				Size : auto 100%;
+				Padding : 0 0 3 0;
+				Background : HUD/CommanderSwitch/CommanderSwitchInactive.png;
+				BackgroundHover : HUD/CommanderSwitch/CommanderSwitchHover.png;
+				BackgroundDown : HUD/CommanderSwitch/CommanderSwitchActive.png;
+				Fontsize : 45%;
+				Fontcolor : $font-color-white;
+				&.selected{
+					Background : HUD/CommanderSwitch/CommanderSwitchActive.png;
+					Fontsize : 67%;
+				}
+			}
+			.commander-0{
+				BackgroundColor : $FF14C2FF;
+			}
+			.commander-1{
+				BackgroundColor : $FFFF8080;
+			}
+			.commander-2, .commander-8{
+				BackgroundColor : $FF3B3D4B;
+			}
+			.commander-3, .commander-9{
+				BackgroundColor : $FF52B555;
+			}
+			.commander-4, .commander-10{
+				BackgroundColor : $FFFFFFDC;
+			}
+			.commander-5, .commander-11{
+				BackgroundColor : $FF868C8D;
+			}
+			.commander-6, .commander-12{
+				BackgroundColor : $FF367FAC;
+			}
+			.commander-7, .commander-13{
+				BackgroundColor : $FFA6ACAD;
+			}
+			.commander-14{
+				BackgroundColor : $FF666C6D;
+			}
+		}
+	}
+	
+	.sandbox-controls{
+		Position : 0 100;
+		.tools{
+			Size : 200 auto;
+			& > *{
+				Size : 100% 20;
+				Margin-Bottom : 2;
+			}
+			& > .spacer{
+				Size-Y : 5;
+			}
+			.btn-sandbox{
+				BackgroundColor : $80000000;
+				Padding : 2;
+				Fontcolor : $font-color-white;
+				FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+				Enabled : True;
+				&:hover{
+					BackgroundColor : $80808080;
+				}
+				&:down{
+					BackgroundColor : $805BA9FF;
+				}
+				&:disabled{
+					BackgroundColor : $40000000;
+				}
+			}
+			.value-wrapper{
+				.btn-sandbox{
+					Size : 100% 100%;
+				}
+				.value-controls{
+					Position : 2 0;
+					Size : 100% 100%;
+					ParentAnchor : caRight;
+					Anchor : caLeft;
+					Stackpartitioning : 15% 15% 30% 15% 15%;
+					& > .btn-sandbox{
+						Size : inherit inherit;
+					}
+					&.control-6{
+						Stackpartitioning : 12% 12% 12% 18% 12% 12% 12%;
+					}
+					.value{
+						Fontcolor : $font-color-white;
+						FontFlags : [ffCenter];
+						BackgroundColor : $40000000;
+					}
+				}
+			}
+		}
+	}
+}

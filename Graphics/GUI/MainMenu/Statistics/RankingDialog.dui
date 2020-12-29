@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<div class="ranking-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diRanking)" dxml-on:click="dialogs.CloseDialog(diRanking)">
+	<div class="window">
+		<div class="rank" src="MainMenu/Shared/Rank/rank{{ statistics.GameData.Rewards.RankingAfter }}.png"></div>
+		<stack class="events" vertical>
+			<div class="rank-up {{ ascend if statistics.GameData.Rewards.RankingBefore > statistics.GameData.Rewards.RankingAfter }} {{ descend if statistics.GameData.Rewards.RankingBefore < statistics.GameData.Rewards.RankingAfter }}">{{ §ranking_rank_up if statistics.GameData.Rewards.RankingBefore > statistics.GameData.Rewards.RankingAfter }}{{ §ranking_rank_down if statistics.GameData.Rewards.RankingBefore < statistics.GameData.Rewards.RankingAfter }}</div>
+			<div class="streak {{ win if statistics.GameData.Rewards.StarsChange > 1 }} {{ lose if statistics.GameData.Rewards.StarsChange < -1 }}">{{ §ranking_streak_wins if statistics.GameData.Rewards.StarsChange > 2 }}{{ §ranking_streak_win if statistics.GameData.Rewards.StarsChange = 2 }}{{ §ranking_streak_loses if statistics.GameData.Rewards.StarsChange < -2 }}{{ §ranking_streak_lose if statistics.GameData.Rewards.StarsChange = -2 }}</div>
+		</stack>
+		<stack class="stars">
+			<div class="star {{ filled if statistics.GameData.Rewards.StarsAfter >= 1 }} {{ new if (statistics.GameData.Rewards.StarsBefore < 1) and (statistics.GameData.Rewards.StarsAfter >= 1) }} {{ broken if (statistics.GameData.Rewards.StarsBefore >= 1) and (statistics.GameData.Rewards.StarsAfter < 1) }}" :visible="statistics.GameData.Rewards.MaxStarsAtRank >= 1"></div>
+			<div class="star {{ filled if statistics.GameData.Rewards.StarsAfter >= 2 }} {{ new if (statistics.GameData.Rewards.StarsBefore < 2) and (statistics.GameData.Rewards.StarsAfter >= 2) }} {{ broken if (statistics.GameData.Rewards.StarsBefore >= 2) and (statistics.GameData.Rewards.StarsAfter < 2) }}" :visible="statistics.GameData.Rewards.MaxStarsAtRank >= 2"></div>
+			<div class="star {{ filled if statistics.GameData.Rewards.StarsAfter >= 3 }} {{ new if (statistics.GameData.Rewards.StarsBefore < 3) and (statistics.GameData.Rewards.StarsAfter >= 3) }} {{ broken if (statistics.GameData.Rewards.StarsBefore >= 3) and (statistics.GameData.Rewards.StarsAfter < 3) }}" :visible="statistics.GameData.Rewards.MaxStarsAtRank >= 3"></div>
+			<div class="star {{ filled if statistics.GameData.Rewards.StarsAfter >= 4 }} {{ new if (statistics.GameData.Rewards.StarsBefore < 4) and (statistics.GameData.Rewards.StarsAfter >= 4) }} {{ broken if (statistics.GameData.Rewards.StarsBefore >= 4) and (statistics.GameData.Rewards.StarsAfter < 4) }}" :visible="statistics.GameData.Rewards.MaxStarsAtRank >= 4"></div>
+			<div class="star {{ filled if statistics.GameData.Rewards.StarsAfter >= 5 }} {{ new if (statistics.GameData.Rewards.StarsBefore < 5) and (statistics.GameData.Rewards.StarsAfter >= 5) }} {{ broken if (statistics.GameData.Rewards.StarsBefore >= 5) and (statistics.GameData.Rewards.StarsAfter < 5) }}" :visible="statistics.GameData.Rewards.MaxStarsAtRank >= 5"></div>
+			<div class="star {{ filled if statistics.GameData.Rewards.StarsAfter >= 6 }} {{ new if (statistics.GameData.Rewards.StarsBefore < 6) and (statistics.GameData.Rewards.StarsAfter >= 6) }} {{ broken if (statistics.GameData.Rewards.StarsBefore >= 6) and (statistics.GameData.Rewards.StarsAfter < 6) }}" :visible="statistics.GameData.Rewards.MaxStarsAtRank >= 6"></div>
+		</stack>
+	</div>
+</div>

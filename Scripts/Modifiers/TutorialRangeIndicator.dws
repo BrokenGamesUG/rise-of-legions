@@ -1,0 +1,10 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+begin
+  {$IFDEF CLIENT}
+    TTextureRangeIndicatorComponent.CreateGrouped(Entity, [1])
+      .SetTexture('SpelltargetShootingRange.png')
+      .IsPermanent;
+  {$ENDIF}
+end;

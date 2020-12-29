@@ -1,0 +1,93 @@
+﻿.meta-tutorial:important{
+	&.mtsQuestListOpen{
+		.btn-quest{
+			Zoffset : $zoffset-meta-tutorial-highlight;
+		}
+		.meta-tutorial-hint{
+			$arrow-bottom-right
+		}
+		.meta-tutorial-window{
+			Position : 95.63vw 92.78vh;
+		}
+	}
+	&.mtsQuestCollect{
+		.tutorial-quests{
+			Zoffset : $zoffset-meta-tutorial-highlight;
+		}
+		.meta-tutorial-hint{
+			$arrow-right
+		}
+		.meta-tutorial-window{
+			Position : 77.89vw 69.86vh;
+		}
+	}
+}
+
+.meta-tutorial-hint{
+	&.backdrop{
+		ZOffset : $zoffset-meta-tutorial-dialog;
+		BackgroundColor : rgba($background-backdrop, 0.2);
+	}
+	.window{
+		Anchor : caTopLeft;
+		ParentAnchor : caTopLeft;
+		Size : 40vw auto;
+		&.text-only{
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+		}
+		.text{
+			Size : 100% text;
+			Padding : 20 40;
+			FontSize : 24;
+			FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+		}
+		.arrow{
+			Position : 40 0;
+			Anchor : caTopLeft;
+			ParentAnchor : caBottomRight;
+			Size : auto 13vw;
+			ParentBox : pbPadding;
+			Background : Shared/Arrow.png;
+			Transform : rotateZ(45deg);
+			TransformAnchor : caCenter;
+			TransformOrder : toAnimationTransform;
+			$jello-horizontal;
+		}
+	}
+}
+
+.redeem-starterdecks-window.window:important{
+	Size : 60vw 55vh;
+	.starter-deck{
+		Position : 0 -12ch;
+		Anchor : caTop;
+		ParentAnchor : caTop;
+		Size : 80% auto;
+		Padding : 0 10cw;
+	}
+	.text{
+		Position : 0 20;
+		BackgroundColor : $40000000;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Padding : 30% 10%;
+		Size : 100% 23%;
+		FontSize : 100%;
+		FontWeight : 700;
+		FontFlags : [ffCenter,ffVerticalCenter];
+	}
+}
+
+.tutorial-game-dialog{
+	.window{
+		Size : 40vw 25vh;
+		.text{
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Size : 80% 100%;
+			FontSize : 18%;
+			FontFlags : [ffWordWrap,ffCenter,ffVerticalCenter];
+		}
+	}
+}

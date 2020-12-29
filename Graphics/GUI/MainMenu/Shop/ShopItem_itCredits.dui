@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-credits">
+	<img class="header-icon" src="MainMenu/Shop/{{ item.name }}.png"></img>
+	<div class="amount">
+		{{ F.IntComma(item.amount) }}
+		<img class="icon" src="{{ HClient.CurrencyIcon(item.Currency.UID) }}"></img>
+	</div>
+</div>

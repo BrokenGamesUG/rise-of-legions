@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<stack class="teamlist">
+	<div class="team-member index-{{ index. }}" dxml-for="member in matchmaking.manager.Currentteam.Players" :autoupdate="matchmaking.manager.CurrentTeam.UpdateDeck">
+		<wrapper>
+			<stack class="member-wrapper">
+				<div class="member-info">
+					<div class="player-icon">
+						<img class="icon" src="{{ HClient.GetPlayerIcon(member.Owner.Icon) }}"></img>
+					</div>
+					<div class="name">
+						{{ member.Owner.name }}
+						<div class="leader " :visible="member.IsLeader">§teambuilding_teamleader</div>
+					</div>
+					<btn class="btn-member btn-small btn-danger btn-close {{ disabled if matchmaking.InQueue }}" :visible="member.IsKickable" title="§Popupmenu_kick_player" dxml-on:click="matchmaking.manager.CurrentTeam.Kick(member.)"></btn>
+					<btn class="btn-member btn-small btn-danger btn-close" :visible="member.Owner.IsCurrentUser and not matchmaking.InQueue and (matchmaking.Manager.CurrentTeam.PlayerCount > 1)" title="§popupmenu_leave_team" dxml-on:click="matchmaking.manager.CurrentTeam.LeaveTeam"></btn>
+					<btn class="btn-member btn-small btn-warning fa fa-chevron-up {{ disabled if matchmaking.InQueue }}" :visible="member.IsKickable" title="§Popupmenu_promote_player" dxml-on:click="matchmaking.manager.CurrentTeam.PromotePlayerToLeader(member.)"></btn>
+				</div>
+				<btn class="deck-info {{ disabled if not member.Owner.IsCurrentUser or matchmaking.InQueue }}" dxml-on:click="dialogs.OpenDialog(diMatchmakingDeck)">
+					<div dxml-include="MainMenu/Deckbuilding/Deck.dui" dxml-with="deck=member.Deck"></div>
+				</btn>
+			</stack>
+		</wrapper>
+	</div>
+	<div class="team-member index-{{ index. + matchmaking.manager.Currentteam.PlayerCount }} {{ invisible if matchmaking.Manager.CurrentTeam.IsFull or not matchmaking.manager.CurrentTeam.CurrentUserIsLeader }}" dxml-for="slot in F.Range(matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.MaxTeamSize - matchmaking.manager.Currentteam.PlayerCount)">
+		<wrapper>
+			<stack split="40% 60%">
+				<div class="member-info add">
+					<img class="icon" src="MainMenu/Navbar/AddTeamMember.png" dxml-on:click="quests.IsVisible := False; friendlist.IsVisible := not friendlist.IsVisible"></img>
+					<div class="name">
+						§teambuilding_invite_player
+					</div>
+				</div>
+			</stack>
+		</wrapper>
+	</div>
+	<div class="selected-deck">§teambuilding_selected_deck</div>
+</stack>

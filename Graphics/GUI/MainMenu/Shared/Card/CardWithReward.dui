@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!-- Parameters | card : TCardInstanceWithRewards -->
+<div class="card {{ card.CardInstance.CardInfo.CardType }} {{ special if card.CardInstance.CardInfo.IsLegendary or card.CardInstance.CardInfo.IsEpic }}">
+	<div class="shadow">
+		<div class="hover"></div>
+		<img class="icon-frame" src="{{ HClient.GetCardIconBackground(card.CardInstance.CardInfo.) }}">
+			<div class="legendary" :visible="card.CardInstance.CardInfo.IsLegendary"></div>
+			<div class="epic" :visible="card.CardInstance.CardInfo.IsEpic"></div>
+			<img class="icon" src="{{ HClient.GetCardIcon(card.CardInstance.CardInfo.) }}"></img>
+			<wrapper class="stats">
+				<img class="league-icon {{ levelup if card.LevelUp }}" :src="HClient.GetLeagueIcon(card.CardInstance.League)" :title="F._d(§league_card_hint, card.CardInstance.League)">
+					<icon class="level-number level-{{ card.LevelAfter }}"></icon>
+					<div class="league-upgrade" :visible="card.CardInstance.IsLeagueUpgradable or (card.IsMaxLeveLAfter and card.CardInstance.League < 5)"></div>
+				</img>
+				<progress class="level-progress" :visible="not card.CardInstance.IsLeagueUpgradable">
+					<wrapper class="max" :visible="card.IsMaxLeveLAfter">Max</wrapper>
+					<bar class="old" :visible="not card.LevelUp or card.CardInstance.IsMaxLevel" transform="scaleX({{ card.LevelProgressBefore }})"></bar>
+					<bar class="new" transform="scaleX({{ card.LevelProgressAfter }})"></bar>
+				</progress>
+				<progress class="ascension-progress" :visible="card.CardInstance.IsLeagueUpgradable">
+					<wrapper class="max" :visible="card.UpgradeProgressAfter >= 1">Max</wrapper>
+					<bar class="old" :visible="not card.LevelUp or card.CardInstance.IsMaxLevel" transform="scaleX({{ card.UpgradeProgressBefore }})"></bar>
+					<bar class="new" transform="scaleX({{ card.UpgradeProgressAfter }})"></bar>
+				</progress>
+			</wrapper>
+		</img>
+		<div class="card-info" src="{{ HClient.GetCardInfoBackground(card.CardInstance.CardInfo.) }}">
+			<div class="name">{{ card.CardInstance.CardInfo.name }}</div>
+			<div class="description {{ skills if not card.CardInstance.CardInfo.IsSpell }}">
+				{{ card.CardInstance.CardInfo.ShortDescription if card.CardInstance.CardInfo.IsSpell else card.CardInstance.CardInfo.SkillList }}
+				<stack class="skill-hint custom-hint">
+					<stack class="skill-list" :visible="card.CardInstance.CardInfo.HasSkills or card.CardInstance.CardInfo.IsSpell">
+						<div class="skill" :visible="card.CardInstance.CardInfo.IsSpell">
+							<div class="skill-description">	
+								{{ card.CardInstance.CardInfo.Description }}
+							</div>
+						</div>
+						<stack dxml-for:static="skill in card.CardInstance.CardInfo.Skills" class="skill">
+							<div class="skill-name">- {{ skill.name }} -</div>
+							<div class="skill-description">{{ skill.hint }}</div>
+						</stack>
+					</stack>
+					<stack class="keyword-list" :visible="card.CardInstance.CardInfo.HasKeywords">
+						<div dxml-for:static="keyword_id in card.CardInstance.CardInfo.Keywords" class="keyword">
+							§effect_{{ keyword_id. }}_description
+						</div>
+					</stack>
+				</stack>
+			</div>
+			<div class="card-stats" :visible="not card.CardInstance.CardInfo.IsSpell">
+				<div class="attackdefense">
+					<div class="dps">
+						{{ F.IntToStr(F.Trunc(card.CardInstance.CardInfo.DPS * card.CardInstance.CardInfo.SquadSize)) if card.CardInstance.CardInfo.DPS <> 0 else '-'}}
+						<img class="icon" src="MainMenu/Shared/Card/Attack_{{  card.CardInstance.CardInfo.DamageType }}.png"  title="§damagetype_{{ card.CardInstance.CardInfo.DamageType }}_hint"></img>
+					</div>
+					<div class="health">
+						{{ F.IntToStr(F.Trunc(card.CardInstance.CardInfo.Health * card.CardInstance.CardInfo.SquadSize)) }}
+						<img class="icon" src="MainMenu/Shared/Card/Armor{{ card.CardInstance.CardInfo.ArmorType }}.png"  title="§armortype_{{ card.CardInstance.CardInfo.ArmorType }}_hint"></img>
+					</div>
+				</div>
+			</div>
+			<div class="costs {{ spawner if card.CardInstance.CardInfo.IsSpawner }}">
+				<div class="cost">
+					{{ card.CardInstance.CardInfo.WoodCost if card.CardInstance.CardInfo.IsSpawner else card.CardInstance.CardInfo.GoldCost }}
+				</div>
+				<div class="tech" :visible="not card.CardInstance.CardInfo.IsSpawner">{{ F.AsRoman(card.CardInstance.CardInfo.TechLevel) }}</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,31 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TClientGame{$ENDIF});
+begin
+
+  {$IFDEF SERVER}
+  // red KI
+  TScenarioDirectorComponent.Create(Entity)
+  // setup
+    .SetTeam(1)
+    .AddKIPlayer(0, 86, -23)
+    .ChooseUnitFaction(ecColorless)
+    .DisableMirroring
+    .ChangeGoldIncome(0, 0)
+    .ChangeWoodIncome(0, 20)
+    .ChangeWood(0, 16000)
+    .ChangeUnitSpawnerSubset(0, ['SmallMeleeGolem', 'SmallRangedGolem']);
+
+   // red KI
+  TScenarioDirectorComponent.Create(Entity)
+  // setup
+    .SetTeam(2)
+    .AddKIPlayer(1, -86, -23)
+    .ChooseUnitFaction(ecColorless)
+    .DisableMirroring
+    .ChangeGoldIncome(0, 0)
+    .ChangeWoodIncome(0, 20)
+    .ChangeWood(0, 16000)
+    .ChangeUnitSpawnerSubset(0, ['SmallMeleeGolem', 'SmallRangedGolem']);
+  {$ENDIF}
+end;

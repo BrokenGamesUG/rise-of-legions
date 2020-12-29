@@ -1,0 +1,14 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TClientGame{$ENDIF});
+begin
+  {$IFDEF SERVER}
+    TServerSandboxComponent.Create(Entity);
+    TServerSandboxCommandComponent.Create(Entity);
+  {$ENDIF}
+
+  TSandboxComponent.Create(Entity);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

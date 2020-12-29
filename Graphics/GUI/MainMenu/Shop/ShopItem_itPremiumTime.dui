@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-premium">
+	<img class="header-icon" src="MainMenu/Shop/{{ item.name }}.png"></img>
+	<div class="amount">
+		{{ F._pluralize_d(§shop_item_premium_time, item.Days) }}
+	</div>
+</div>

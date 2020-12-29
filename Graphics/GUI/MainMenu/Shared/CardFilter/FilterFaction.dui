@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<div class="filter-faction">
+	<stack>
+		<div class="check-wrapper">
+			<check class="white" dxml-on:change="filter.SetColor(ecWhite)" checked="{{ ecWhite in filter.FilterForColors }}"></check>
+			<wrapper class="overlay"></wrapper>
+		</div>
+		<div class="check-wrapper">
+			<check class="green" dxml-on:change="filter.SetColor(ecGreen)" checked="{{ ecGreen in filter.FilterForColors }}"></check>
+			<wrapper class="overlay"></wrapper>
+		</div>
+		<div class="check-wrapper">
+			<check class="blue" dxml-on:change="filter.SetColor(ecBlue)" checked="{{ ecBlue in filter.FilterForColors }}"></check>
+			<wrapper class="overlay"></wrapper>
+		</div>
+		<div class="check-wrapper">
+			<check class="black" dxml-on:change="filter.SetColor(ecBlack)" checked="{{ ecBlack in filter.FilterForColors }}"></check>
+			<wrapper class="overlay"></wrapper>
+		</div>
+		<div class="check-wrapper">
+			<check class="colorless" dxml-on:change="filter.SetColor(ecColorless)" checked="{{ ecColorless in filter.FilterForColors }}"></check>
+			<wrapper class="overlay"></wrapper>
+		</div>
+		<div class="check-wrapper" :visible="False">
+			<check class="red" dxml-on:change="filter.SetColor(ecRed)" checked="{{ ecRed in filter.FilterForColors }}"></check>
+			<wrapper class="overlay"></wrapper>
+		</div>
+	</stack>
+</div>

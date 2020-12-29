@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<div class="quest-log" :show="quests.IsVisible">
+	<stack class="lists-wrapper">
+		<stack class="lists">
+			<stack class="event-quests" :visible="(quests.QuestManager.EventQuestsCount > 0) and (profile.Profile.League > 1)">
+				<div class="caption">§quests_event_caption</div>
+				<div dxml-for="quest in quests.QuestManager.EventQuests" class:merge="quest-event" dxml-include="MainMenu/Quests/Quest.dui"></div>
+			</stack>
+			<stack class="weekly-quests {{ empty if quests.QuestManager.WeeklyQuestsCount <= 0 }}" :visible="profile.Profile.Level >= 3">
+				<div class="caption" title="§quests_weekly_hint">§quests_weekly_caption ({{ F.IntToTimeAdaptiveDays(quests.SecondsUntilWeeklyResets) }})</div>
+				<div class="empty">§quests_weekly_empty</div>
+				<div dxml-for="quest in quests.QuestManager.WeeklyQuests" class:merge="quest-weekly" dxml-include="MainMenu/Quests/Quest.dui"></div>
+			</stack>
+			<stack class="tutorial-quests" :visible="quests.QuestManager.TutorialQuestsCount > 0">
+				<div class="caption">§quests_tutorial_caption</div>
+				<div dxml-for="quest in quests.QuestManager.TutorialQuests" class:merge="quest-tutorial" :title="§quest_hint_ + quest.Identifier" dxml-include="MainMenu/Quests/Quest.dui"></div>
+			</stack>
+			<stack class="daily-quests {{ reroll-blocked if quests.QuestManager.OpenReRolls <= 0 }} {{ empty if quests.QuestManager.DailyQuestsCount <= 0 }}" :visible="profile.Profile.Level >= 3">
+				<div class="caption">§quests_daily_caption ({{ quests.QuestManager.DailyQuestsCount }}/{{  quests.QuestManager.MaxDailyQuests }})</div>
+				<div class="empty">§quests_daily_empty</div>
+				<div dxml-for="quest in quests.QuestManager.DailyQuests" class:merge="quest-daily" dxml-include="MainMenu/Quests/Quest.dui"></div>
+			</stack>
+		</stack>
+	</stack>
+	<div class="reroll-panel" title="§quests_reroll_panel_hint">
+		<icon></icon>
+		<div class="caption">{{ quests.QuestManager.OpenReRolls }}/{{ quests.QuestManager.MaxReRolls }}</div>
+	</div>
+</div>

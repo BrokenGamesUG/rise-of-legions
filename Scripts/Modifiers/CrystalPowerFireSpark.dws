@@ -1,0 +1,20 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+    TAutoBrainOnDealDamageComponent.CreateGrouped(Entity, [0, Group])
+      .FireInGroup([Group]);
+    TWelaTargetConstraintNotSelfComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\CrystalPowerSpark.dws')
+    .PassValueFromEvent(eiTeamID)
+    .PassValueFromEvent(eiFront);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

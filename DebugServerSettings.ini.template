@@ -1,0 +1,10 @@
+;Debug Server Settings
+;=========================
+[Server]
+GAMESERVER_OUTBOUND_IP = 192.168.0.101
+GAMESERVER_CHEATS_ENABLED = 0
+TESTSERVER_SCENARIO_UID = sandbox
+IS_TESTSERVER = 1
+
+[Connection]
+MANAGE_SERVER_URL=192.168.0.101:8000

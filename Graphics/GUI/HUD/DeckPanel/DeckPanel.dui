@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<stack class="deck-panel {{ sandbox if hud.IsSandbox and not hud.CaptureMode }}" id="deck_panel">
+	<stack class="instant">
+		<div class="deco deco-left"></div>
+		<div class="deco deco-mid"></div>
+		<div class="deco deco-right"></div>	
+		<stack id="Tech1" class="cards">
+			<div dxml-for="slot in hud.DeckSlotsStage1" dxml-include="HUD/DeckPanel/DeckCard.dui"></div>
+		</stack>
+		<stack id="Tech2" class="disabled cards">
+			<stack class="tier-timer" id="DeckTimer">
+				<div class="left"></div>
+				<div class="mid">
+					<div class="timer" id="Timer">14:00</div>
+					<div class="lock"></div>
+				</div>
+				<div class="right"></div>
+			</stack>
+			<div dxml-for="slot in hud.DeckSlotsStage2" dxml-include="HUD/DeckPanel/DeckCard.dui"></div>
+		</stack>
+		<stack id="Tech3" class="disabled cards">
+			<stack class="tier-timer" id="DeckTimer">
+				<div class="left"></div>
+				<div class="mid">
+					<div class="timer" id="Timer">14:00</div>
+					<div class="lock"></div>
+				</div>
+				<div class="right"></div>
+			</stack>
+			<div dxml-for="slot in hud.DeckSlotsStage3" dxml-include="HUD/DeckPanel/DeckCard.dui"></div>
+		</stack>
+	</stack>
+	<stack class="spawner cards" id="Spawner">
+		<div class="deco deco-left"></div>
+		<div class="deco deco-mid"></div>
+		<div class="deco deco-right"></div>	
+		<btn class="btn-spawner-jump" id="spawner_jump_button" title="§core_spawner_jump" dxml-on:click="hud.SpawnerJump"></btn>
+		<div dxml-for="slot in hud.DeckSlotsSpawner" dxml-include="HUD/DeckPanel/DeckCard.dui"></div>
+	</stack>
+</stack>

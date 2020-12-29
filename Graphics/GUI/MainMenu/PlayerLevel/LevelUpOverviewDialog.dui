@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<wrapper class="player-level-up-overview-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diPlayerLevelUpOverview)" dxml-on:click="dialogs.CloseDialog(diPlayerLevelUpOverview)">
+	<div class="window">
+		<div class="window-caption">§player_level_up_overview_caption</div>
+		<btn class="btn-small btn-window-close fa fa-times" dxml-on:click="dialogs.CloseDialog(diPlayerLevelUpOverview)"></btn>
+		
+		<stack class="level-up-reward-list">
+			<div dxml-for="level_reward in player_level.LevelUpRewardListCurrentObjects" class="level-up-reward-item">
+				<div class="level-up-reward">
+					<div class="header">
+						<div class="level">
+							<img class="level-number" src="MainMenu/PlayerLevel/{{ level_reward.Level }}.png"></img>
+						</div>
+					</div>
+					<div class="content index-{{ index. }} {{ has_text if level_reward.HasText }}">
+						<div class="checkmark" :visible="profile.Profile.Level >= level_reward.level"></div>
+						<div class="text">
+							{{ level_reward.AdditionalText }}
+						</div>
+						<stack class="loot-list items-{{ level_reward.Loot.Content.Count }}">
+							<div class="loot-item" dxml-for="item in level_reward.Loot.Content">
+								<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}.dui"></div>
+							</div>
+						</stack>
+					</div>
+				</div>
+			</div>
+		</stack>
+		
+		<div class="btn btn-left pop-out big" :visible="player_level.LevelUpRewardListPaginator.HasPrevious" dxml-on:click="player_level.LevelUpRewardListPaginator.Previous"></div>
+		<div class="btn btn-right pop-out big" :visible="player_level.LevelUpRewardListPaginator.HasNext" dxml-on:click="player_level.LevelUpRewardListPaginator.Next"></div>
+	</div>
+</wrapper>

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="shopitem detail shopitem-detail-skin">
+	<div class:merge="before" dxml-include="MainMenu/Shared/Card/CardTemplate.dui" dxml-with="card=item.Card.CardInfo"></div>
+	<div class="arrow"></div>
+	<div class:merge="after" dxml-include="MainMenu/Shared/Card/CardTemplate.dui" dxml-with="card=item.CardInfo"></div>
+</div>

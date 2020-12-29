@@ -1,0 +1,99 @@
+﻿.friend-invite-dialog{
+	.window{
+		Size : 80% 80%;
+		.panel{
+			Size : 49.5% 100%;
+			Padding-Top : 30;
+			BackgroundColor : $20000000;
+			.caption{
+				Anchor : caBottomLeft;
+				Size : 100% 30;
+				FontFlags : [ffCenter];
+			}
+			.subcaption{
+				Size : 100% 16;
+				FontFlags : [ffCenter];
+			}
+		}
+		.proposal.panel{
+			stack{
+				Size: 80% 100%;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				& > *{
+					Height : 5%;
+					BackgroundColor : $80000000;
+					Margin : 2;
+					&:hover{
+						BackgroundColor : $80404040;
+					}
+				}
+			}
+		}
+		.request.panel{
+			ParentAnchor : caTopRight;
+			Anchor : caTopRight;
+			.form{
+				Size : 80% 40;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				Padding : 2;
+				BackgroundColor : $80000000;
+				input{
+					Position : 0 100%;
+					Size : 65% 100%;
+					Anchor : caBottomLeft;
+					BackgroundColor : $FFAFAFAF $FFAFAFAF $FFFFFFFF $FFFFFFFF;
+					Enabled : True;
+					Fontsize : 80%;
+					Fontflags : [ffVerticalCenter];
+				}
+				.btn{
+					Position : 100% 100%;
+					Size : 30% 100%;
+					Anchor : caBottomRight;
+					BackgroundColor : $8000AF00 $8000AF00 $80A0FFA0 $80A0FFA0;
+				}
+			}
+		}
+	}
+}
+
+.refer-a-friend-dialog{
+	.window{
+		Size : 60% 50%;
+		.friend-id{
+			Size : 100% 50;
+			Margin : 0 3;
+			BoxSizing : bsMargin;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			FontFlags : [ffVerticalCenter,ffCenter];
+			BackgroundColor : $50000000;
+			ParentBox : pbPadding;
+			.click-hint{
+				Position : 0 2;
+				ParentAnchor : caBottom;
+				Anchor : caTop;
+				Size : 100% 12;
+				FontFlags : [ffVerticalCenter,ffCenter];
+			}
+		}
+		.top-text, .bottom-text{
+			Size : 100% 100%;
+			Padding : 0 20%;
+			FontSize : 18;
+			FontFlags : [ffVerticalCenter,ffCenter,ffWordWrap];
+		}
+		.top-text{
+			Size-Y : 30%;
+			ParentAnchor : caTop;
+			Anchor : caTop;
+		}
+		.bottom-text{
+			Size-Y : 30%;
+			ParentAnchor : caBottom;
+			Anchor : caBottom;
+		}
+	}
+}

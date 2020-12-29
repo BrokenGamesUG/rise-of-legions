@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<wrapper class="core-menu-dialog backdrop dialog" :show="hud.IsMenuOpen" dxml-on:click="hud.IsMenuOpen := False">
+	<div class="window">
+		<div class="window-caption small">§gui_ingame_menu_caption</div>
+		<stack class="buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.OpenDialog(diSettings)">§Settings</btn>
+			<btn class="btn-xl {{ btn-warning if hud.IsTutorial else btn-danger}}" dxml-on:click="hud.Surrender">{{ §core_menu_tutorial_skip if hud.IsTutorial else §Surrender }}</btn>
+			<btn class="btn-xl" dxml-on:click="client.CloseForcePrompt">§Quit</btn>
+			<btn class="btn-xl btn-success" dxml-on:click="hud.IsMenuOpen := False">§BackToGame</btn>
+		</stack>
+	</div>
+</wrapper>

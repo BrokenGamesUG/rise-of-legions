@@ -1,0 +1,427 @@
+﻿.league-icon{
+	Anchor : caCenter;
+	Size : auto 100%;
+	MouseEvents : mePassClick;
+	BackgroundMipMapLodBias : -1.0;
+	.league-upgrade{
+		Position : 1% 8%;
+		ParentAnchor : caTop;
+		Anchor : caCenter;
+		Size : auto 76.5%;
+		Background : MainMenu/Shared/Card/LeagueUpgrade.png;
+		BackgroundMipMapLodBias : -1.0;
+		AnimationBackgroundSpriteSize : 5 3;
+		AnimationBackgroundSpriteCount : 14;
+		AnimationDelay : 1000 4000;
+	}
+	.level-number{
+		Size : 69.2% auto;
+		ParentAnchor : caCenter;
+		Anchor : caCenter;
+		BackgroundMipMapLodBias : -1.0;
+		&.level-1{
+			Background : MainMenu/Shared/Card/1.png;
+		}
+		&.level-2{
+			Background : MainMenu/Shared/Card/2.png;
+		}
+		&.level-3{
+			Background : MainMenu/Shared/Card/3.png;
+		}
+		&.level-4{
+			Background : MainMenu/Shared/Card/4.png;
+		}
+		&.level-5{
+			Background : MainMenu/Shared/Card/5.png;
+		}
+	}
+	&.levelup{
+		.level-number{
+			&.level-1{
+				Background : MainMenu/Shared/Card/1green.png;
+			}
+			&.level-2{
+				Background : MainMenu/Shared/Card/2green.png;
+			}
+			&.level-3{
+				Background : MainMenu/Shared/Card/3green.png;
+			}
+			&.level-4{
+				Background : MainMenu/Shared/Card/4green.png;
+			}
+			&.level-5{
+				Background : MainMenu/Shared/Card/5green.png;
+			}
+		}
+	}
+}
+
+.card, .deck-card{
+	.icon-frame{
+		Size : auto 105%;
+		ZOffset : 10;
+		BackgroundMipMapping : mhLoad;
+		.legendary, .epic{
+			Position : -6% -6%;
+			Size : auto 92%;
+		}
+		.legendary{
+			Background : MainMenu/Shared/Card/LegendaryIndicator.png;
+		}
+		.epic{
+			Background : MainMenu/Shared/Card/EpicIndicator.png;
+		}
+		.icon{
+			Position: 0 0;
+			Size : 100% 100%;
+			BackgroundMipMapping : mhLoad;
+			ZOffset : 1;
+		}
+		.league-icon{
+			ZOffset : 10;
+			Position : 85% 98%;
+			Size : auto 36%;
+		}
+	}
+}
+
+.card{
+	Size : 100% auto;
+	.shadow{
+		Size : 100% auto;
+		Padding : 7% 4% 16% 4%;
+		Background : MainMenu\Shared\Card\CardTemplateShadow.png;
+		BackgroundColor : $A0FFFFFF;
+		&.ctDrop{
+			Background : MainMenu\Shared\Card\CardShadowDrop.png;
+			&.special{
+				.hover{
+					Background : MainMenu\Shared\Card\Card_Legendary_Hover.png;
+				}
+				.selected{
+					Background : MainMenu\Shared\Card\Card_Legendary_Glow.png;
+				}
+			}
+		}
+		&.ctBuilding{
+			Background : MainMenu\Shared\Card\CardShadowDrop.png;
+		}
+		&.ctSpawner{
+			Background : MainMenu\Shared\Card\CardShadowSpawner.png;
+			.hover{
+				Background : MainMenu\Shared\Card\Card_Spawner_Hover.png;
+			}
+			.selected{
+				Background : MainMenu\Shared\Card\Card_Spawner_Glow.png;
+			}
+		}
+		&.ctSpell{
+			Background : MainMenu\Shared\Card\CardShadowSpell.png;
+			.selected{
+				Background : MainMenu\Shared\Card\Card_Spell_Glow.png;
+			}
+		}
+	}
+	.hover{
+		Size : 109% auto;
+		Position : -1.8% -16%;
+		Anchor : caTop;
+		ParentAnchor : caTop;
+		Background : MainMenu\Shared\Card\Card_Hover.png;
+		Visibility : False;
+		BackgroundColorOverrideInheritance : False;
+		$glow;
+	}
+	.selected{
+		Size : 111% auto;
+		Position : -0.8% -17%;
+		Anchor : caTop;
+		ParentAnchor : caTop;
+		Background : MainMenu\Shared\Card\Card_Glow.png;
+		Opacity : 0;
+		TransistionProperty : gtOpacity;
+		TransisitonDuration : 100;
+	}
+	&.card-icon{
+		Enabled : True;
+		*{
+			MouseEvents : mePass;
+		}
+		&.ctSpawner{
+			.hover{
+				Background : MainMenu\Shared\Card\CardIcon_Spawner_Hover.png;
+			}
+			.selected{
+				Background : MainMenu\Shared\Card\Card_Spawner_Icon_Glow.png;
+			}
+		}
+		&.special{
+			.hover{
+				Background : MainMenu\Shared\Card\CardIcon_Legendary_Hover.png;
+			}
+		}
+		.hover{
+			Size : 126% auto;
+			Position : -1.8% -16%;
+			Background : MainMenu\Shared\Card\CardIcon_Hover.png;
+		}
+		.selected{
+			Size : 136% auto;
+			Position : 1.0% -19%;
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Background : MainMenu\Shared\Card\Card_Icon_Glow.png;
+			Opacity : 0;
+			TransistionProperty : gtOpacity;
+			TransisitonDuration : 100;
+			BackgroundColorOverrideInheritance : False;
+		}
+	}
+	.icon-frame{
+		Position : 1.0% 1%;
+		Size : auto 105%;
+		ZOffset : 10;
+		BackgroundMipMapping : mhLoad;
+		.legendary, .epic{
+			Position : -6% -6%;
+			Size : auto 92%;
+		}
+		.legendary{
+			Background : MainMenu/Shared/Card/LegendaryIndicator.png;
+		}
+		.epic{
+			Background : MainMenu/Shared/Card/EpicIndicator.png;
+		}
+		.icon{
+			Position: 0 0;
+			Size : 100% 100%;
+			Anchor : caTopLeft;
+			ParentAnchor : caTopLeft;
+			BackgroundMipMapping : mhLoad;
+			ZOffset : 1;
+		}
+		.stats{
+			Position-Y : -6%;
+			ZOffset : 10;
+			.league-icon{
+				Position : 85% 98%;
+			}
+			.level-progress, .ascension-progress{
+				Position : 76% 98.5%;
+				Anchor : caRight;
+				Size : 66% 10%;
+				BackgroundColor : $FF39474B;
+				Outline : 18ch $FF1A2B2F; 
+				bar{
+					Background : MainMenu/Shared/Card/XPFillBar.png;
+					MouseEvents : mePass;
+				}
+				.max, .daily-reward{
+					ZOffset : 5;
+					FontColor : $FFFFFFFF;
+					FontSize : 90%;
+					FontBorder : 1 $FF808080;
+				}
+				.max{
+					FontFlags : [ffCenter,ffVerticalCenter];
+					Padding : 0 0 3% 16%;
+				}
+				.daily-reward{
+					Position : -2% 0;
+					Size : text 100%;
+					Anchor : caTopRight;
+					FontFlags : [ffRight,ffVerticalCenter];
+				}
+				.old{
+					ZOffset : 1;
+				}
+				.new{
+					Background : MainMenu/Shared/Card/XPFillBarChange.png;
+				}
+				.premium{
+					Background : MainMenu/Shared/Card/XPFillBarNeutral.png;
+					BackgroundColor : $font-color-premium;
+				}
+			}
+			.ascension-progress{
+				bar, .new{
+					Background : MainMenu/Shared/Card/UpgradeFillBar.png;
+				}
+			}
+		}
+	}
+	.name{
+		Position : -4% 2.0%;
+		Anchor : caTopRight;
+		ParentAnchor : caTopRight;
+		Size : 86% 15%;
+		$medium-font;
+		Fontsize : 100%;
+		Padding : 0% 5% 10% 5%;
+		Fontcolor : $FFFFFFFF;
+		Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+	}
+	.card-info{
+		Anchor : caTopRight;
+		ParentAnchor : caTopRight;
+		Size : auto 100%;
+		Position : -1.5% 4.5%;
+		ZOffset : 11;
+	}
+	.card-stats, .description{
+		Anchor : caTopRight;
+		ParentAnchor : caTopRight;
+		Position : -7.0% 24.8%;
+		Size : 74% 60%;
+		.attackdefense{
+			Size : 100% 100%;
+			& > *{
+				Size : 49% 100%;
+				BackgroundColor : $FF1c2b2e;
+				Padding : 0 5% 0 100ch;
+				FontSize : 102%;
+				FontFlags : [ffRight,ffVerticalCenter];
+				FontWeight : 700;
+				FontColor : $font-color-white;
+				.icon:important{
+					Position : -5ch 0;
+					ParentAnchor : caLeft;
+					Size : auto 90%;
+					Anchor : caRight;
+					MouseEvents : mePass;
+				}
+			}
+			.health{
+				Size : 49% 100%;
+				ParentAnchor : caTopRight;
+				Anchor : caTopRight;
+			}
+		}
+		&:hover{
+			.skill-hint{
+				Visibility : True;
+			}
+		}
+	}
+	.card-stats{
+		Height : 15.6%;
+	}
+	.description{
+		FontWeight : 700;
+		FontSize : 17.5%;
+		FontFlags : [ffWordWrap];
+		FontColor : $DF000000;
+		HintAnchor : caLeft;
+		Cursor : crHint;
+		&.skills{
+			Padding-Top : 30%;
+			Padding-Bottom : 5%;
+			FontSize : 26%;
+			HintTemplate : Hints/DefaultHintLarge.gco;
+		}
+	}
+	.costs{
+		Position : 3.7% 6.2%;
+		Size : auto 24%;
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+		Background : MainMenu/Shared/Card/PriceTag.png;
+		&.spawner{
+			Background : MainMenu/Shared/Card/PriceTagSpawner.png;
+		}
+		.cost{
+			Size : 66% 100%;
+			Padding : 0 0 0 20;
+			Fontsize : 50%;
+			Fontflags : [ffRight,ffVerticalCenter];
+			Fontcolor : $FFE9FEFF;
+			FontWeight : 700;
+		}
+		.tech{
+			Position : -2% 0;
+			Anchor : caBottomRight;
+			ParentAnchor : caBottomRight;
+			Size : 100ch 100%;
+			Fontsize : 100%;
+			Padding : 25%;
+			Fontflags : [ffCenter,ffVerticalCenter];
+			Fontcolor : $FF000000;
+			FontWeight : 1000;
+		}
+	}
+	.btn-into-deck{
+		Size : 45% auto;
+		ZOffset : 15;						
+		Enabled : True;
+		Background : MainMenu\Shared\Card\CardIntoDeckButton.png;
+		Visibility : False;
+		&:hover{
+			Background : MainMenu\Shared\Card\CardIntoDeckButtonHover.png;
+		}
+	}
+}
+
+.skill-hint{
+	Position : 6% 0;
+	Anchor : caAuto caLeft caRight;
+	ParentAnchor : caAuto caLeft caRight;
+	Size : 250 auto;
+	Stackorientation : soVertical;
+	FontColor : $font-color-default;
+	ZOffset : 9000;
+	Visibility : False;
+	MouseEvents : mePass;
+	BackgroundColorOverrideInheritance : False;
+	*{
+		MouseEvents : mePass;
+	}
+	.skill-list, .keyword-list{
+		$frame;
+		BackgroundColor : $background-hint;
+	}
+	.skill-list{
+		Size : 100% auto;
+		Stackorientation : soVertical;
+		.skill{
+			Size : 100% auto;
+			Stackorientation : soVertical;
+			Padding-Bottom : 15;
+			&:last-child{
+				Padding-Bottom : 0;
+			}
+			.skill-name, .skill-description{
+				Size : 100% text;
+				Fontsize : 15;
+				Fontflags : [ffWordWrap];
+				Padding : 0 4;
+			}
+			.skill-name{
+				BackgroundColor : $field-background;
+				FontWeight : 1000;
+				TextTransform : ttUppercase;
+				FontColor : $font-color-real-white;
+			}
+			.skill-description{
+				Padding-Top : 2;
+				FontWeight : 500;
+			}
+		}
+	}
+	.keyword-list{
+		Size : 100% auto;
+		Stackorientation : soVertical;
+		BackgroundColor : lerp($field-background, $background-hint, 0.5);
+		Border : 2 lerp($field-background, $background-hint, 0.5);
+		BackgroundColorOverride : $override-subtile;
+		.keyword{
+			Size : 100% text;
+			Fontsize : 15;
+			Fontflags : [ffWordWrap];
+			Padding : 0 4 15 4;
+			FontWeight : 500;
+			&:last-child{
+				Padding-Bottom : 0;
+			}
+		}
+	}
+}

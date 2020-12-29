@@ -1,0 +1,55 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var HealthGroup, Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  HealthGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [HealthGroup], 0.3); // increase health by max health
+  Entity.Blackboard.SetValue(eiWelaModifier, [HealthGroup], 50.0); // and increase health flat
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, HealthGroup]);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Enchanted')
+      .TriggerOnTakeDamage;
+
+    // Increase Health, only server because cap is synced
+    TModifierResourceComponent.CreateGrouped(Entity, [HealthGroup])
+      .Resource(reHealth)
+      .ScaleWithResource(reHealth)
+      .UseResourceCap
+      .AddModifier
+      .ApplyNow();
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedHealth]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\blessing_health_buff.pfx', 3.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\blessing_health_apply.pfx', 1.1)
+      .ActivateNow
+      .FixedHeightGround
+      .FixedOrientationDefault
+      .ScaleWith(eiCollisionRadius);
+
+    TVisualModificatorSizeComponent.CreateGrouped(Entity, [0, 1, 2, 3, 4, 5, 6, 7, 8, Group])
+      .Keypoints([1.0, 0.9, 1.25, 1.1])
+      .KeypointsY([1.0, 1.4, 1.0, 1.1])
+      .TimeKeys([0, 100, 250, 300])
+      .Duration(300);
+
+    TMeshEffectTint.Create(300, $FFECFFC5)
+      .AddKey(0, 0.0)
+      .AddKey(100, 1.0)
+      .AddKey(300, 0.0)
+      .AssignToEntity(Entity);
+  {$ENDIF}
+end;

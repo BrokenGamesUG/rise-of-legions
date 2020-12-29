@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh">
+  <GeometryFile>thistle.fbx</GeometryFile>
+  <Cullmode>cmCCW</Cullmode>
+  <Alpha>1</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <SpecularIntensity>0,239215686917305</SpecularIntensity>
+  <SpecularPower>17</SpecularPower>
+  <SpecularTint>1</SpecularTint>
+  <ShadingReduction>0</ShadingReduction>
+  <DiffuseTetxure>ThistleDiffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture>ThistleMaterial.tga</SpecularTexture>
+  <GlowTexture>ThistleGlow.tga</GlowTexture>
+  <FurTexture>FurMask.tga</FurTexture>
+  <FurIterations>5</FurIterations>
+  <FurThickness>0</FurThickness>
+  <FurTrackBone>ThistleRibcage</FurTrackBone>
+  <FurResponsivness>0,00811764691025019</FurResponsivness>
+  <FurAcceleration>1</FurAcceleration>
+  <FurAccelerationResponsivness>0,0309803932905197</FurAccelerationResponsivness>
+  <FurAttenuation>0,0038823529612273</FurAttenuation>
+  <FurMovementLength>1</FurMovementLength>
+  <FurGravitation>0,200000002980232</FurGravitation>
+</TMesh>

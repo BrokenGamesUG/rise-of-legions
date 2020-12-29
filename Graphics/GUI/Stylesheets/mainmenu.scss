@@ -1,0 +1,107 @@
+﻿.meta-client{
+}
+
+.mainmenu{
+	.overlay{
+		Size : 100% 100%;
+		ZOffset : 1000;
+		MouseEvents : mePass;
+	}
+	.main-content{
+		Padding : $navbar-size 0 0 0;
+		.content-sub{
+			Padding : 40 10 10 10;
+		}
+	}
+	.fullscreen-content{
+		ZOffset : 100;
+		MouseEvents : mePass;
+	}
+}
+
+.hover-menu{
+	Size : 100% 100%;
+	MouseEvents : mePass;
+	.panels{
+		Size : 0 0;
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+		Position : -5 -55;
+		& > *{
+			$slide-right-in;
+			&:hiding{
+				$slide-right-out;
+			}
+		}
+	}
+	& > .deco{
+		Size : auto 100bh;
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+		Background : MainMenu/HoverMenu/hover_menu_background.png;
+		MouseEvents : mePass;
+	}
+	.navigation{
+		Anchor : caBottomRight;
+		ParentAnchor : caBottomRight;
+		Position : -3 -3;
+		Size : auto 0;
+		StackOrientation : soHorizontal;
+		StackPartitioning : auto;
+		& > *{
+			Position : inherit inherit;
+			Size : auto 100bh;
+			Anchor : caBottomLeft;
+			Margin-Left : 4;
+			Enabled : True;
+		}
+		.btn-quest{
+			Background : MainMenu/HoverMenu/quest_btn.png;
+			ZOffset : 1;
+			.ping{
+				MouseEvents : mePass;
+				Visibility : False;
+				Size : 100% 100%;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				TransformAnchor : caBottomRight;
+				ZOffset : -5;
+				TransformInheritance : False;
+				BackgroundColorOverrideInheritance : False;
+				Background : Shared/WithMipMaps/quadradic_ping.tga;
+				BackgroundMipMapping : mhLoad;
+				$quest-ping;
+			}
+			&.completed{
+				$jello-flash;
+				Background : MainMenu/HoverMenu/quest_btn_complete.png;
+				&:down{
+					AnimationDuration: 0;
+					.ping{
+						Visibility : False;
+					}
+				}
+			}
+			&.has-ping{
+				.ping{
+					Visibility : True;
+				}
+			}
+		}
+		.btn-friendlist{
+			Background : MainMenu/HoverMenu/friendlist_btn.tga;
+			Position: inherited 4;
+		}
+	}
+}
+
+.tutorial{
+	.content-sub{
+		Blur : True;
+		img{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Size : auto 100%;
+		}
+	}
+}

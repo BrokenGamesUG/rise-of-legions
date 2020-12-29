@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<wrapper class="dashboard" :visible="menu.CurrentMenu = mtStart">
+	<div class="left">
+		<div class="title-image"></div>
+		<div class="players-online">{{ F._d(§misc_players_online, profile.Account.CurrentPlayersOnline) }}</div>
+		<div class="beta-announcement">
+			<div class="title">{{ serverstate.ClientDashboardHeadline }}</div>
+			<div class="text">{{ serverstate.ClientDashboardText }}</div>
+		</div>
+		<div :visible="not serverstate.IsTournamentUpcoming" class="news-tile" :enabled="False">
+			<stack class="icon">
+				<img src="MainMenu/Dashboard/youtubeLink.png" dxml-on:click="client.BrowseTo(weYoutube)"></img>
+				<img src="MainMenu/Dashboard/TwitterLink.png" dxml-on:click="client.BrowseTo(weTwitter)"></img>
+				<img src="MainMenu/Dashboard/facebookLink.png" dxml-on:click="client.BrowseTo(weFacebook)"></img>
+			</stack>
+			<!--div class="caption">§home_social_text</div-->
+		</div>
+	</div>
+	<div class="divider"></div>
+	<stack vertical class="right">
+		<!--div class="news-tile crystal-sunday">
+			<div class="title">
+				§home_crystal_sunday_title
+				<div class="event">§home_crystal_sunday_subtitle</div>
+				<div class="date">§home_crystal_sunday_date</div>
+				<div class="crystal cleft"></div>
+				<div class="crystal cright"></div>
+			</div>
+			<div class="caption">§home_crystal_sunday_text</div>
+			<div class="countdown" :visible="profile.Profile.CrystalEventTimeSeconds > 0">§home_crystal_sunday_countdown {{ F.IntToLongTimeDetail(profile.Profile.CrystalEventTimeSeconds) }}</div>
+			<div class="countdown" :visible="profile.Profile.CrystalEventTimeSeconds <= 0">§home_crystal_sunday_started</div>
+		</div-->
+		<div class="news-tile banner {{ highlight if not profile.Profile.ScillHighlightDisabled }}" dxml-on:click="client.BrowseTo(weScill);profile.Profile.ScillHighlightSeen">
+			<img class="icon" src="MainMenu/Dashboard/scill_banner_{{ dashboard.ScillBannerIndex }}.png"><hover></hover></img>
+		</div>
+		<div class="news-tile banner single" dxml-on:click="client.BrowseTo(weScillTournament)">
+			<img class="icon" src="MainMenu/Dashboard/scill_tournaments.png"><hover></hover></img>
+		</div>
+		<!--div :visible="profile.IsTranslationFinished" class="news-tile" dxml-on:click="client.BrowseTo(weTranslation)">
+			<img class="icon" src="MainMenu/Dashboard/crowdin_logo.png"></img>
+			<div class="caption">§home_translation_text</div>
+		</div>
+		<div :visible="not profile.IsTranslationFinished" class="news-tile two-line-caption" dxml-on:click="client.BrowseTo(weTranslation)">
+			<img class="icon" src="MainMenu/Dashboard/crowdin_logo.png"></img>
+			<div class="caption">{{ F._(§home_translation_unfinished_text, profile.TranslationPercentage) }}</div>
+			<icon :visible="(profile.TranslationProgress < 100) and (profile.TranslationProgress > 10)" class="sign sign-warning wobble"></icon>
+			<icon :visible="profile.TranslationProgress < 10" class="sign sign-danger wobble"></icon>
+		</div-->
+		<div class="news-tile" dxml-on:click="client.BrowseTo(weSteamChat)">
+			<img class="icon" src="MainMenu/Dashboard/SteamLogo.png"></img>
+			<div class="caption">§home_steam_chat_text</div>
+		</div>
+		<div class="news-tile" dxml-on:click="client.BrowseTo(weDiscord)">
+			<img class="icon" src="MainMenu/Dashboard/DiscordLogo.tga"></img>
+			<div class="caption">§home_discord_text</div>
+		</div>
+		<div :visible="not serverstate.IsTournamentUpcoming" class="news-tile" dxml-on:click="client.BrowseTo(wePatchNotes)">
+			<div class="title">§home_patch_notes_title {{ F.Date(profile.Profile.LatestPatchNotes) }}</div>
+			<div class="caption">§home_patch_notes_text</div>
+		</div>
+		<!--div :visible="profile.IsTranslationFinished" class="news-tile" dxml-on:click="client.BrowseTo(weGuide)">
+			<div class="title with-banner">§home_guide_title</div>
+			<div class="caption">§home_guide_text</div>
+		</div-->
+		<!--div class="news-tile" dxml-on:click="client.BrowseTo(weWiki)">
+			<img class="icon" src="MainMenu/Dashboard/gamepedia_logo.png"></img>
+			<div class="caption">§home_wiki_text</div>
+		</div-->
+	</stack>
+</wrapper>

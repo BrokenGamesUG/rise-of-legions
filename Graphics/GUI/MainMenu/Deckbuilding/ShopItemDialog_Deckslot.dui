@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<wrapper class="shopitem-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diDeckslotPurchase)" dxml-on:click="dialogs.CloseDialog(diDeckslotPurchase)">
+	<div class="shopitem-wrapper">
+		<div class="showcase">
+			<div dxml-include="MainMenu/Shop/ShopItemDetail_{{ shop.DeckslotShopItemCredits.ItemType }}.dui" dxml-with="item=shop.DeckslotShopItemCredits"></div>
+		</div>
+		<stack class="offers">
+			<div dxml-for="offer in shop.DeckslotShopItemCredits.Offers" class="offer">
+				<stack>
+					<btn dxml-for="cost in offer.Costs" class="btn-xl btn-currency" :enabled="offer.IsPayable" dxml-on:click="shop.BuyOffer(offer.)">
+						<div class="amount">
+							{{ cost.Amount }}
+							<img class="icon" src="{{ HClient.CurrencyIcon(cost.Currency.UID) }}"></img>
+						</div>
+					</btn>
+				</stack>
+			</div>
+			
+			<div dxml-for="offer in shop.DeckslotShopItemCrystals.Offers" class="offer">
+				<stack>
+					<btn dxml-for="cost in offer.Costs" class="btn-xl btn-currency" :enabled="offer.IsPayable" dxml-on:click="shop.BuyOffer(offer.)">
+						<div class="amount">
+							{{ cost.Amount }}
+							<img class="icon" src="{{ HClient.CurrencyIcon(cost.Currency.UID) }}"></img>
+						</div>
+					</btn>
+				</stack>
+			</div>
+		</stack>
+	</div>
+</wrapper>

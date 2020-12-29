@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<div class="sandbox-controls" :visible="hud.IsSandbox and hud.IsSandboxControlVisible and not hud.Capturemode">
+	<stack class="tools" vertical>
+		<div class="btn-sandbox disabled">
+			{{ HUD.MouseScreenPosition.X }}, {{ HUD.MouseScreenPosition.Y }}
+		</div>
+		<div class="btn-sandbox disabled">
+			{{ F.FloatToStr(HUD.MousePosition.X) }}, {{ F.FloatToStr(HUD.MousePosition.Y) }}
+		</div>
+		<div class="btn-sandbox" :down="hud.CameraFixedToLane" dxml-on:click="hud.CameraFixedToLane := not hud.CameraFixedToLane">
+			Fix camera to lane
+		</div>
+		<div class="value-wrapper">
+			<div class="btn-sandbox" :down="hud.CameraRotate" dxml-on:click="hud.CameraRotate := not hud.CameraRotate">
+				Rotate camera (Strg + R)
+			</div>
+			<stack class="value-controls">
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationSpeed := hud.CameraRotationSpeed - 5">-5</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationSpeed := hud.CameraRotationSpeed - 1">-1</div>
+				<div class="value">{{ hud.CameraRotationSpeed }}</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationSpeed := hud.CameraRotationSpeed + 1">+1</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationSpeed := hud.CameraRotationSpeed + 5">+5</div>
+			</stack>
+		</div>
+		<div class="value-wrapper">
+			<div class="btn-sandbox disabled">
+				Scroll speed
+			</div>
+			<stack class="value-controls">
+				<div class="btn-sandbox" dxml-on:click="hud.CameraScrollSpeed := hud.CameraScrollSpeed - 5">-5</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraScrollSpeed := hud.CameraScrollSpeed - 1">-1</div>
+				<div class="value">{{ hud.CameraScrollSpeed }}</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraScrollSpeed := hud.CameraScrollSpeed + 1">+1</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraScrollSpeed := hud.CameraScrollSpeed + 5">+5</div>
+			</stack>
+		</div>
+		<div class="value-wrapper">
+			<div class="btn-sandbox" :down="hud.CameraRotationOffsetUsed" dxml-on:click="hud.CameraRotationOffsetUsed := not hud.CameraRotationOffsetUsed">
+				Camera rotation offset
+			</div>
+			<stack class="value-controls control-6">
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationOffset := 0">0</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationOffset := hud.CameraRotationOffset - 45">-45</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationOffset := hud.CameraRotationOffset - 1">-1</div>
+				<div class="value">{{ F.Trunc(hud.CameraRotationOffset) }}°</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationOffset := hud.CameraRotationOffset + 1">+1</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationOffset := hud.CameraRotationOffset + 45">+45</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraRotationOffset := -47.429217">Lane</div>
+			</stack>
+		</div>
+		<div class="value-wrapper">
+			<div class="btn-sandbox" :down="hud.CameraTiltOffsetUsed" dxml-on:click="hud.CameraTiltOffsetUsed := not hud.CameraTiltOffsetUsed">
+				Camera tilt offset
+			</div>
+			<stack class="value-controls">
+				<div class="btn-sandbox" dxml-on:click="hud.CameraTiltOffset := hud.CameraTiltOffset - 5">-5</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraTiltOffset := hud.CameraTiltOffset - 1">-1</div>
+				<div class="value">{{ hud.CameraTiltOffset }}°</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraTiltOffset := hud.CameraTiltOffset + 1">+1</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraTiltOffset := hud.CameraTiltOffset + 5">+5</div>
+			</stack>
+		</div>
+		<div class="value-wrapper">
+			<div class="btn-sandbox" :down="hud.CameraFoVOffsetUsed" dxml-on:click="hud.CameraFoVOffsetUsed := not hud.CameraFoVOffsetUsed">
+				Camera FoV offset
+			</div>
+			<stack class="value-controls">
+				<div class="btn-sandbox" dxml-on:click="hud.CameraFoVOffset := hud.CameraFoVOffset - 5">-5</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraFoVOffset := hud.CameraFoVOffset - 1">-1</div>
+				<div class="value">{{ hud.CameraFoVOffset }}°</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraFoVOffset := hud.CameraFoVOffset + 1">+1</div>
+				<div class="btn-sandbox" dxml-on:click="hud.CameraFoVOffset := hud.CameraFoVOffset + 5">+5</div>
+			</stack>
+		</div>
+		<div class="btn-sandbox" :down="hud.CameraLocked" dxml-on:click="hud.CameraLocked := not hud.CameraLocked">
+			Lock camera
+		</div>
+		<div class="btn-sandbox" :down="not hud.CameraLimited" dxml-on:click="hud.CameraLimited := not hud.CameraLimited">
+			Unlimited camera
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccSaveCameraPosition)">
+			Save camera position
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccReturnToSavedCameraPosition)">
+			Load camera position
+		</div>
+		<div class="spacer"></div>
+		<div class="btn-sandbox" :down="hud.KeepResourcesInCaptureMode" dxml-on:click="hud.KeepResourcesInCaptureMode := not hud.KeepResourcesInCaptureMode">
+			Normal resources while capturing
+		</div>
+		<div class="btn-sandbox" :down="hud.CaptureMode" dxml-on:click="hud.CaptureMode := not hud.CaptureMode">
+			Capture mode (P)
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccClearUnits)">
+			Clear all units
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccClearAllUnits)">
+			Clear all units and golems
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccClearSpawners)">
+			Clear all spawners
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccClearLaneTowers)">
+			Clear all lane towers
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccClearGolemTowers)">
+			Clear all golem towers
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccBaseBuildingsLevel1)">
+			Reset base buildings to lvl 1
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccBaseBuildingsLevel2)">
+			Reset base buildings to lvl 2
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccBaseBuildingsLevel3)">
+			Reset base buildings to lvl 3
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccBaseBuildingsIndestructible)">
+			Make base buildings indestructible
+		</div>
+		<div class="btn-sandbox" :down="hud.SandboxSpawnWithOverwatch" dxml-on:click="hud.SandboxSpawnWithOverwatch := not hud.SandboxSpawnWithOverwatch; hud.CallClientCommand(ccToggleOverwatch)">
+			Toggle overwatch
+		</div>
+		<div class="btn-sandbox" :down="hud.SandboxSpawnWithOverwatchClearable" dxml-on:click="hud.SandboxSpawnWithOverwatchClearable := not hud.SandboxSpawnWithOverwatchClearable; hud.CallClientCommand(ccToggleOverwatchSandbox)">
+			Toggle overwatch clearable
+		</div>
+		<div class="btn-sandbox" dxml-on:click="hud.CallClientCommand(ccClearOverwatch)">
+			Clear overwatch
+		</div>
+	</stack>
+</div>

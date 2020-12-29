@@ -1,0 +1,55 @@
+#define DURATION 10000
+
+procedure Apply(Entity : TEntity);
+var Group, ImmuneGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], DURATION); //Banished-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], DURATION + 10000); //Banished-Duration
+
+  {$IFDEF SERVER}
+    // Stop unit at Banished
+    Entity.Eventbus.Trigger(eiStand, []);
+    Entity.Eventbus.Trigger(eiWelaStop, []);
+    // After eiCooldown Banished is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Banished')
+      .TriggerOnKilled;
+
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+
+    TWelaHelperBeaconComponent.CreateGrouped(Entity, [Group, ImmuneGroup])
+      .TriggerAt([upBanished]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upBanished]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToBanished]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Banished.pfx', 0.8)
+      .ScaleWith(eiCollisionRadius)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectVoid.Create()
+          .SetTexture(PATH_GRAPHICS + 'Effects\Textures\Banished.tga')
+      );
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/black/effect/banish')
+      .TriggerNow();
+  {$ENDIF}
+end;

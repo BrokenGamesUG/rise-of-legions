@@ -1,0 +1,87 @@
+﻿.final{
+	Visibility : False;
+	$scale-in;
+	.panel{
+		Size : 100% auto;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Background : HUD/FinalScreen/banner.png;
+		.result{
+			Size : auto 30%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Background : HUD\FinalScreen\Victory.png;
+			&.defeat{
+				Background : HUD\FinalScreen\Defeat.png;
+			}
+		}
+		btn{
+			Position : 0 -5%;
+			Anchor : caCenter;
+			ParentAnchor : caBottom;
+		}
+	}
+}
+
+.scoreboard-dialog{
+	.window{
+		Size : 900 450;
+		.match{
+			stack{
+				Size-X : 35%;
+				& > *{
+					Size : 100% 120;
+					Padding : 10 0;
+				}
+			}
+		}
+	}
+}
+
+.core-menu-dialog{
+	.window{
+		Size : 270 330;
+		Padding-Bottom : 10;
+		.buttons{
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Size : 90% 100%;
+			Stackpartitioning : auto;
+			Stackorientation : soVertical;
+			& > *{
+				Position-X : 5%;
+				Size : 90% auto;
+				Fontsize : 50%;
+				Margin-Top : -10;
+				&:last-child{
+					Position : 0 0;
+					Anchor : caBottom;
+					ParentAnchor : caBottom;
+				}
+			}
+		}
+	}
+}
+
+.reconnect-dialog{
+	&.backdrop{
+		Zoffset: $zoffset-super-nested-dialog;
+	}
+	.window{
+		Size : 450 200;
+		.message-wrapper{
+			Size : 100% 100%;
+		}
+		.spinner{
+			Position : 0 55%;
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Size : auto 30%;
+		}
+		.message{
+			Position : 0 20%;
+			Size : 100% 20%;
+			FontFlags : [ffCenter];
+		}
+	}
+}

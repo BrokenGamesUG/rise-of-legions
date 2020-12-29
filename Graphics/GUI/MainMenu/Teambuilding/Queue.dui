@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<div class="queue">
+	<div class="btn btn-xl btn-queue btn-tier-{{ matchmaking.manager.CurrentTeam.League if matchmaking.HasAutoLeague else no }}" :enabled="not matchmaking.IsEnteringQueue and not matchmaking.InQueue and (matchmaking.manager.CurrentTeam.QueueEnterable = qeYes)" :visible="matchmaking.manager.CurrentTeam.CurrentUserIsLeader" title="§teambuilding_{{ matchmaking.manager.CurrentTeam.QueueEnterable }}" dxml-on:click="matchmaking.EnterQueue">
+		§teambuilding_start_queue
+	</div>
+	<div class="window queue-hint league-hint" :visible="not matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.IsDuel and matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.IsPvP and not matchmaking.manager.CurrentTeam.HavePlayersSameLeague">
+		§teambuilding_match_hint_team_not_equal_league
+		<icon class="window-icon sign-danger wobble"></icon>
+	</div>
+	<div class="window queue-hint match-hint" :visible="not matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.IsDuel and not matchmaking.manager.CurrentTeam.IsFull and not matchmaking.InQueue">
+		§teambuilding_match_hint_team_not_full
+		<icon class="window-icon sign-danger wobble"></icon>
+	</div>
+	<div class="window queue-window" :visible="matchmaking.InQueue">
+		<div class="window queue-hint match-hint" :visible="not matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.IsDuel and not matchmaking.manager.CurrentTeam.IsFull">
+			§teambuilding_match_hint_team_not_full
+			<icon class="window-icon sign-danger wobble"></icon>
+		</div>
+		<div class="window window-danger queue-hint server-full-hint" :visible="not matchmaking.Queue.ServerAvailable">	
+			§teambuilding_queue_server_full
+			<icon class="window-icon sign-danger wobble"></icon>
+		</div>
+		<div class="window-headline">§Teambuilding_InQueue_Title</div>
+		<div class="panel time" title="§teambuilding_queue_time_hint">
+			<div class="fa fa-clock-o"></div>
+			<div id="QueueTimeInQueueDisplay" class="display">{{ F.IntToTime(matchmaking.Queue.TimeInQueue) }}</div>
+		</div>
+		<div class="panel online">
+			<div class="display">{{ F._d(§misc_players_online, profile.Account.CurrentPlayersOnline) }}</div>
+		</div>
+		<div class="panel count" title="§teambuilding_queue_count_hint">
+			<div class="fa fa-users"></div>
+			<div id="QueuePlayerCountDisplay" class="display">{{ matchmaking.Queue.PlayerCount }}</div>
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-danger" dxml-on:click="matchmaking.LeaveQueue">§teambuilding_queue_abort</btn>
+		</stack>
+	</div>
+</div>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<wrapper class="scoreboard-dialog backdrop dialog disabled" :show="hud.ScoreboardVisible">
+	<div class="window">
+		<div class="window-caption">§core_scoreboard</div>
+		<wrapper class="match">
+			<stack class="left">
+				<div dxml-for="player in hud.ScoreboardLeftTeam">
+					<div class="username">
+						{{ player.username }}
+					</div>
+					<div class="deck">
+						<img class="icon" src="{{ HClient.GetDeckIcon(player.deck_icon) }}"></img>
+						<div class="info">
+							<div class="name">{{ player.deckname }}</div>
+						</div>
+					</div>
+				</div>
+			</stack>
+			<stack class="right">
+				<div dxml-for="player in hud.ScoreboardRightTeam">
+					<div class="username">
+						{{ player.username }}
+					</div>
+					<div class="deck">
+						<img class="icon" src="{{ HClient.GetDeckIcon(player.deck_icon) }}"></img>
+						<div class="info">
+							<div class="name">{{ player.deckname }}</div>
+						</div>
+					</div>
+				</div>
+			</stack>
+			<div class="vs-icon"></div>
+		</wrapper>
+	</div>
+</wrapper>

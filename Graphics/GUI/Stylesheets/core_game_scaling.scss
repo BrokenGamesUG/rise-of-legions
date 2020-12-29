@@ -1,0 +1,52 @@
+﻿.core-game.small{
+	.hud{
+		.deck-panel{
+			Position-X : -30ch;
+			Size-Y : 64;
+			.build-slot-wrapper{
+				Size : 66 64;
+			}
+			.spawner{
+				Margin-left : 48;
+			}
+			.btn-spawner-jump{
+				Position-X : 45ch;
+			}
+			.cards{
+				&.disabled{
+					Position-Y : 38%;
+					.tier-timer{
+						Position-Y : -38%;
+					}
+				}
+			}
+		}
+		.resources{
+			Size-X : 80bw;
+		}
+		.minimap{
+			Size-X : 80bw;
+		}
+		.tooltip{
+			Size-X : 80bw;
+		}
+		.commander-switch{
+			Size-Y : 35;
+		}
+		.game-info{
+			Size-X : 80bw;
+		}
+		.pve-attack-panel{
+			Size-Y : 80bh;
+		}
+		.card-hint{
+			Position-Y : -208;
+			Size-X : 267;
+			.hint{
+				.hint-text{
+					Fontsize : 12;
+				}
+			}
+		}
+	}
+}

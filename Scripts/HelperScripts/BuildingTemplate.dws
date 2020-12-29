@@ -1,0 +1,94 @@
+{$INCLUDE 'Math.dws'};
+
+procedure InitBuildingData(Entity : TEntity; LimitedLifeTime : boolean = False);
+begin
+  Entity.Blackboard.SetValue(eiAttentionrange, [0, 1, 2, 3, 4, 5], 12.0);
+
+  // limited life duration
+  if LimitedLifeTime then
+    Entity.Blackboard.SetValue(eiCooldown, [GROUP_BUILDING_LIFETIME], 90000);
+
+  Entity.Blackboard.SetValue(eiWelaRange, [GROUP_SOUL], 12.0);
+
+  {$IFDEF CLIENT}
+    Entity.Blackboard.SetIndexedValue(eiUnitData, [], udHasDeathEffect, True);
+    Entity.Blackboard.SetIndexedValue(eiUnitData, [], udMinimapIcon, 'MinimapBuildingIcon.png');
+
+    if LimitedLifeTime then
+      TTooltipUnitAbilityComponent.CreateGrouped(Entity, [GROUP_BUILDING_LIFETIME], 'TimedLifeBuilding')
+       .PassInteger('duration', 90);
+  {$ENDIF}
+end;
+
+procedure InitBuildingMeta(Entity : TEntity);
+begin
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;
+
+procedure InitBaseBuildingEntity(Entity : TEntity);
+begin
+  TCollisionComponent.Create(Entity);
+
+  {$IFDEF SERVER}
+    TStatisticsUnitComponent.Create(Entity);
+
+    TPositionComponent.Create(Entity);
+    THealthComponent.Create(Entity);
+    TArmorComponent.Create(Entity);
+    TThinkImpulseTimerComponent.Create(Entity);
+    TBrainActionComponent.CreateGroupedAll(Entity);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [])
+      .Name('BuildingToBasebuilding')
+      .TriggerOnDamageDone
+      .CheckUnitPropertyMustHave([upBase]);
+  {$ENDIF}
+
+  TPathfindingComponent.Create(Entity);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;
+
+procedure InitBuildingEntity(Entity : TEntity; LimitedLifeTime : boolean = False);
+begin
+  InitBaseBuildingEntity(Entity);
+  {$IFDEF SERVER}
+    // suicide after time
+    if LimitedLifeTime then
+    begin
+      TWelaHelperBeaconComponent.CreateGrouped(Entity, [GROUP_BUILDING_LIFETIME])
+      .TriggerAt([upBuildingLimitedTime]);
+      TBrainWelaSelftargetGroundComponent.CreateGrouped(Entity, [GROUP_BUILDING_LIFETIME]);
+      TWelaEffectSuicideComponent.CreateGrouped(Entity, [GROUP_BUILDING_LIFETIME]);
+    end;
+  {$ENDIF}
+
+  if LimitedLifeTime then
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [GROUP_BUILDING_LIFETIME], False);
+
+  {$IFDEF CLIENT}
+    TEntityDisplayWrapperComponent.Create(Entity);
+    TResourceDisplayHealthComponent.Create(Entity)
+      .OrderValue(-1);
+    TShowOnMinimapComponent.Create(Entity);
+    TSoundComponent.CreateGrouped(Entity, [], 'event:/env/building/shared/hit')
+      .TriggerOnLoseHealth();
+
+    if LimitedLifeTime then
+    begin
+      TIndicatorCooldownCircleComponent.CreateGrouped(Entity, [GROUP_BUILDING_LIFETIME])
+        .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+        .SetRadius(1.5)
+        .ScaleWith(eiCollisionRadius)
+        .SetThickness(0.1)
+        .SetLinearBlend
+        .Color($60FFFFFF)
+        .Invert;
+    end;
+  {$ENDIF}
+end;

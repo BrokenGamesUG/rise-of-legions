@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<TAnimatedImage type="Engine.AnimatedBackground.TAnimatedImage" identifier="37693728">
+  <FLayer type="System.Generics.Collections.TObjectList&lt;Engine.AnimatedBackground.TAnimatedImageLayer&gt;" identifier="37816768">
+    <FOwnsObjects>True</FOwnsObjects>
+    <FListHelper>
+      <FCount>4</FCount>
+      <FTypeInfo/>
+      <FNotify/>
+      <FCompare/>
+    </FListHelper>
+    <FItems type="array" size="4" rawData="false">
+      <element_0 type="Engine.AnimatedBackground.TAnimatedImageLayer" identifier="37816896">
+        <TimeScale>1</TimeScale>
+        <Depth>0,899999976158142</Depth>
+        <Rect>
+          <Left>0</Left>
+          <Top>0</Top>
+          <Right>1</Right>
+          <Bottom>1</Bottom>
+        </Rect>
+        <TextureFilename>\Graphics\GUI\Shared\AnimatedBackground\background_layer_0.png</TextureFilename>
+        <Vertices type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" identifier="37732480">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Vertices>
+        <Indices type="System.Generics.Collections.TList&lt;Engine.Math.RIntVector3&gt;" identifier="37732536">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Indices>
+        <Keyframes type="System.Generics.Collections.TObjectDictionary&lt;System.Integer,System.Generics.Collections.TList&lt;Engine.AnimatedBackground.RKeyFrame&gt;&gt;" identifier="37816960">
+          <FOwnerships>[doOwnsValues]</FOwnerships>
+          <FItems type="array" size="0" rawData="false"/>
+          <FCount>0</FCount>
+          <FComparer/>
+          <FGrowThreshold>0</FGrowThreshold>
+          <FOnKeyNotify/>
+          <FOnValueNotify/>
+          <FKeyCollection/>
+          <FValueCollection/>
+        </Keyframes>
+      </element_0>
+      <element_1 type="Engine.AnimatedBackground.TAnimatedImageLayer" identifier="37817152">
+        <TimeScale>1</TimeScale>
+        <Depth>0,660000026226044</Depth>
+        <Rect>
+          <Left>0</Left>
+          <Top>0</Top>
+          <Right>1</Right>
+          <Bottom>1</Bottom>
+        </Rect>
+        <TextureFilename>\Graphics\GUI\Shared\AnimatedBackground\background_layer_1.png</TextureFilename>
+        <Vertices type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" identifier="37732592">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Vertices>
+        <Indices type="System.Generics.Collections.TList&lt;Engine.Math.RIntVector3&gt;" identifier="37732648">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Indices>
+        <Keyframes type="System.Generics.Collections.TObjectDictionary&lt;System.Integer,System.Generics.Collections.TList&lt;Engine.AnimatedBackground.RKeyFrame&gt;&gt;" identifier="37817216">
+          <FOwnerships>[doOwnsValues]</FOwnerships>
+          <FItems type="array" size="0" rawData="false"/>
+          <FCount>0</FCount>
+          <FComparer/>
+          <FGrowThreshold>0</FGrowThreshold>
+          <FOnKeyNotify/>
+          <FOnValueNotify/>
+          <FKeyCollection/>
+          <FValueCollection/>
+        </Keyframes>
+      </element_1>
+      <element_2 type="Engine.AnimatedBackground.TAnimatedImageLayer" identifier="37817408">
+        <TimeScale>1</TimeScale>
+        <Depth>0,230000004172325</Depth>
+        <Rect>
+          <Left>0</Left>
+          <Top>0</Top>
+          <Right>1</Right>
+          <Bottom>1</Bottom>
+        </Rect>
+        <TextureFilename>\Graphics\GUI\Shared\AnimatedBackground\background_layer_2.png</TextureFilename>
+        <Vertices type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" identifier="37732704">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Vertices>
+        <Indices type="System.Generics.Collections.TList&lt;Engine.Math.RIntVector3&gt;" identifier="37732760">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Indices>
+        <Keyframes type="System.Generics.Collections.TObjectDictionary&lt;System.Integer,System.Generics.Collections.TList&lt;Engine.AnimatedBackground.RKeyFrame&gt;&gt;" identifier="37817472">
+          <FOwnerships>[doOwnsValues]</FOwnerships>
+          <FItems type="array" size="0" rawData="false"/>
+          <FCount>0</FCount>
+          <FComparer/>
+          <FGrowThreshold>0</FGrowThreshold>
+          <FOnKeyNotify/>
+          <FOnValueNotify/>
+          <FKeyCollection/>
+          <FValueCollection/>
+        </Keyframes>
+      </element_2>
+      <element_3 type="Engine.AnimatedBackground.TAnimatedImageLayer" identifier="37817600">
+        <TimeScale>1</TimeScale>
+        <Depth>0,00100000004749745</Depth>
+        <Rect>
+          <Left>0</Left>
+          <Top>0</Top>
+          <Right>1</Right>
+          <Bottom>1</Bottom>
+        </Rect>
+        <TextureFilename>\Graphics\GUI\Shared\AnimatedBackground\background_layer_3.png</TextureFilename>
+        <Vertices type="System.Generics.Collections.TList&lt;Engine.Math.RVector2&gt;" identifier="37732816">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Vertices>
+        <Indices type="System.Generics.Collections.TList&lt;Engine.Math.RIntVector3&gt;" identifier="37732872">
+          <FListHelper>
+            <FCount>0</FCount>
+            <FTypeInfo/>
+            <FNotify/>
+            <FCompare/>
+          </FListHelper>
+          <FItems type="array" size="0" rawData="false"/>
+          <FComparer/>
+          <FOnNotify/>
+        </Indices>
+        <Keyframes type="System.Generics.Collections.TObjectDictionary&lt;System.Integer,System.Generics.Collections.TList&lt;Engine.AnimatedBackground.RKeyFrame&gt;&gt;" identifier="37817664">
+          <FOwnerships>[doOwnsValues]</FOwnerships>
+          <FItems type="array" size="0" rawData="false"/>
+          <FCount>0</FCount>
+          <FComparer/>
+          <FGrowThreshold>0</FGrowThreshold>
+          <FOnKeyNotify/>
+          <FOnValueNotify/>
+          <FKeyCollection/>
+          <FValueCollection/>
+        </Keyframes>
+      </element_3>
+    </FItems>
+    <FComparer/>
+    <FOnNotify/>
+  </FLayer>
+  <FZoom>1,14999997615814</FZoom>
+  <FAspectRatio>1,77777779102325</FAspectRatio>
+</TAnimatedImage>

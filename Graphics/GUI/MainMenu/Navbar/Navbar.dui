@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<div class="navbar-wrapper">
+	<div class="navbar">
+		<div class="issue-info team-size-{{ matchmaking.manager.CurrentTeam.Players.Count }}">
+			<div class="maintenance-info {{ important if not serverstate.MaintenanceWobbelMuted }}" :visible="serverstate.MaintenanceModeEnabled" dxml-on:mouse_enter="serverstate.MuteMaintenance">
+				<stack class="hint">
+					<div class="text">§server_maintenance_preparation</div>
+					<div class="time">
+						{{ F.IntToLongTimeDetail(serverstate.MaintenanceRemainingTimeToBegin) }}
+					</div>
+				</stack>
+			</div>
+			<div class="server-issues {{ important if serverstate.ClientServerIssuesWobbel and not serverstate.ClientServerIssuesWobbelMuted }}" :visible="serverstate.ClientServerIssuesEnabled"  dxml-on:mouse_enter="serverstate.MuteServerIssue">
+				<div class="hint">
+					{{ serverstate.ClientServerIssuesText }}
+				</div>
+			</div>
+		</div>
+	
+		<stack class="navbar-left">
+			<btn class="btn-nav start {{ selected if menu.CurrentMenu = mtStart }}" title="§navbar_menu_start_hint" dxml-on:click="menu.CurrentMenu := mtStart; quests.IsVisible := False">
+				<img class="logo" src="MainMenu/Navbar/Home.png"></img>
+			</btn>
+			
+			<btn class="btn-nav btn-play {{ queue-locked if not serverstate.MaintenanceCanEnterQueues }} {{ selected if menu.CurrentMenu = mtGame else unselected }} {{ highlighted if matchmaking.InQueue }}" :title="§navbar_menu_play_hint if serverstate.MaintenanceCanEnterQueues else §server_maintenance_queue_lock" dxml-on:click="menu.CurrentMenu := mtGame; quests.IsVisible := False">
+				{{ F.IntToTime(matchmaking.Queue.TimeInQueue) if matchmaking.InQueue else §navbar_menu_play }}
+				<div class="selection-indicator"></div>
+				<div class="highlight"></div>
+				<icon class="lock"></icon>
+			</btn>
+			
+			<btn class="btn-nav btn-deck {{ selected if menu.CurrentMenu = mtDeck }}" title="§navbar_menu_deckbuilding_hint" dxml-on:click="deckbuilder.ResetFilter; deckbuilder.CloseIfInDeckeditor; menu.CurrentMenu := mtDeck; quests.IsVisible := False">
+				§navbar_menu_deckbuilding
+				<div class="selection-indicator"></div>
+				<div class="new-flag" :show="deckbuilder.CardManager.HasAnyNewCard or deckbuilder.DeckManager.HasAnyNewDeck"></div>
+			</btn>
+			
+			<btn :enabled="profile.Profile.DisableLevelUnlocks or (profile.Profile.Level >= 1)" class="btn-nav btn-legion {{ selected if menu.CurrentMenu = mtCollection }}" title="§navbar_menu_collection_hint" dxml-on:click="menu.CurrentMenu := mtCollection; quests.IsVisible := False" dxml-on:mouse_enter="profile.Profile.LevelUnlockSeen(1)">
+				§navbar_menu_collection
+				<div class="selection-indicator"></div>
+				<div class="player-level-lock" :title="F._d(§feature_level_requirement, 1)" :visible="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level < 1)" dxml-on:click="dialogs.OpenDialog(diPlayerLevelUpOverview)">
+					<icon class="lock"></icon>
+				</div>
+				<div class="new-flag" :show="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level = 1) and not profile.Profile.HasLevelUnlockSeen"></div>
+			</btn>
+			
+			<btn :enabled="profile.Profile.DisableLevelUnlocks or (profile.Profile.Level >= 5)" class="btn-nav btn-leaderboards {{ selected if menu.CurrentMenu = mtLeaderboards }}" title="§navbar_menu_leaderboards_hint" dxml-on:click="menu.CurrentMenu := mtleaderboards; quests.IsVisible := False" dxml-on:mouse_enter="profile.Profile.LevelUnlockSeen(5)">
+				§navbar_menu_leaderboards
+				<div class="selection-indicator"></div>
+				<div class="player-level-lock" :title="F._d(§feature_level_requirement, 5)" :visible="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level < 5)" dxml-on:click="dialogs.OpenDialog(diPlayerLevelUpOverview)">
+					<icon class="lock"></icon>
+				</div>
+				<div class="new-flag" :show="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level = 5) and not profile.Profile.HasLevelUnlockSeen"></div>
+			</btn>
+						
+			<btn class="btn-nav btn-shop {{ selected if menu.CurrentMenu = mtShop }}" title="§navbar_menu_shop_hint" dxml-on:click="menu.CurrentMenu := mtShop; quests.IsVisible := False">
+				§navbar_menu_shop
+				<div class="selection-indicator"></div>
+			</btn>
+		</stack>
+		
+		<div class="navbar-right">
+			<stack class="player-panel">
+				<stack class="boosts">
+					<div class="premium {{ available if profile.Profile.IsPremiumActive}}" title="{{ F._(§profile_boosts_premium_active,F.IntToTimeAdaptive(profile.Profile.SecondsUntilPremiumEnds)) if profile.Profile.IsPremiumActive else §profile_boosts_premium_inactive }}" dxml-on:click="menu.CurrentMenu := mtShop; shop.ShopItemFilter.Category := scPremiumTime"></div>
+				</stack>
+				<progress class="user" dxml-on:click="dialogs.OpenDialog(diPlayerLevelUpOverview)">
+					<div class="overlay"></div>
+					<caption>
+						{{ F.TruncChars(profile.Account.Own.Name, 20) }} ({{ profile.Profile.Level }})
+					</caption>
+					<bar width="{{ profile.Profile.LevelProgress * 100 }}%"></bar>
+					<div dxml-include="MainMenu/Navbar/LevelHint.dui"dxml-with="userprofile=profile.Profile"></div>
+				</progress>
+				
+				<div dxml-include="Mainmenu/Navbar/Teampanel.dui"></div>
+				<div dxml-include="Mainmenu/Navbar/ResourcePanel.dui"></div>
+			</stack>
+		</div>
+		
+		<!--div class="feedback-panel">
+			<btn class="toggle" title="{{ §gui_feedback_toggle_hint if not dialogs.IsDialogVisible(diFeedback) }}" dxml-on:click="dialogs.ToggleDialog(diFeedback)">§gui_feedback_caption</btn>
+		</div-->
+	</div>
+</div>

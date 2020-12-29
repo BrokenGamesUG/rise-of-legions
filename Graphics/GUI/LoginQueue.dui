@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<root class="maingui">
+	<div class="black left"></div>
+	<div class="black right"></div>
+	<div class="black top"></div>
+	<div class="black bottom"></div>
+	<wrapper class="client-wrapper">
+		<div dxml-include="Mainmenu/SystemPanel/SystemPanel.dui"></div>
+		<div dxml-include="SettingsMenu.dui"></div>
+		<div dxml-include="ErrorDialog.dui"></div>
+		<div dxml-include="Mainmenu/Navbar/FeedbackDialog.dui"></div>
+		<wrapper class="login-queue-page access-block-page state-page">
+			<img class="game-logo" src="Shared/Logos/game_logo.png">
+				<img class="banner" src="MainMenu/LoadingScreen/ReleaseBanner.png"></img>
+			</img>
+			<stack vertical class="content">
+				<div class="info-box">
+					<div class="title">§login_queue_caption</div>
+					<div class="text">§login_queue_text</div>
+					<div class="timer">
+						<div class="timer-text">§login_queue_position_text {{ loginqueue.PositionInQueue if loginqueue.PositionInQueue >= 0 else '-' }}</div>
+						<div class="time">{{ F.IntToLongTimeDetail(loginqueue.TimeInQueue) }}</div>
+					</div>
+				</div>
+				<stack class="news-tile-split">
+					<div class="news-tile" dxml-on:click="client.BrowseTo(weDiscord)">
+						<img class="icon" src="MainMenu/Dashboard/DiscordLogo.tga"></img>
+						<div class="caption">§home_discord_text</div>
+					</div>
+					<div class="news-tile" dxml-on:click="client.BrowseTo(weSteamForum)">
+						<img class="icon" src="MainMenu/Dashboard/SteamLogo.png"></img>
+						<div class="caption">§home_steam_forum_text</div>
+					</div>
+				</stack>
+				<div class="news-tile without-icon" dxml-on:click="client.BrowseTo(weGuide)">
+					<div class="caption">§home_guide_text</div>
+				</div>
+			</stack>
+
+			<stack class="social-media">
+				<img class="pop-out" src="MainMenu/Dashboard/youtubeLink.png" dxml-on:click="client.BrowseTo(weYoutube)"></img>
+				<img class="pop-out" src="MainMenu/Dashboard/TwitterLink.png" dxml-on:click="client.BrowseTo(weTwitter)"></img>
+				<img class="pop-out" src="MainMenu/Dashboard/facebookLink.png" dxml-on:click="client.BrowseTo(weFacebook)"></img>
+			</stack>
+				
+			
+			<div dxml-include="ExitDialog.dui"></div>	
+			<img class="crunchy-logo" src="Shared/Logos/crunchy_leaf_logo.tga" dxml-on:click="client.BrowseTo(wePublisher)"></img>
+			<img class="broken-logo" src="Shared/Logos/broken_games_logo.png" dxml-on:click="client.BrowseTo(weCompany)"></img>
+			<img class="fmod-logo" src="Shared/Logos/fmod_logo.png" dxml-on:click="client.BrowseTo(weFmod)"></img>
+		</wrapper>
+	</wrapper>
+</root>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- Parameters | card : TDeckCard -->
+<div class="card card-icon {{ card.CardInfo.CardType }} {{ special if card.CardInfo.IsLegendary or card.CardInfo.IsEpic }}">
+	<img class="icon-frame" src="{{ HClient.GetCardIconBackground(card.CardInfo.) }}">
+		<div class="legendary" :visible="card.CardInfo.IsLegendary"></div>
+		<div class="epic" :visible="card.CardInfo.IsEpic"></div>
+		<img class="icon" src="{{ HClient.GetCardIcon(card.CardInfo.) }}"></img>
+		<wrapper class="stats">
+			<img class="league-icon" :src="HClient.GetLeagueIcon(card.CardInstance.League)" :title="F._d(§league_card_hint, card.CardInstance.League)">
+				<icon class="level-number level-{{ card.CardInstance.Level }}"></icon>
+				<div class="league-upgrade" :visible="card.CardInstance.IsLeagueUpgradable"></div>
+			</img>
+			<progress class="level-progress">
+				<wrapper class="max" :visible="card.CardInstance.IsMaxLevel">Max</wrapper>
+				<bar width="{{ card.CardInstance.LevelProgress * 100 }}%"></bar>
+			</progress>
+		</wrapper>
+	</img>
+	<div class="hover"></div>
+</div>

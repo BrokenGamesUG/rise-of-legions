@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<wrapper class="reconnect meta-client" :visible="client.State = csReconnect">
+	<div dxml-include="Mainmenu/SystemPanel/SystemPanel.dui"></div>
+	<div class="message">§reconnect_message</div>
+	<btn class="btn-xl btn-reconnect" dxml-on:click="reconnect.Reconnect">§reconnect_reconnect_button_caption</btn>
+	
+	<div class="force-broker-fallback">
+		<div class="caption">§reconnect_force_broker_fallback_caption</div>
+		<check dxml-on:change="reconnect.SetForceBrokerFallback" checked="{{ reconnect.ForceBrokerFallback }}">
+			§reconnect_force_broker_fallback_checkbox
+		</check>
+	</div>
+</wrapper>

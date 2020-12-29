@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<div class="window redeem-starterdecks-window">
+	<div class="window-shine"></div>
+	<div class="window-caption">§starterdeck_redeem_{{  notification.StarterDeckColor }}_dialog_caption</div>
+	<img class="starter-deck" src="MainMenu/Tutorial/splash_{{  notification.StarterDeckColor }}.png"></img>
+	<div class="text">§starterdeck_redeem_{{  notification.StarterDeckColor }}_dialog_text</div>
+	<stack class="window-buttons">
+		<btn class="btn-xl btn-primary" dxml-on:click="notifications.Close">§starterdeck_redeem_{{  notification.StarterDeckColor }}_dialog_redeem</btn>
+	</stack>
+</div>

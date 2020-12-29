@@ -1,0 +1,103 @@
+﻿.shopitem-dialog{
+	Enabled : True;
+	.shopitem-wrapper{
+		Size : 30% 40%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		MouseEvents : mePass;
+		.showcase{
+			Size : 100% 55%;
+			MouseEvents : mePass;
+			.shopitem{
+				&.shopitem-detail-card{
+					Size : 100% 100%;
+				}
+				&.shopitem-detail-skin{
+					Size : auto 100%;
+					Anchor : caTop;
+					ParentAnchor : caTop;
+					MouseEvents : mePass;
+					.league-icon{
+						Visibility : False;
+					}
+					.before, .after, .arrow{
+						Size : auto 230%;
+						Anchor : caCenter;
+						ParentAnchor : caCenter;
+						MouseEvents : mePass;
+					}
+					.before{
+						Position : -80% 50%;
+					}
+					.arrow{
+						Size : 30% auto;
+						Transform : rotateZ(90deg);
+						Background : Shared/Arrow.png;
+						$jello-horizontal;
+					}
+					.after{
+						Position : 80% 50%;
+					}
+				}
+				&.shopitem-currency, &.shopitem-xp, &.shopitem-icon, &.shopitem-premium{
+					Size : auto 100%;
+					Anchor : caTop;
+					ParentAnchor : caTop;
+				}
+				&.shopitem-deckslot{
+					Position : 0 15%;
+				}
+			}
+		}
+		.offers{
+			Position : 0 70%;
+			Size : 80% 18%;
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			.offer{
+				Padding : 0 8cw;
+				&.locked{
+					btn{
+						Enabled : False;
+						*{
+							Opacity : 0.5;
+						}
+					}
+					.lock{
+						Position : 50% -7%;
+						Size : auto 50%;
+					}
+				}
+				btn{
+					Size : 100% auto;
+				}
+			}
+		}
+	}
+}
+
+.purchase-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-nested-dialog;
+	}
+	&.disabled{
+		.window{
+			.message{
+				Position : 50ch;
+			}
+		}
+	}
+	.window{
+		Size : 60vh 20vh;
+		.message{
+			Size : text 30%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			.spinner{
+				Position : -50ch;
+				Size : auto 100%;
+				Anchor : caTopRight;
+			}
+		}
+	}
+}

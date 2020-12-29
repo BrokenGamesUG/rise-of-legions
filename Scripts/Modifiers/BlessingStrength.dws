@@ -1,0 +1,54 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var DamageGroup, HealthGroup, Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  HealthGroup := Entity.ReserveFreeGroup();
+  DamageGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [HealthGroup], 40.0);
+  Entity.Blackboard.SetValue(eiWelaModifier, [DamageGroup], 8.0);
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, DamageGroup, HealthGroup]);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Enchanted')
+      .TriggerOnTakeDamage;
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('EnchantedStrength')
+      .TriggerOnDamageDone;
+
+    // Increase Health, only server because cap is synced
+    TModifierResourceComponent.CreateGrouped(Entity, [HealthGroup])
+      .Resource(reHealth)
+      .ApplyNow();
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedStrength]);
+
+  TModifierWelaDamageComponent.CreateGrouped(Entity, [0, 1, Group])
+    .FactorForUnitProperty([upLinkWeapon], 0.5)
+    .SetValueGroup([DamageGroup]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\blessing_strength_buff.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_WEAPON, [0, 1]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\blessing_strength_apply.pfx', 2.0)
+      .ActivateNow
+      .BindToSubPositionGroup(BIND_ZONE_WEAPON, [0, 1])
+      .FixedOrientationDefault;
+
+    TMeshEffectTint.Create(500, $FFecffc5)
+      .AddKey(0, 0.0)
+      .AddKey(150, 1.0)
+      .AddKey(500, 0.0)
+      .AssignToEntity(Entity);
+  {$ENDIF}
+end;

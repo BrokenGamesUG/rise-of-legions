@@ -1,0 +1,141 @@
+﻿.loot{
+	Size : 100% 100%;
+	.loot-list{
+		Padding : 0 auto;
+	}
+}
+
+.loot-item{
+	& > .loot-wrapper{
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		&.loot-currency, &.loot-lootlist{
+			Size : 100% 100%;
+			Padding : 10% 0;
+			.icon{
+				ParentOffset : 1;
+				Position : 0 62.5%;
+				Size : auto 50%;
+				Anchor : caBottom;
+				ParentAnchor : caTop;
+				& > .deco{
+					ZOffset : -2;
+					ParentAnchor : caCenter;
+					Anchor : caCenter;
+					Size : 90% 35%;
+					BackgroundColor : $FF1F7579;
+				}
+			}
+			.amount{
+				Position : 0 62.5%;
+				Size : 100% 25%;
+				Anchor : caTop;
+				ParentAnchor : caTop;
+				FontWeight : 700;
+				FontFlags : [ffCenter,ffVerticalCenter];
+			}
+		}
+		&.loot-card, &.loot-card-icon{
+			Size : auto 100%;
+			.card{
+				Size : auto 100%;
+				.shadow{
+					Size : auto 100%;
+				}
+			}
+		}
+		&.loot-skin{
+			Size : 100% auto;
+			.league-icon{
+				Visibility : False;
+			}
+		}
+		&.loot-icon{
+			Size : auto 50%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Background : MainMenu/Shop/icon_bg.png;
+			.framed-icon{
+				Size : auto 100%;
+			}
+		}
+		&.loot-premiumtime{
+			Position : 0 3%;
+			Size : auto 65%;
+		}
+		&.loot-deckslot{
+			Size : 90% auto;
+		}
+		&.loot-draftbox{
+			Size : 100% 100%;
+			&.skinbox{
+				.icon{
+					.league-icon{
+						Visibility : False;
+					}
+				}
+			}
+			.icon{
+				ParentAnchor : caTop;
+				Anchor : caTop;
+				Size : auto 80%;
+				Background : MainMenu/Loot/Draftbox.png;
+				.league-icon{
+					Size : auto 50%;
+					Position : 75% 90%;
+					Anchor : caCenter;
+				}
+			}
+		}
+	}
+}
+
+.window.loot-window:important{
+	Size-X : 47vw;
+	&.wide{
+		Size-X : 82vw;
+		&.items-0, &.items-1{
+			Size-X : 32vw;
+		}
+		&.items-2{
+			Size-X : 55vw;
+		}
+		&.scrolling{
+			Size-X : 83.87vw;
+		}
+	}
+	.loot-list{
+		StackColumns : 3;
+		ScrollbarWidth : 24;
+		.loot-item{
+			Size : 33.333% 174;
+		}
+		&:scrollable{
+			Padding-Right : 24;
+		}
+	}
+	&.items-0, &.items-1{
+		Size-X : 32vw;
+		.loot-list{
+			StackColumns : 1;
+			.loot-item{
+				Size-X : 100%;
+			}
+		}
+	}
+	&.items-2{
+		Size-X : 32vw;
+		.loot-list{
+			StackColumns : 2;
+			.loot-item{
+				Size-X : 50%;
+			}
+		}
+	}
+	&.scrolling{
+		Size-X : 48.07vw;
+		.loot-list{
+			Overflow : ohScrollY;
+		}
+	}
+}

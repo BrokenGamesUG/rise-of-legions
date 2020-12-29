@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-card {{ locked if not item.PurchasableBySoftcurrency }}">
+	<div class="deco"></div>
+	<div class="own-count" :visible="item.Card.OwnCount > 0" title="§shop_item_card_own_count_hint">x{{ item.Card.OwnCount }}</div>
+	<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=item.Card.CardInfo"></div>
+	<div class="name">{{ item.Card.CardInfo.name }}</div>
+</div>

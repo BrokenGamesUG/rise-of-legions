@@ -1,0 +1,20 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; Duration : integer);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], Duration); //Duration of invisble stun
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upSummoningSickness]);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

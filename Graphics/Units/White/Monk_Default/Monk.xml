@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh" identifier="127594560">
+  <AnimationDriver type="Engine.Mesh.TSkinnedMeshAnimationDriver" identifier="58557952"/>
+  <GeometryFile>Monk.FBX</GeometryFile>
+  <Cullmode>cmCCW</Cullmode>
+  <Alpha>0,99999998430675</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <Specular>True</Specular>
+  <SpecularIntensity>0,99999998430675</SpecularIntensity>
+  <SpecularPower>128</SpecularPower>
+  <DiffuseTetxure>MonkDiffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture>MonkMaterial.tga</SpecularTexture>
+</TMesh>

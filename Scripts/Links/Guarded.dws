@@ -1,0 +1,41 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 1.0); // Health is on death = 0, so set it to 1
+
+  {$IFDEF SERVER}
+    TAutoBrainPreventDeathComponent.CreateGrouped(Entity, [Group]);
+    TWelaReadyCreatorComponent.CreateGrouped(Entity, [Group]);
+    // set health to 1
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [Group])
+      .SetResourceType(reHealth)
+      .SetsResourceToValue();
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Guarded')
+      .TriggerOnFire;
+    TWelaEffectFireComponent.CreateGrouped(Entity, [Group])
+      .FireInCreator;
+  {$ENDIF}
+  // this aura can only placed once on a unit
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upGuarded]);
+
+  // make invincible
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\Invincibility.dws');
+  // prevent effect for a long time
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [Group], 'Modifiers\ImmuneToGuarded.dws');
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\guarded_buff.pfx', 1.5)
+      .ActivateNow
+      .ActivateOnCreate
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\guarded_trigger.pfx', 1.2)
+      .ActivateOnFireWarhead();
+  {$ENDIF}
+
+  Result := [Group];
+end;

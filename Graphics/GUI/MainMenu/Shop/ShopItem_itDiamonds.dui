@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<div class="shopitem shopitem-diamonds">
+	<div class="badge"></div>
+	<img class="header-icon" src="MainMenu/Shop/{{ item.name }}.png"></img>
+	<div class="amount">
+		{{ F.IntComma(2500 if item.amount = 2500 else (6000 if item.amount = 6300 else (12500 if item.amount = 13750 else (25000 if item.amount = 28750 else (50000 if item.amount = 60000 else item.amount))))) }}
+		<img class="icon" src="{{ HClient.CurrencyIcon(item.Currency.UID) }}"></img>
+	</div>
+	<div class="bonus" :visible="item.Amount > 2500">{{ F._(§shop_item_diamonds_bonus, F.IntComma(0 if item.amount = 2500 else (300 if item.amount = 6300 else (1250 if item.amount = 13750 else (3750 if item.amount = 28750 else (10000 if item.amount = 60000 else item.amount)))))) }}</div>
+</div>

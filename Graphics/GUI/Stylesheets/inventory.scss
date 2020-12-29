@@ -1,0 +1,75 @@
+﻿.lootbox{
+	ParentAnchor : caBottomRight;
+	Anchor : caBottomRight;
+	Size : 100ch 100%;
+	img{
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		MouseEvents : mePass;
+		Size : auto 150%;
+		Background : MainMenu/Loot/Lootbox.png;
+	}
+	&:hover{
+		img{
+			Background : MainMenu/Loot/Lootbox_Hover.png;
+		}
+	}
+}
+
+.inventory{
+	.grid{
+		StackColumns : 4;
+		.item{
+			BoxSizing : bsMargin;
+			Margin: 5%;
+		}
+	}
+}
+
+.lootbox-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-dialog;
+	}
+	.window{
+		Size : 80% 80%;
+		ParentAnchor : caCenter;
+		Anchor : caCenter;
+		Padding : 10% 10ch;
+	}
+	.loot{
+		Size : 100% 40%;
+	}
+	.lootbox{
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Size : 100% 50%;
+		btn{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Size : auto 100%;
+			.box{
+				Size : auto 100%;
+				MouseEvents : mePass;
+				Background : MainMenu/Loot/Lootbox.png;
+			}
+			&:hover{
+				.box{
+					Background : MainMenu/Loot/Lootbox_Hover.png;
+				}
+			}
+			&:down{
+				.box{
+					Background : MainMenu/Loot/Lootbox_Down.png;
+				}
+			}
+		}
+		&.opened{
+			btn{
+				Enabled : False;
+				.box{
+					Background : MainMenu/Loot/Lootbox_Open.png;
+				}
+			}
+		}
+	}
+}

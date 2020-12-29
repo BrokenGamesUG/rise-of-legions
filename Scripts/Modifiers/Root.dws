@@ -1,0 +1,73 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+const ROOT_DURATION = 12000;
+var Group, DoTGroup, ImmuneGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  DoTGroup := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], ROOT_DURATION); //Root-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [DoTGroup], 1000); //DoT-Tick
+  Entity.Blackboard.SetValue(eiWelaDamage, [DoTGroup], 1.5);
+  Entity.Blackboard.SetValue(eiDamageType, [DoTGroup], [dtSpell, dtAbility, dtDoT]);
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], ROOT_DURATION + 10000); //RootImmunity-Duration
+
+  {$IFDEF SERVER}
+    // Stop unit at root
+    Entity.Eventbus.Trigger(eiStand, []);
+    // After eiCooldown root is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, DoTGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Root')
+      .TriggerOnKilled;
+
+    // DoT
+    TThinkImpulseTimerCooldownComponent.CreateGrouped(Entity, [DoTGroup])
+      .TimerIsReady;
+    TBrainWelaSelfTargetComponent.CreateGrouped(Entity, [DoTGroup])
+      .ThinksLocal
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [DoTGroup], True);
+    TWelaReadyNthComponent.CreateGrouped(Entity, [DoTGroup])
+      .Times(12);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [DoTGroup], eiDamageable);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [DoTGroup]);
+    TWarheadSpottyDamageComponent.CreateGrouped(Entity, [DoTGroup]);
+
+    // Immunity
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upRooted]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToRooted]);
+
+  {$IFDEF CLIENT}
+     TMeshComponent.CreateGrouped(Entity, [Group], 'Effects\Meshes\Rootnetwork.xml')
+       .ApplyLegacySizeFactor
+       .CreateNewAnimation(ANIMATION_STAND, 0, 30)
+       .ScaleWith(eiCollisionRadius)
+       .MaxScale(1.0);
+     TAnimationComponent.CreateGrouped(Entity, [Group]);
+     TVisualModificatorSizeComponent.CreateGrouped(Entity, [Group])
+       .Keypoints([0.0, 2.2, 1.8])
+       .Duration(700);
+     TOrienterAutoRotationComponent.CreateGrouped(Entity, [Group])
+       .SetSpeed(RVector3.Create(0, 0.0055, 0))
+       .SpeedJitter(0, 0.0005, 0)
+       .RandomOffset(0, 3.141,0)
+       .StopAt(700);
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/green/effect/root')
+      .TriggerNow();
+  {$ENDIF}
+end;

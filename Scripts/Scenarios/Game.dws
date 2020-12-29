@@ -1,0 +1,42 @@
+#define INCOME_GROUP [0]
+#define SPAWN_GROUP [1]
+
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TGame{$ENDIF});
+begin
+  Game.StartingGold := 300.0;
+  Game.GoldCap := 400.0;
+  Game.StartingWood := 1600.0;
+  Game.IncomeUpgradeCap := 10;
+  Game.StartingTier := 1;
+  Game.GadgetCountCap := 5;
+  Game.CharmCountCap := 3;
+  Game.StartingIncomeRate := 10.0;
+  Game.IncomeRatePerIncomeUpgrade := 2.0;
+  Game.StartingIncomeUpgradeCost := 1500.0;
+  Game.IncomeUpgradeCostPerIncomeUpgrade := 250.0;
+  Game.GoldCapPerTier := 100.0;
+
+  {$IFDEF SERVER}
+    TThinkImpulseGameTickComponent.CreateGrouped(Entity, []);
+
+    // triggers payout of income in intervals
+    TWelaEffectIncomePayoutComponent.CreateGrouped(Entity, INCOME_GROUP);
+    TBrainWelaTargetlessComponent.CreateGrouped(Entity, INCOME_GROUP);
+
+    // triggers the spawners every 2 seconds
+    TWelaEffectWaveSpawnComponent.CreateGrouped(Entity, SPAWN_GROUP);
+    TWelaReadyNthComponent.CreateGrouped(Entity, SPAWN_GROUP)
+      .Nth(2);
+    TBrainWelaTargetlessComponent.CreateGrouped(Entity, SPAWN_GROUP);
+  {$ENDIF}
+
+  Game.GameDirector
+    .AddEventIf(Game.HasShowdown, i([6, 9, 9, 12, 12], Game.League) * 60, GAME_EVENT_SHOWDOWN)
+    .AddEvent(i([3, 3, 3, 4, 4], Game.League) * 60, GAME_EVENT_TECH_LEVEL_2)
+    .AddEventIf((Game.League > 2) or (not Game.IsPvP), i([6, 6, 6, 8, 8], Game.League) * 60, GAME_EVENT_TECH_LEVEL_3);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<!-- Parameters | card : TCardInfo -->
+<div class="card {{ card.CardType }} {{ special if card.IsLegendary or card.IsEpic }}">
+	<div class="shadow {{ card.CardType }} {{ special if card.IsLegendary or card.IsEpic }}">
+		<div class="hover"></div>
+		<div class="selected"></div>
+		<img class="icon-frame" src="{{ HClient.GetCardIconBackground(card.) }}">
+			<div class="legendary" :visible="card.IsLegendary"></div>
+			<div class="epic" :visible="card.IsEpic"></div>
+			<img class="icon" src="{{ HClient.GetCardIcon(card.) }}"></img>
+			<wrapper class="stats">
+				<img class="league-icon" :src="HClient.GetLeagueIcon(card.League)" :title="F._d(§league_card_hint, card.League)"></img>
+			</wrapper>
+		</img>
+		<div class="card-info" src="{{ HClient.GetCardInfoBackground(card.) }}">
+			<div class="name">{{ card.name }}</div>
+			<div class="description {{ skills if not card.IsSpell }}">
+				{{ card.ShortDescription if card.IsSpell else card.SkillList }}
+				<stack class="skill-hint custom-hint">
+					<stack class="skill-list" :visible="card.HasSkills or card.IsSpell">
+						<div class="skill" :visible="card.IsSpell">
+							<div class="skill-description">	
+								{{ card.Description }}
+							</div>
+						</div>
+						<stack dxml-for:static="skill in card.Skills" class="skill">
+							<div class="skill-name">- {{ skill.name }} -</div>
+							<div class="skill-description">{{ skill.hint }}</div>
+						</stack>
+					</stack>
+					<stack class="keyword-list" :visible="card.HasKeywords">
+						<div dxml-for:static="keyword_id in card.Keywords" class="keyword">
+							§effect_{{ keyword_id. }}_description
+						</div>
+					</stack>
+				</stack>
+			</div>
+			<div class="card-stats" :visible="not card.IsSpell">
+				<div class="attackdefense">
+					<div class="dps" title="§damagetype_{{ card.DamageType }}_hint">
+						{{ F.IntToStr(F.Trunc(card.DPS * card.SquadSize)) if card.DPS <> 0 else '-'}}
+						<img class="icon" src="MainMenu/Shared/Card/Attack_{{  card.DamageType }}.png"></img>
+					</div>
+					<div class="health" title="§armortype_{{ card.ArmorType }}_hint">
+						{{ F.IntToStr(F.Trunc(card.Health * card.SquadSize)) }}
+						<img class="icon" src="MainMenu/Shared/Card/Armor{{ card.ArmorType }}.png"></img>
+					</div>
+				</div>
+			</div>
+			<div class="costs {{ spawner if card.IsSpawner }}">
+				<div class="cost">
+					{{ card.WoodCost if card.IsSpawner else card.GoldCost }}
+				</div>
+				<div class="tech" :visible="not card.IsSpawner">{{ F.AsRoman(card.TechLevel) }}</div>
+			</div>
+		</div>
+	</div>
+</div>

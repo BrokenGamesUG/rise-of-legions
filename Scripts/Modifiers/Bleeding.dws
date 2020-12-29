@@ -1,0 +1,64 @@
+procedure Apply(Entity : TEntity);
+var Group, BleedingGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  BleedingGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 10000); //Bleeding-Duration
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 0.60); // 40% healing reduction
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [Group], reWelaCharge, 1);
+  Entity.Blackboard.SetIndexedValue(eiResourceCap, [Group], reWelaCharge, 20);
+  Entity.Blackboard.SetValue(eiCooldown, [BleedingGroup], 1000);
+  Entity.Blackboard.SetValue(eiWelaDamage, [BleedingGroup], 0.005); // 0.5% per stack - 10% max
+  Entity.Blackboard.SetValue(eiDamageType, [BleedingGroup], [dtAbility, dtDoT]);
+
+  {$IFDEF SERVER}
+    // After eiCooldown Bleeding is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, BleedingGroup]);
+
+    TWelaHelperBeaconComponent.CreateGrouped(Entity, [Group])
+      .TriggerAt([upBleeding]);
+
+    TBuffTakenDamageMultiplierComponent.CreateGrouped(Entity, [Group])
+      .ApplyOnHeal;
+
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [BleedingGroup])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [BleedingGroup], False);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [BleedingGroup], eiDamageable);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [BleedingGroup])
+      .MustNotHave([upBanished]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [BleedingGroup]);
+    TWarheadSpottyDamageComponent.CreateGrouped(Entity, [BleedingGroup])
+      .PercentageOfMaxHealth;
+
+    TModifierWelaDamageComponent.CreateGrouped(Entity, [BleedingGroup])
+      .ScaleWithResource(reWelaCharge)
+      .ResourceGroup([Group])
+      .Multiply;
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upBleeding]);
+
+  {$IFDEF CLIENT}
+    TIndicatorResourceCircleComponent.CreateGrouped(Entity, [Group])
+      .Padding(PI / 1000)
+      .SetLinearBlend
+      .ShowsResource(reWelaCharge)
+      .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+      .SetRadius(1.5)
+      .ScaleWith(eiCollisionRadius)
+      .SetThickness(0.1)
+      .Color($40b92020);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Bleeding.pfx', 0.7)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+  {$ENDIF}
+end;

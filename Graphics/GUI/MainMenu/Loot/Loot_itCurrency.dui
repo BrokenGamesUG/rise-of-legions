@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<div class="loot-wrapper loot-currency">
+	<div class="amount">
+		{{ item.Amount * item.ShopItem.Amount }}
+		<img class="icon" src="{{ HClient.CurrencyIcon(item.ShopItem.Currency.UID) }}">
+			<div class="deco"></div>
+		</img>
+	</div>
+</div>

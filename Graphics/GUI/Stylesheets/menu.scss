@@ -1,0 +1,75 @@
+﻿.maingui{
+	& > .black{
+		ZOffset : 100000;
+		BackgroundColor : $FF000000;
+		Size : 100sw 100sh;
+		&.left{
+			Anchor : caRight;
+			ParentAnchor : caLeft;
+		}
+		&.top{
+			Anchor : caBottom;
+			ParentAnchor : caTop;
+		}
+		&.right{
+			Anchor : caLeft;
+			ParentAnchor : caRight;
+		}
+		&.bottom{
+			Anchor : caTop;
+			ParentAnchor : caBottom;
+		}
+	}
+	.client-wrapper{
+		MouseEvents : mePass;
+	}
+}
+
+.system-panel{
+	Position : -4 4;
+	Anchor : caTopRight;
+	ParentAnchor : caTopRight;
+	Size : auto 16;
+	StackOrientation : soHorizontal;
+	StackPartitioning : auto;
+	ZOffset : 20000;
+	& > *{
+		Size : 100ch 100%;
+		Margin-Left: 5;
+	}
+	.btn-minimize{
+		Background : MainMenu/SystemPanel/Minimize.tga;
+		BackgroundHover : MainMenu/SystemPanel/Minimize_Hover.tga;
+	}
+	.btn-settings{
+		Background : MainMenu/SystemPanel/Options.tga;
+		BackgroundHover : MainMenu/SystemPanel/Options_Hover.tga;
+	}
+	.btn-exit{
+		Background : MainMenu/SystemPanel/Close.tga;
+		BackgroundHover : MainMenu/SystemPanel/Close_Hover.tga;
+	}
+}
+
+.generic-loading-dialog{
+	&.backdrop{
+		Zoffset: $zoffset-super-nested-dialog;
+	}
+	.window{
+		Size : 450 200;
+		.message-wrapper{
+			Size : 100% 100%;
+		}
+		.spinner{
+			Position : 0 55%;
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Size : auto 30%;
+		}
+		.message{
+			Position : 0 20%;
+			Size : 100% 20%;
+			FontFlags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+		}
+	}
+}

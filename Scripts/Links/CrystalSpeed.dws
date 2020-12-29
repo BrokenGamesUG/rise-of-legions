@@ -1,0 +1,30 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 0.7); // 30% more attack speed
+
+  {$IFDEF SERVER}
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, Group])
+      .Name('CrystalSpeed')
+      .TriggerOnDamageDone;
+  {$ENDIF}
+
+  TModifierMultiplyCooldownComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, Group])
+    .SetValueGroup([Group]);
+
+  // this buff can only placed once on a unit
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasCrystalSpeed]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Colorless\crystal_power_idle.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_WEAPON, [0, 1]);
+  {$ENDIF}
+
+  Result := [Group];
+end;

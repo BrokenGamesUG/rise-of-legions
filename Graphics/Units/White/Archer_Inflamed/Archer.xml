@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh">
+  <GeometryFile>archer.fbx</GeometryFile>
+  <Cullmode>cmNone</Cullmode>
+  <Alpha>1</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <SpecularIntensity>1</SpecularIntensity>
+  <SpecularPower>141</SpecularPower>
+  <SpecularTint>0,988235294818878</SpecularTint>
+  <ShadingReduction>0</ShadingReduction>
+  <DiffuseTetxure>ArcherDiffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture>ArcherMaterial.tga</SpecularTexture>
+  <GlowTexture>ArcherGlow.tga</GlowTexture>
+  <FurTexture></FurTexture>
+  <FurIterations>10</FurIterations>
+  <FurThickness>10,1960000991821</FurThickness>
+  <FurTrackBone></FurTrackBone>
+  <FurResponsivness>0,00811760034412146</FurResponsivness>
+  <FurAcceleration>1</FurAcceleration>
+  <FurAccelerationResponsivness>0,0309800002723932</FurAccelerationResponsivness>
+  <FurAttenuation>0,00388234993442893</FurAttenuation>
+  <FurMovementLength>1</FurMovementLength>
+  <FurGravitation>1</FurGravitation>
+</TMesh>

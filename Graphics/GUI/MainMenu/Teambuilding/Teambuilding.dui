@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<div class="teambuilding {{ disabled if not matchmaking.manager.CurrentTeam.CurrentUserIsLeader or matchmaking.InQueue }}" :visible="menu.CurrentMenu = mtGame">
+	<div class="navbar navbar-sub">
+		<stack>
+			<btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = es1v1) }}" dxml-on:click="matchmaking.ChosenScenario := es1v1" title="§scenario_type_description_es1v1">
+				§teambuilding_mode_pvp
+			</btn>
+			<!--btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = es3v3) }}" dxml-on:click="matchmaking.ChosenScenario := es3v3" title="§scenario_type_description_es3v3">
+				§teambuilding_mode_es3v3
+			</btn-->
+			<!--btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = es4v4) }}" dxml-on:click="matchmaking.ChosenScenario := es4v4" title="§scenario_type_description_es4v4">
+				§teambuilding_mode_es4v4
+			</btn-->
+			<!--btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = esRanked1v1) }}" dxml-on:click="matchmaking.ChosenScenario := esRanked1v1" title="§scenario_type_description_esRanked1v1">
+				§teambuilding_mode_esRanked1v1
+			</btn-->
+			<!--btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = esRanked2v2) }}" dxml-on:click="matchmaking.ChosenScenario := esRanked2v2" title="§scenario_type_description_esRanked2v2">
+				§teambuilding_mode_esRanked2v2
+			</btn-->
+			<btn :enabled="profile.Profile.DisableLevelUnlocks or (profile.Profile.Level >= 2)" class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = es2v2) }}" dxml-on:click="matchmaking.ChosenScenario := es2v2" title="§scenario_type_description_es2v2"  dxml-on:mouse_enter="profile.Profile.LevelUnlockSeen(2)">
+				§teambuilding_mode_pvp_duo
+				<div class="player-level-lock" :title="F._d(§feature_level_requirement, 2)" :visible="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level < 2)" dxml-on:click="dialogs.OpenDialog(diPlayerLevelUpOverview)">
+					<icon class="lock"></icon>
+				</div>
+				<div class="new-flag" :show="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level = 2) and not profile.Profile.HasLevelUnlockSeen"></div>
+			</btn>
+			<btn class="btn btn-nav {{ selected if matchmaking.ChosenScenario = es1vE }}" dxml-on:click="matchmaking.ChosenScenario := es1vE" title="§scenario_type_description_es1vE">		
+				§teambuilding_mode_pve
+			</btn>
+			<btn :enabled="profile.Profile.DisableLevelUnlocks or (profile.Profile.Level >= 2)" class="btn btn-nav {{ selected if matchmaking.ChosenScenario = es2vE }}" dxml-on:click="matchmaking.ChosenScenario := es2vE" title="§scenario_type_description_es2vE" dxml-on:mouse_enter="profile.Profile.LevelUnlockSeen(2)">		
+				§teambuilding_mode_pve_duo
+				<div class="player-level-lock" :title="F._d(§feature_level_requirement, 2)" :visible="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level < 2)" dxml-on:click="dialogs.OpenDialog(diPlayerLevelUpOverview)">
+					<icon class="lock"></icon>
+				</div>
+				<div class="new-flag" :show="not profile.Profile.DisableLevelUnlocks and (profile.Profile.Level = 2) and not profile.Profile.HasLevelUnlockSeen"></div>
+			</btn>
+			<btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = esDuel) or (matchmaking.ChosenScenario = esDuel2v2) or (matchmaking.ChosenScenario = esDuel3v3) or (matchmaking.ChosenScenario = esDuel4v4) }}" title="§scenario_type_description_esDuel" dxml-on:click="matchmaking.ChosenScenario := esDuel">
+				§teambuilding_mode_duel
+			</btn>
+		</stack>
+		<stack class="right">
+			<btn class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = esTutorial) }}" dxml-on:click="matchmaking.ChosenScenario := esTutorial" title="§scenario_type_description_esTutorial">
+				§teambuilding_mode_tutorial
+			</btn>
+			<btn :visible="client.IsStaging or profile.Profile.IsStaff"  class="btn btn-nav {{ selected if (matchmaking.ChosenScenario = esSpecial) }}" dxml-on:click="matchmaking.ChosenScenario := esSpecial">
+				DEBUG
+			</btn>
+		</stack>
+	</div>
+	<div dxml-include="Mainmenu/Teambuilding/ScenarioDialog.dui"></div>
+	<div dxml-include="Mainmenu/Teambuilding/DifficultyDialog.dui"></div>
+	<div dxml-include="Mainmenu/Teambuilding/ChooseDeckDialog.dui"></div>
+	<wrapper class="content-sub">
+		<stack class="layout">
+			<div class="scenario-type-description">
+				§scenario_type_description_{{ matchmaking.ChosenScenario }}
+				<div class="league-hint" :visible="matchmaking.HasAutoLeague">
+					§scenario_type_description_pvp_tier_hint
+					<div class="exclamation left"></div>
+					<div class="exclamation right"></div>
+				</div>
+			</div>
+			<div class="scenario-options-section {{ invisible if not matchmaking.HasLeagueSelection and not matchmaking.HasScenarioSelection }}">
+				<stack class="scenario-options">
+					<btn class="scenario-option " :visible="matchmaking.HasScenarioSelection" dxml-on:click="dialogs.OpenDialog(diMatchmakingScenario)">
+						<div class="text">
+							{{ §teambuilding_choose_scenario if matchmaking.manager.CurrentTeam.ScenarioInstance = nil else (§scenario_ + matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.UID) }}
+						</div>
+						<div class="caption">		
+							§teambuilding_choose_gamemode
+						</div>
+					</btn>
+					<btn class="scenario-option" :visible="matchmaking.HasLeagueSelection and matchmaking.IsPvE" dxml-on:click="dialogs.OpenDialog(diMatchmakingScenarioDifficulty)">
+						<div class="text with-icon">
+							§scenario_difficulty_{{ matchmaking.manager.CurrentTeam.ScenarioInstance.League }} (§scenario_difficulty_loot_{{ matchmaking.manager.CurrentTeam.ScenarioInstance.League }})
+							<img class="league-icon" :src="HClient.GetLeagueIcon(matchmaking.manager.CurrentTeam.ScenarioInstance.League)"></img>
+						</div>
+						<div class="caption">			
+							§teambuilding_choose_difficulty
+						</div>
+					</btn>
+					<btn class="scenario-option" :visible="matchmaking.HasLeagueSelection and not matchmaking.IsPvE" dxml-on:click="dialogs.OpenDialog(diMatchmakingScenarioDifficulty)">
+						<div class="text with-icon">
+							§league_{{ matchmaking.manager.CurrentTeam.ScenarioInstance.League }}
+							<img class="league-icon" :src="HClient.GetLeagueIcon(matchmaking.manager.CurrentTeam.ScenarioInstance.League)"></img>
+						</div>
+						<div class="caption">			
+							§league
+						</div>
+					</btn>
+				</stack>
+			</div>
+		</stack>
+		<div class="scenario-team {{ no-deck-required if not matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.DeckRequired }} {{ duel if matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.IsDuel }} teamsize-{{ matchmaking.manager.CurrentTeam.ScenarioInstance.Scenario.MaxTeamSize }}">
+			<div class="duel-versus"></div>
+			<div dxml-include="MainMenu/Teambuilding/Teamlist.dui"></div>
+		</div>
+		<div class="scenario-queue">
+			<div dxml-include="MainMenu/Teambuilding/Queue.dui"></div>
+		</div>
+		<btn class="btn-tutorial-videos pop-out {{ not-found if not profile.Profile.HasFoundTutorialVideos }}" dxml-on:click="dialogs.OpenDialog(diTutorialVideos)">§tutorial_video_dialog_button_caption</btn>
+	</wrapper>
+</div>

@@ -1,0 +1,41 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; TeamID : integer; Front : RVector2);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 20.0);
+  Entity.Blackboard.SetValue(eiWelaRange, [Group], 11.0);
+  Entity.Blackboard.SetValue(eiWelaUnitPattern, [Group], 'Projectiles\Colorless\CrystalPowerProjectile');
+  Entity.Blackboard.SetValue(eiDamageType, [Group], [dtRanged]);
+
+  {$IFDEF SERVER}
+    TBrainWelaFightComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively
+      .ThinksLocal;
+    TWelaTargetingRadialComponent.CreateGrouped(Entity, [Group])
+      .Cone(Front, PI / 4)
+      .PrioritizeMiddleDistant
+      .SetTargetTeamConstraint(tcAll);
+    TWelaTargetConstraintNotSelfComponent.CreateGrouped(Entity, [Group]);
+    TWelaTargetConstraintTeamIDComponent.CreateGrouped(Entity, [Group])
+      .SetTargetTeam(TeamID)
+      .Invert;
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [Group], eiDamageable);
+    TWelaEffectProjectileComponent.CreateGrouped(Entity, [Group]);
+
+    TThinkImpulseNowComponent.CreateGrouped(Entity, [Group]);
+    // as effect is instantly applied, we free it immediately afterwards
+    Entity.RemoveGroups([Group]);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [0, 1], '\Colorless\crystal_power_attack.pfx', 6.0)
+      .ActivateNow()
+      .Free;
+
+    TSoundComponent.CreateGrouped(Entity, [], 'event:/card/colorless/unit/small_caster_golem/crystal_power_trigger')
+      .TriggerNow()
+      .Free;
+  {$ENDIF}
+end;

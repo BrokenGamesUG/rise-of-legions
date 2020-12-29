@@ -1,0 +1,222 @@
+﻿.hud{
+	&.tutorial-hud:important{
+		&.disabled{
+			& > .ui{
+				BackgroundColorOverride : $override-black;
+				*{
+					MouseEvents : mePass;
+				}
+				.build-slot-wrapper:disabled{
+					.build-button{
+						.charge-text{
+							BackgroundColorOverride : $override-black;
+						}
+					}
+				}
+			}
+			
+		}
+		& > .ui.disabled{
+			BackgroundColorOverride : $override-black;
+			.card-hint{
+				Position-Y : 200%;
+			}
+			*{
+				Enabled : False;
+				MouseEvents : mePass;
+			}
+			.build-slot-wrapper:disabled{
+				.build-button{
+					MouseEvents : mePass;
+					*{
+						MouseEvents : mePass;
+					}
+					.charge-text:important{
+						BackgroundColorOverride : $override-black;
+					}
+				}
+			}
+			*:enabled{
+				BackgroundColorOverrideInheritance : False;
+				MouseEvents : meAll;
+				*{
+					MouseEvents : mePass;
+				}
+			}
+		}
+		& > .ui.locked{
+			.build-slot-wrapper:disabled{
+				.build-button{
+					Enabled : False;
+					BackgroundColorOverride : $override-darken;
+					MouseEvents : mePass;
+					*{
+						Enabled : False;
+						MouseEvents : mePass;
+					}
+					.charge-text{
+						BackgroundColorOverrideInheritance : False;
+					}
+				}
+				&.unshadowed{
+					MouseEvents : mePass;
+					BackgroundColorOverride : 0;
+					BackgroundColorOverrideInheritance : False;
+					.build-button{
+						Enabled : True;
+						MouseEvents : mePass;
+						BackgroundColorOverride : 0;
+						.charge-text:important{
+							BackgroundColorOverride : 0;
+						}
+					}
+				}
+			}
+		}
+	}
+	.tutorial-hint{
+		MouseEvents : mePass;
+		.backdrop{
+			ZOffset : -2;
+			BackgroundColor : $A0000000;
+		}
+		.window{
+			&.has-button{
+				.text{
+					Position : 0 -5;
+				}
+			}
+		}
+		.active-hint{
+			.window{
+				Position : 0 -5%;
+				Size : 40% auto;
+				.window-buttons{
+					Position : 0 32;
+				}
+				.text{
+					Size : 100% text;
+					Padding : 20 0 40 0;
+					Fontcolor : $font-color-white;
+					FontSize : 30;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+				}
+				.btn-xl{
+					Size : auto 70;
+				}
+			}
+		}
+		.passive-hint{
+			Position : 50pw 110;
+			Anchor : caTop;
+			ZOffset : 1000;
+			.window{
+				Size : 700 auto;
+				Padding : 30;
+				.text{
+					Size : 100% text;
+					Fontcolor : $font-color-white;
+					FontSize : 26;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+				}
+			}
+		}
+		.arrow-hint{
+			MouseEvents : mePass;
+		}
+		.info{
+			ZOffset : 1000;
+			Size : 380 300;
+			MouseEvents : mePass;
+			.rgl{
+				Size : 100% text;
+				Position : 0 -5;
+				Fontcolor : $font-color-white;
+				FontSize : 26;
+				FontFlags : [ffCenter,ffBottom,ffWordWrap];
+			}
+			.text{
+				Position : 0 -40%;
+				Size : 100% auto;
+				Padding : 30 20;
+				Fontcolor : $font-color-white;
+				.btn-xl{
+					ParentAnchor : caBottom;
+					Anchor : caCenter;
+				}
+				&.caRight{
+					Position : -28% 0;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+				}
+				&.caBottomRight{
+					Position : -30% 48%;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+				}
+				&.caTop{
+					Position : 0 41%;
+					FontFlags : [ffCenter,ffTop,ffWordWrap];
+				}
+				&.caLeft{
+					Position : 28% 0;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+				}
+			}
+			.arrow{
+				ZOffset : 100;
+				Size : auto 50%;
+				Background : HUD/Tutorial/Arrow.png;
+				MouseEvents : mePass;
+				TransformAnchor : caCenter;
+				TransformOrder : toAnimationTransform;
+				$jello-horizontal;
+				&.caRight{
+					Transform : rotate(90deg);
+				}
+				&.caBottomRight{
+					Transform : rotate(45deg);
+				}
+				&.caTop{
+					Transform : rotate(180deg);
+				}
+				&.caLeft{
+					Transform : rotate(270deg);
+				}
+			}
+		}
+		.backdrop{
+			.info{
+				.text{
+					.window-buttons{
+						Position : 0 35;
+						Size : 0 0;
+						ParentAnchor : caBottom;
+						Anchor : caTop;
+					}
+				}
+			}
+		}
+		.world{
+			.info{
+				.text{
+					Position : 0 -28%;
+					&.caBottomRight{
+						Position : -22% -35%;
+					}
+					&.caRight{
+						Position : -28% 0;
+					}
+					&.caTop{
+						Position : 0 30%;
+					}
+					&.caLeft{
+						Position : 30% 0;
+					}
+					.btn-xl{
+						ParentAnchor : caTopLeft;
+						Anchor : caTopLeft;
+					}
+				}
+			}
+		}
+	}
+}

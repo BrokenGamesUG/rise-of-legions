@@ -1,0 +1,115 @@
+﻿.state-page{
+	Padding : 10;
+	.game-logo{
+		Position : 0 -15%;
+		Anchor : caBottom;
+		ParentAnchor : caCenter;
+		Size : 30% auto;
+		.banner{
+			Position : 0 -20%;
+			Size : auto 100bh;
+			Anchor : caTop;
+			ParentAnchor : caBottom;
+		}
+	}
+	.crunchy-logo{
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Size : auto 8%;
+		Enabled : True;
+	}
+	.broken-logo{
+		Position : 7%;
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Size : 8% auto;
+		Enabled : True;
+	}
+	.fmod-logo{
+		Position : 17% -2.5%;
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Size : 8% auto;
+		Opacity : 0.7;
+		Enabled : True;
+	}
+}
+
+.loading-main-page{
+	.game-logo, .opener{
+		Position : 0 -10%;
+	}
+	.opener{
+		Padding-Top : 7.3vh;
+		Anchor : caTop;
+		ParentAnchor : caCenter;
+		Size : 80% 50%;
+		FontSize : 24;
+		FontWeight : 700;
+		FontFlags : [ffCenter,ffWordWrap];
+	}
+	.status{
+		Position : 0 -10%;
+		Anchor : caBottom;
+		ParentAnchor : caBottom;
+		Size : 50% 7.5%;
+		.text{
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Size : 100% 46.67%;
+			FontSize : 100%;
+			FontFlags : [ffCenter,ffVerticalCenter];
+		}
+		.spinner{
+			Position : 0 20%;
+			Anchor : caBottom;
+			ParentAnchor : caBottom;
+			Size : auto 53.33%;
+		}
+	}
+}
+
+.loading-generic{
+	Padding : 10;
+	.text{
+		Position : 0 -2.5%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : 50% 3.5%;
+		FontSize : 100%;
+		FontFlags : [ffCenter,ffVerticalCenter];
+	}
+	.spinner{
+		Position : 0 2.5%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : auto 4%;
+	}
+	.game-logo{
+		Position : 0 -5%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : 30% auto;
+	}
+	.crunchy-logo{
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Size : auto 8%;
+		Enabled : True;
+	}
+	.broken-logo{
+		Position : 7%;
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Size : 8% auto;
+		Enabled : True;
+	}
+	.fmod-logo{
+		Position : 17% -2.5%;
+		Anchor : caBottomLeft;
+		ParentAnchor : caBottomLeft;
+		Size : 8% auto;
+		Opacity : 0.7;
+		Enabled : True;
+	}
+}

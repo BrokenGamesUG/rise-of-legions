@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<stack class="system-panel">
+	<btn class="btn-minimize" dxml-on:click="client.Minimize"></btn> 
+	<btn class="btn-settings" dxml-on:click="dialogs.OpenDialog(diSettings)"></btn>
+	<btn class="btn-exit" dxml-on:click="client.Close"></btn>
+</stack>

@@ -1,0 +1,305 @@
+﻿.currency{
+	Size : auto 100%;
+	Padding : 0 20ch 0 100ch;
+	&.error{
+		.amount{
+			FontColor : $font-color-invalid;
+		}
+	}
+	.amount{
+		Size : text 100%;
+		FontFlags : [ffVerticalCenter];
+	}
+	.icon{
+		ParentAnchor : caLeft;
+		Anchor : caRight;
+		Size : auto 150%;
+		Position-X : -10ch;
+	}
+	&.centered{
+		Padding : 0;
+		.amount{
+			Position-X : 70ch;
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+		}
+	}
+}
+
+.btn-currency{
+	&:disabled{
+		.amount{
+			Opacity : 0.5;
+		}
+	}
+	.amount{
+		Position : -50ch 5%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Size : text 90%;
+		FontFlags : [ffRight,ffVerticalCenter,ffAutoShrink];
+		BackgroundColorOverrideInheritance : False;
+		MaxWidth : 90%;
+		.icon{
+			Position : 0 -5%;
+			Anchor : caLeft;
+			ParentAnchor : caRight;
+			Size : auto 110%;
+		}
+	}
+}
+
+.shopitem-wrapper{
+	.offers{
+		Size : 100% 14%;
+		ParentAnchor : caBottom;
+		Anchor : caTop;
+		& > *{
+			Padding : 0 8cw;
+			&:last-child{
+				Margin-Left : 8cw;
+			}
+		}
+		&.single{
+			StackColumns : 1;
+			Padding : 0 auto;
+		}
+		& > .offer{
+			Size-X : 50%;
+			&.locked{
+				.lock:important{
+					Visibility : True;
+					MouseEvents : meAll;
+				}
+				stack{
+					.currency{
+						BackgroundColor : $FF468791;
+						.icon{
+							Visibility : False;
+						}
+						.amount{
+							Opacity : 0.5;
+						}
+					}
+				}
+			}
+			.lock{
+				Visibility : False;
+				ParentAnchor : caLeft;
+				Anchor : caCenter;
+				Size : auto 115%;
+				ZOffset : 10;
+			}
+			.price{
+				Position : -55% -20%;
+				Size : 200% 120%;
+				BackgroundColor : $field-background;
+				FontColor : $font-color-gold;
+				FontFlags : [ffCenter,ffVerticalCenter];
+			}
+			.offer-buttons{
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				Size : 100% 100%;
+				.currency{
+					Size-X : 100%;
+					BackgroundColor : $field-background;
+					.amount{
+						Position-Y : 1;
+						FontWeight : 700;
+						ParentAnchor : caRight;
+						Anchor : caRight;
+						FontFlags : [ffRight,ffVerticalCenter];
+					}
+				}
+			}
+		}
+	}
+}
+	
+.shopitem{
+	&.shopitem-card, &.shopitem-skin{
+		Size : 100% 100%;
+		.own-count:important{
+			MouseEvents : meAll;
+			ParentAnchor : caTopRight;
+			Anchor : caCenter;
+			Size : text 15%;
+			Position : -15% 3%;
+			ZOffset : 1000;
+		}
+		.card{
+			Position : 0 -8%;
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Size : 80% auto;
+			.icon-frame{
+				Size : 100% auto;
+				.league-icon:important{
+					MouseEvents : mePassClick;
+				}
+			}
+		}
+		.deco{
+			Anchor : caTop;
+			ParentAnchor : caTop;
+			Position : 0 25%;
+			Size : 92% auto;
+			Background : MainMenu/Shop/card_background.png;
+			ZOffset : -6;
+		}
+		.name{
+			Anchor : caCenter;
+			ParentAnchor : caBottom;
+			Background : MainMenu/Shop/card_header.png;
+			Size : 100% auto;
+			ZOffset : 100;
+			$big-font;
+			Fontsize : 100%;
+			Padding : 15% 5% 20% 5%;
+			Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+		}
+	}
+	&.shopitem-skin{
+		.card{
+			.icon-frame{
+				.league-icon{
+					Visibility : False;
+				}
+			}
+		}
+	}
+	&.shopitem-deckslot{
+		Size : 100% auto;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+	}
+	&.shopitem-currency, &.shopitem-xp, &.shopitem-diamonds, &.shopitem-credits, &.shopitem-premium{
+		Size : 100% auto;
+		Background : MainMenu/Shop/item_background.png;
+		.header-icon{
+			Size : auto 60%;
+			Anchor : caCenter;
+			ParentAnchor : caTop;
+			Position : 0 22%;
+		}
+		.icon{
+			Position-X : 10ch;
+			Size : auto 100%;
+			Anchor : caLeft;
+			ParentAnchor : caRight;
+		}
+		.amount{
+			Position : -50ch 30%;
+			Size : text 18%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			FontFlags : [ffRight,ffVerticalCenter];
+		}
+	}
+	&.shopitem-icon{
+		Size : 100% auto;
+		.framed-icon{
+			Position : 0 10%;
+			Size : auto 70%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			Outline : $shadow-outline;
+		}
+	}
+	&.shopitem-premium{
+		.header-icon{
+			Position : 0 24%;
+			Size : auto 66%;
+		}
+		.amount{
+			Position : 0 27.5%;
+			Size : 90% 18%;
+			FontSize : 80%;
+			FontFlags: [ffCenter,ffVerticalCenter,ffAutoShrink];
+		}
+	}
+	&.shopitem-diamonds, &.shopitem-credits{
+		.header-icon{
+			Position : 0 28%;
+			Size : auto 90%;
+		}
+		.bonus{
+			Position : 0 -1;
+			Anchor : caBottom;
+			ParentAnchor : caBottom;
+			Size : 100% 12%;
+			FontFlags : [ffCenter];
+			FontColor : $FF28CF2B;
+		}
+	}
+	&.shopitem-xp{
+		.amount{
+			Position-X : 0;
+		}
+	}
+	&.shopitem-bundle{
+		Size : 100% 100%;
+		MouseEvents : mePassClick;
+		&:hover{
+			.plate{
+				.chest{
+					$swing;
+					.amount{
+						$swing-small;
+					}
+				}
+			}
+		}
+		.plate{
+			Size : auto 100%;
+			Anchor : caCenter;
+			ParentAnchor : caCenter;
+			.content{
+				Position : 4.3% 25.1%;
+				Size : 75% 59%;
+				StackOrientation : soVertical;
+				Padding : 12ch 30ch 18ch 30ch;
+				.title, .text{
+					FontWeight : 1000;
+				}
+				.title{
+					Size : 100% 38;
+					FontFlags : [ffVerticalCenter,ffAutoShrink];
+				}
+				.text{
+					Size : 100% text;
+					FontSize : 19;
+					FontFlags : [ffWordWrap];
+				}
+			}
+			.chest{
+				Position : -4% 2%;
+				Anchor : caCenter;
+				ParentAnchor : caRight;
+				Size : auto 120%;
+				Background : MainMenu/Shop/bundle_chest.png;
+				TransitionProperty : gtTransform;
+				TransitionDuration : 50;
+				.amount{
+					Position : 6% 3%;
+					Size : text 15%;
+					Anchor : caRight;
+					ParentAnchor : caCenter;
+					FontColor : $font-color-crystal;
+					FontBorder : 1 $FF000000;
+					FontWeight : 1000;
+					Transform : rotate(-12deg);
+					AnimationOffset : 500;
+					TransitionProperty : gtTransform;
+					TransitionDuration : 50;
+					.icon{
+						Size : auto 120%;
+						Anchor : caLeft;
+						ParentAnchor : caRight;
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,31 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 1); // armor class up by one
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Enchanted')
+      .TriggerOnTakeDamage;
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedArmor]);
+
+  TModifierArmorTypeComponent.CreateGrouped(Entity, [Group])
+    .Increase;
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\blessed_armor_buff.pfx', 0.6)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+  {$ENDIF}
+end;

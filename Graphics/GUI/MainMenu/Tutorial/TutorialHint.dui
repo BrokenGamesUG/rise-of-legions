@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<wrapper class="backdrop meta-tutorial-hint dialog disabled" :show="dialogs.IsDialogVisible(diMetaTutorial) and not metatutorial.RewardStage">
+	<wrapper class="arrow-offset">
+		<div class="window meta-tutorial-window {{ text-only if metatutorial.TextOnlyStage }}">
+			<div class="text">§tutorial_meta_{{ metatutorial.Stage }}</div>
+			<div class="window-caption" :visible="metatutorial.StageHasTitle">§tutorial_meta_title_{{ metatutorial.Stage }}</div>
+			<div class="arrow" :visible="not metatutorial.TextOnlyStage"></div>
+			<stack class="window-buttons" :visible="metatutorial.TextOnlyStage">
+				<btn class="btn-xl btn-success" dxml-on:click="metatutorial.CompleteCurrentStage">§tutorial_meta_ok</btn>
+			</stack>
+		</div>
+	</wrapper>
+</wrapper>

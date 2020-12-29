@@ -1,0 +1,35 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 1.0);
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 3000);
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively;
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWarheadSpottyResourceComponent.CreateGrouped(Entity, [Group])
+      .SetResourceType(reMana)
+      .TargetGroup([]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('ManaRegenerationAura')
+      .TriggerOnFire;
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upEnergyAuraBuffed]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\healing_garden_buff.pfx', 1.1)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiCollisionRadius)
+      .FixedHeightGround;
+  {$ENDIF}
+
+  Result := [Group];
+end;

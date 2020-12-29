@@ -1,0 +1,20 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 60000); // Prevent trigger of aura
+
+  {$IFDEF SERVER}
+    TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upImmuneToGuarded]);
+
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group]);
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;

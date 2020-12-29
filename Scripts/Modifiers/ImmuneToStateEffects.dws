@@ -1,0 +1,21 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upImmuneToStateEffects]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\state_immunity.pfx', 0.7)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiCollisionRadius)
+      .FixedHeightGround;
+  {$ENDIF}
+end;

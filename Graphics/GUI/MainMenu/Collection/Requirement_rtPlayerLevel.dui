@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<div class="requirement player-level {{ done if requirement.IsFulfilled or card.Unlocked }}">
+	<div class="description">{{ F._(§card_requirement_player_level, F.IntToStr(requirement.RequiredPlayerLevel)) }}</div>
+	<div class="overlay">
+		<div class="done"></div>
+	</div>
+	<progress>
+		<bar width="{{ requirement.Progress * 100}}%"></bar>
+		<div class="caption">{{ requirement.CurrentValue if not card.Unlocked else requirement.TargetValue }} / {{ requirement.TargetValue }}</div>
+	</progress>
+</div>

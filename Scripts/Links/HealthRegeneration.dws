@@ -1,0 +1,28 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 30.0);
+  Entity.Blackboard.SetValue(eiDamageType, [Group], [dtHoT]);
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 1000);
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively;
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [Group]);
+    TWarheadSpottyHealComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('SporeField')
+      .TriggerOnHealDone;
+  {$ENDIF}
+  // this aura can only placed once on a unit
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upSporeFieldRegenerating]);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+
+  Result := [Group];
+end;

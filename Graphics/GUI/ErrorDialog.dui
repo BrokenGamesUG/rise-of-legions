@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<wrapper class="error-dialog backdrop dialog disabled" :show="client.IsErrorDialogOpen">
+	<div class="window">
+		<div class="window-caption small">{{ client.ErrorCaption }}</div>
+		<div class="message">{{ client.ErrorMessage }}</div>
+		<stack class="window-buttons">
+			<div class="btn btn-xl" dxml-on:click="client.IsErrorDialogOpen := False">{{ client.ErrorConfirm }}</div>
+		</stack>
+	</div>
+</wrapper>

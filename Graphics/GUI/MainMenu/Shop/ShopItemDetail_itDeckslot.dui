@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<div class="shopitem detail shopitem-deckslot">
+	<div class="deck">
+		<img class="icon" src="{{ HClient.GetDeckIcon('') }}"></img>
+		<div class="info">
+			<div class="name">§deckbuilding_deck_slot_new</div>
+		</div>
+	</div> 
+</div>

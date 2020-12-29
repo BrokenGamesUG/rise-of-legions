@@ -1,0 +1,26 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upInvisible]);
+
+  {$IFDEF CLIENT}
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectInvisible.Create()
+          .Smooth(0.2)
+          .Speed(0.0005)
+          .Span(0.7)
+          .SetTexture(PATH_GRAPHICS_EFFECTS_MESHES + 'InvisibleMask.png')
+          );
+  {$ENDIF}
+
+  Result := [Group];
+end;

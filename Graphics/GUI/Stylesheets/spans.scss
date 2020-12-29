@@ -1,0 +1,152 @@
+﻿span{
+	FontWeight : 700; 
+	&.keyword{
+		FontWeight : 700;
+		FontColor : $font-color-default;
+	}
+	&.danger{
+		FontColor : $font-color-danger;
+	}
+	&.warning{
+		FontColor : $font-color-warning;
+	}
+	&.headline{
+		FontColor : $font-color-real-white;
+	}
+	&.highlight{
+		FontWeight : 700;
+		FontColor : $text-color-highlight;
+	}
+	&.premium{
+		FontColor : $font-color-premium-time;
+	}
+	&.premium-currency{
+		FontColor : $font-color-crystal;
+	}
+	&.deckslot{
+		FontColor : $font-color-default;
+	}
+	
+	&.level{
+		FontColor : $font-color-level;
+	}
+	&.cardname{
+		FontColor : $text-color-cardname;
+	}
+	&.abilityname{
+		FontColor : $text-color-ability;
+	}
+	&.questcount{
+		FontColor : $text-color-questcount;
+	}
+	&.mana{
+		FontColor : $text-color-mana;
+	}
+	&.essence{
+		FontColor : $text-color-essence;
+	}
+	
+	&.annihilated{
+		FontColor : $keyword-color-annihilated;
+	}
+	&.banished{
+		FontColor : $keyword-color-banished;
+	}
+	&.bleeding{
+		FontColor : $keyword-color-bleeding;
+	}
+	&.blinded{
+		FontColor : $keyword-color-blinded;
+	}
+	&.enchantment{
+		FontColor : $keyword-color-enchantment;
+	}
+	&.domain{
+		FontColor : $keyword-color-domain;
+	}
+	&.frozen{
+		FontColor : $keyword-color-frozen;
+	}
+	&.grounded{
+		FontColor : $keyword-color-grounded;
+	}
+	&.lifted{
+		FontColor : $keyword-color-lifted;
+	}
+	&.missile{
+		FontColor : $keyword-color-missile;
+	}
+	&.overheal{
+		FontColor : $keyword-color-overheal;
+	}
+	&.petrified{
+		FontColor : $keyword-color-petrified;
+	}
+	&.protected{
+		FontColor : $keyword-color-protected;
+	}
+	&.rescued{
+		FontColor : $keyword-color-rescued;
+	}
+	&.rooted{
+		FontColor : $keyword-color-rooted;
+	}
+	&.sapling{
+		FontColor : $keyword-color-sapling;
+	}
+	&.shieldblock{
+		FontColor : $keyword-color-shieldblock;
+	}
+	&.silenced{
+		FontColor : $keyword-color-silenced;
+	}
+	&.statuseffect{
+		FontColor : $keyword-color-statuseffect;
+	}
+	&.stealthed{
+		FontColor : $keyword-color-stealthed;
+	}
+	&.stunned{
+		FontColor : $keyword-color-stunned;
+	}
+	&.summoningsickness{
+		FontColor : $keyword-color-summoningsickness;
+	}
+	&.timed{
+		FontColor : $keyword-color-timed;
+	}
+
+	&.armor{
+		FontColor : $text-color-armor;
+	}
+	&.counter{
+		FontColor : $text-color-counter;
+	}
+	&.damage{
+		FontColor : $text-color-damage;
+	}
+	&.energy{
+		FontColor : $text-color-energy;
+	}
+	&.health{
+		FontColor : $text-color-health;
+	}
+	&.league-1{
+		FontColor : $text-color-league-1;
+	}
+	&.league-2{
+		FontColor : $text-color-league-2;
+	}
+	&.league-3{
+		FontColor : $text-color-league-3;
+	}
+	&.league-4{
+		FontColor : $text-color-league-4;
+	}
+	&.league-5{
+		FontColor : $text-color-league-5;
+	}
+	&.range{
+		FontColor : $text-color-range;
+	}
+}

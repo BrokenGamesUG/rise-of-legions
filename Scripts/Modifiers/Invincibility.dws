@@ -1,0 +1,75 @@
+#define DURATION 2000
+
+function ApplyRaw(Entity : TEntity) : integer;
+begin
+  Result := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Result], DURATION); //Invincible-Duration
+
+  {$IFDEF SERVER}
+    // After eiCooldown Buff is removed
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Result])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Result], [btPositive]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Result], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Result]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Result], [upInvincible]);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+end;
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := ApplyRaw(Entity);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\White\Invincible.pfx', 0.3)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGlow.Create(DURATION)
+          .FixedColorIdentity(ecWhite)
+          .AddKey(0, 0.1)
+          .AddKey(DURATION - 500, 0.1)
+          .AddKey(DURATION, 0.0)
+      );
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/white/effect/invincible')
+      .TriggerNow();
+  {$ENDIF}
+end;
+
+procedure ApplyBlue(Entity : TEntity);
+var Group : integer;
+begin
+  Group := ApplyRaw(Entity);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Blue\Invincible.pfx', 0.3)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_CENTER, [0, 1]);
+
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGlow.Create(DURATION)
+          .FixedColorIdentity(ecBlue)
+          .AddKey(0, 0.1)
+          .AddKey(DURATION - 500, 0.1)
+          .AddKey(DURATION, 0.0)
+      );
+
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/blue/effect/invincible')
+      .TriggerNow;
+  {$ENDIF}
+end;

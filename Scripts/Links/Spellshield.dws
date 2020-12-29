@@ -1,0 +1,20 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 0.2);
+
+  {$IFDEF SERVER}
+    TBuffTakenDamageMultiplierComponent.CreateGrouped(Entity, [Group])
+      .DamageTypeMustHaveAny([dtSpell, dtAbility]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upSpellshieldAuraBuffed]);
+
+  {$IFDEF CLIENT}
+  {$ENDIF}
+
+  Result := [Group];
+end;

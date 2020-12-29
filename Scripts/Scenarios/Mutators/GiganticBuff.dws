@@ -1,0 +1,39 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; League : integer);
+var Group, HealthGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  HealthGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiWelaModifier, [Group], 1.75); // increase damage
+  Entity.Blackboard.SetValue(eiWelaDamage, [HealthGroup], 165.0); // increase health
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive, btDivine]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group, HealthGroup])
+      .TargetGroup([Group, HealthGroup]);
+
+    // Increase Health, only server because cap is synced
+    TModifierResourceComponent.CreateGrouped(Entity, [HealthGroup])
+      .Resource(reHealth)
+      .ApplyNow();
+  {$ENDIF}
+  // this buff can only placed once on an unit
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessedGrowth]);
+
+  // Damage-Buff for primary weapon (1)
+  TModifierWelaDamageComponent.CreateGrouped(Entity, [1, Group])
+    .Multiply()
+    .SetValueGroup([Group]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\giant_growth_buff.pfx', 3.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius);
+
+     TVisualModificatorSizeComponent.CreateGrouped(Entity, [0, 1, 2, 3, 4, 5, 6, Group])
+       .SetTargetSize(1.2)
+       .Duration(500);
+  {$ENDIF}
+end;

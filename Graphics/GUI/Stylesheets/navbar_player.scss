@@ -1,0 +1,247 @@
+﻿.hint.hint-meta_team:important{
+	Size : auto 20;
+	& > *{
+		Size : text 20;
+		Padding-left : 10;
+		Padding-right : 10;
+		Fontsize : 15;
+		Fontflags : [ffCenter];
+		Text: <Playername>;
+	}
+}
+
+.player-panel{
+	Size : auto 100%;
+	Position : -1;
+	Anchor : caTopRight;
+	ParentAnchor : caTopRight;
+	StackAnchor : caTopRight;
+	& > *{
+		Anchor : caTopRight;
+	}
+	.boosts{
+		Anchor : caTopRight;
+		Position : 100% 0;
+		Size: 12.5vw 45%;
+		Padding : 15ch 0;
+		& > * {
+			Size : auto 100%;
+			Margin-Left : 3;
+			HintAnchor : caTop;
+			HintOffset : 0 10;
+		}
+		.premium{
+			Background : MainMenu/Navbar/PremiumIndicator.png;
+			BackgroundColorOverride : $override-darken;
+			Enabled : True;
+			&.available{
+				BackgroundColorOverride : 0;
+			}
+		}
+	}
+	.user{
+		Anchor : caBottomRight;
+		Position : inherit 100%;
+		Size: 12.5vw 55%;
+		FontSize : 100%;
+		BackgroundColor: $dark-background;
+		Enabled : True;
+		Padding : 2;
+		&:hover{
+			.level-panel{
+				Visibility : True;
+				&.max-level{
+					Visibility : False;
+				}
+			}
+			& > .overlay{
+				Visibility : True;
+			}
+		}
+		& > .overlay{
+			Visibility : False;
+			ParentBox : pbPadding;
+			Size : 100% 100%;
+			Background: MainMenu/Navbar/xp_bar_overlay.png;
+			MouseEvents : mePass;
+		}
+		& > caption{
+			Anchor : caBottomLeft;
+			ParentAnchor : caBottomLeft;
+			Size : 100% 70%;
+			ZOffset : 10;
+			Padding-Left : 3;
+			FontColor : $font-color-crystal;
+			Fontweight : 600;
+			MouseEvents : mePass;
+			FontFlags: [ffVerticalCenter,ffAutoShrink];
+		}
+		& > bar{
+			Background : MainMenu/Navbar/xp_bar_background.png;
+			Backgroundrepeat : brMask brStretch;
+		}
+		.level-panel{
+			Visibility : False;
+			Position : 1% 30%;
+			Anchor : caTopRight;
+			ParentAnchor : caBottomRight;
+			Size: 25vw 12vh;
+			ZOffset : $zoffset-popup;
+			$window
+			.level-progress{
+				Size : 100% 35%;
+				BackgroundColor: $dark-background;
+				.level-xp{
+					FontSize : 80%;
+					FontFlags : [ffCenter,ffVerticalCenter];
+				}
+				& > bar{
+					BackgroundColor: $3000FFFF;
+				}
+			}
+			.level-loot-click-hint{
+				Position: 0 35%;
+				Size : 100% 65%;
+				Padding: 5;
+				FontSize : 20;
+				FontFlags: [ffCenter,ffVerticalCenter,ffAutoShrink];
+			}
+		}
+	}
+	.team-panel{
+		Size : auto 100%;
+		Margin-Right : 30;
+		.meta-team{
+			Size : auto 100%;
+			StackAnchor : caTopRight;
+			$small-font;
+			&.tight{
+				& > *{
+					Margin-Right : 0;
+					&.team-member-wrapper{
+						Size : auto 50%;
+						&:first-child{
+							Size : auto 100%;
+						}
+					}
+					&:even{
+						Position-Y : 50%;
+						&:first-child, &:last-child{
+							Position-Y : inherit;
+						}
+						&:last-child{
+							Size-X : 150ch;
+							Margin-Right : 50ch;
+							BoxSizing : bsMargin;
+						}
+					}
+					&:odd{
+						Margin-Right : -100ch;
+						&:last-child{
+							Margin-Right : 0;
+						}
+					}
+				}
+			}
+			& > *{
+				Position : inherit inherit;
+				Size : auto 100%;
+				Margin-Right : 3;
+				HintTemplate : Hints/MetaTeamHint.gco;
+				HintAnchor : caLeft;
+				Anchor : caTopRight;
+				&:hover{
+					.btn-kick{
+						Visibility : True;
+					}
+				}
+				select{
+					ZOffset : 10;
+					& > .options{
+						Width : 200;
+						Position-Y : 3;
+						ParentAnchor : caBottom;
+						Anchor : caTop;
+					}
+					.player-icon{
+						MouseEvents : mePassClick;
+						&:hover{
+							.icon{
+								BackgroundColorOverride : $override-highlight;
+							}
+						}
+					}
+				}
+			}
+			.btn-invite{
+				Background : MainMenu/Navbar/AddTeamMember.png;
+				BackgroundHover : MainMenu/Navbar/AddTeamMember_Hover.png;
+				FontSize : 40%;
+				FontFlags : [ffRight,ffBottom];
+				HintAnchor : caTop;
+				HintOffset : 0 3;
+			}
+		}
+		.invite-panel{
+			Position : 100 10;
+			Size : 400 85;
+			Anchor : caTopRight;
+			ParentAnchor: caBottomRight;
+			ZOffset : $zoffset-popup;
+			.message{
+				Size : 100% 20;
+				MouseEvents : mePass;
+				Fontsize : 18;
+				Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+			}
+		}
+	}
+	.resource-panel{
+		Size : 11.5vw 100%;
+		Padding : 25% 0;
+		FontColor : $font-color-subtle;
+		MouseEvents : meAll;
+		&:hover{
+			.currency-popup{
+				Visibility : False;
+			}
+		}
+		.currency-wrapper{
+			Size : 50% 100%;
+			HintAnchor : caTop;
+			HintOffset : 0 5;
+			BackgroundColor : $dark-background;
+			Margin-Right : 25%;
+			.balance{
+				FontWeight : 600;
+				FontColor : $font-color-crystal;
+				Size : 100% 100%;
+				Padding : 12% 4% 8% 32%;
+				FontFlags: [ffRight,ffVerticalCenter,ffAutoShrink];
+			}
+			img{
+				Position: -30ch 0;
+				Size: auto 170%;
+				ParentAnchor : caLeft;
+				Anchor : caLeft;
+				BackgroundMipMapping : True;
+			}
+		}
+		.currency-popup{
+			Visibility : False;
+			Position : 0 10;
+			Anchor : caTop;
+			ParentAnchor : caBottom;
+			Size : 15vw 20vh;
+			Padding-Bottom : 12%;
+			ZOffset : $zoffset-popup;
+			stack{
+				StackColumns : 2;
+				.currency{
+					Padding : 10% 0 10% 150ch;
+					Margin-Bottom : 5ch;
+				}
+			}
+		}
+	}
+}

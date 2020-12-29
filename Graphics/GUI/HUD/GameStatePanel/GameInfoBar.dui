@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<div class="game-info" id="game_info_panel">
+	<div class="game-time" id="game_time">{{ hud.SpawnTimer }}</div>
+	<progress class="nexus left {{ blue if hud.LeftTeamID = 1 else red}}">
+		<bar :animate-on="hud.LeftNexusHealth" width="{{ hud.LeftNexusHealth }}%"></bar>
+	</progress>
+	<div class="caption left">{{ hud.LeftNexusHealth }}%</div>
+	<progress class="nexus right {{ blue if hud.RightTeamID = 1 else red}}">
+		<bar :animate-on="hud.RightNexusHealth" width="{{ hud.RightNexusHealth}}%"></bar>
+	</progress>
+	<div class="caption right">{{ hud.RightNexusHealth }}%</div>
+	<wrapper class="overlay"></wrapper>
+	<div class="pve-attack-panel" :visible="hud.IsPvEAttack">
+		<div class="attack-timer {{ expired if hud.TimeToAttack <= 0 }}" title="{{ §core_pve_attack_time_to_attack_hint if hud.TimeToAttack >= 0 else §core_pve_attack_time_to_attack_expired_hint }}">
+			{{ F.IntToTime(hud.TimeToAttack) if hud.TimeToAttack >= 0 }}
+			<div class="icon"></div>
+		</div>
+		<div class="tower-counter" title="{{ §core_pve_attack_tower_count_hint if hud.AttackBaseCount > 0 else §core_pve_attack_tower_count_empty_hint }}">
+			{{ hud.AttackBaseCount }}
+			<div class="icon"></div>
+		</div>
+		<div class="boss-timer {{ expired if hud.TimeToNextBossWave < 0 }}" title="{{ §core_pve_attack_time_to_boss_wave_hint if hud.TimeToNextBossWave >= 0 else §core_pve_attack_time_to_boss_wave_empty_hint }}">
+			{{ F.IntToTime(hud.TimeToNextBossWave) if hud.TimeToNextBossWave >= 0 else §core_pve_attack_time_to_boss_wave_empty }}
+			<div class="icon"></div>
+		</div>
+	</div>
+</div>

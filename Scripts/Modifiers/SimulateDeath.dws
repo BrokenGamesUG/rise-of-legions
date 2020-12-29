@@ -1,0 +1,26 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TWelaEffectSuicideComponent.CreateGrouped(Entity, [Group])
+      .PreventDeath;
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group]);
+    TThinkImpulseNowComponent.CreateGrouped(Entity, [Group]);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/black/effect/undying_suicide')
+      .TriggerNow();
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Black\undying_suicide.pfx', 0.45)
+      .ScaleWith(eiCollisionRadius)
+      .ActivateNow();
+  {$ENDIF}
+end;

@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<div class="quest {{ completed if quest.Completed }}">
+	<div class="highlight-flash"></div>
+	<div class="overlay">
+		<btn class="collect" title="§quests_collect_hint" dxml-on:click="metatutorial.CompletedStage(mtsQuestCollect); quest.CollectReward">
+			<div class="state">
+				<icon></icon>
+			</div>
+			<caption>§quests_collect</caption>
+		</btn>
+		<btn class="reroll {{ disabled if quests.QuestManager.OpenReRolls <= 0 }}" :visible="quest.Rerollable and not quest.Completed" :title="§quests_reroll_empty if quests.QuestManager.OpenReRolls <= 0 else §quests_reroll" dxml-on:click="quest.ReRoll">
+			<icon></icon>
+		</btn>
+	</div>
+	<div class="state">
+		<icon></icon>
+		<caption>
+			{{ quest.CurrentProgress}}/{{quest.TargetProgress}}
+		</caption>
+	</div>
+	<div class="description">
+		{{ F._d(§quest_description_ + quest.Identifier, quest.TargetProgress) }}
+	</div>
+	<div class="loot-list {{ dual if quest.ShownSecondaryReward <> nil  else single }}">
+		<div class="loot-item reward primary {{ item.ShopItem.ItemType }}" :visible="quest.ShownReward <> nil" dxml-with="item=quest.ShownReward">
+			<div class="deco"></div>
+			<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}{{ Icon if item.ShopItem.ItemType = itCard }}.dui"></div>
+		</div>
+		<div class="loot-item reward secondary {{ item.ShopItem.ItemType }}" :visible="quest.ShownSecondaryReward <> nil" dxml-with="item=quest.ShownSecondaryReward">
+			<div class="deco"></div>
+			<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}{{ Icon if item.ShopItem.ItemType = itCard }}.dui"></div>
+		</div>
+	</div>
+</div>

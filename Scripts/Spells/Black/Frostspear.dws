@@ -1,0 +1,42 @@
+procedure Apply(Entity : TEntity);
+var Group, FinishGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  FinishGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], 100);
+  Entity.Blackboard.SetValue(eiWelaDamage, [Group], 10.0);
+  Entity.Blackboard.SetValue(eiWelaRange, [Group], 6.0);
+  Entity.Blackboard.SetValue(eiWelaUnitPattern, [Group], 'Projectiles\Black\FrostspearProjectile');
+  Entity.Blackboard.SetValue(eiDamageType, [Group], [dtSpell]);
+
+  {$IFDEF SERVER}
+    TThinkImpulseTimerCooldownComponent.CreateGrouped(Entity, [Group, FinishGroup])
+      .TimerIsReady;
+    TBrainWelaFightComponent.CreateGrouped(Entity, [Group])
+      .DisableTargetLock
+      .ThinksLocal
+      .ThinksPassively;
+    TWelaTargetingRadialComponent.CreateGrouped(Entity, [Group])
+      .IgnoreOwnCollisionradius
+      .SetTargetTeamConstraint(tcAllies)
+      .PicksRandomTargets;
+    TWelaTargetConstraintNotSelfComponent.CreateGrouped(Entity, [Group]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [Group])
+      .MustNotHave([upInvisible, upBanished, upSpellImmune]);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [Group], eiDamageable);
+    TWelaEffectProjectileComponent.CreateGrouped(Entity, [Group]);
+
+    TBrainWelaTargetlessComponent.CreateGrouped(Entity, [FinishGroup])
+      .ThinksLocal
+      .ThinksPassively;
+    TWelaReadyNthComponent.CreateGrouped(Entity, [FinishGroup])
+      .Nth(12);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [FinishGroup])
+      .TargetGroup([Group, FinishGroup]);
+  {$ENDIF}
+
+  {$IFDEF CLIENT}
+    TSoundComponent.CreateGrouped(Entity, [Group], 'event:/card/black/spell/frostspear/attack_fire')
+      .TriggerOnFire();
+  {$ENDIF}
+end;

@@ -1,0 +1,81 @@
+{$INCLUDE 'Math.dws'};
+
+function GetCardBaseCost(Tier, League, Level : integer; IsLegendary, IsSpell, IsSpawner : boolean) : single;
+begin
+  Result := 100;
+
+  if Tier = 2 then
+    Result := Result + 50
+  else if Tier = 3 then
+    Result := Result + 100;
+
+  if IsLegendary then
+    Result := Result + 100;
+
+  if IsSpell then
+    Result := Result - 20;
+
+  if IsSpawner then
+    Result := Result * i([8, 10, 12], Tier);
+end;
+
+function GetCardBaseChargeCooldown(Tier, League, Level : integer; IsLegendary, IsSpell, IsSpawner : boolean) : integer;
+begin
+  Result := ii([
+    [37000, 36250, 35500, 34750, 34000],
+    [34000, 33250, 32500, 31750, 31000],
+    [31000, 30250, 29500, 28750, 28000],
+    [28000, 27250, 26500, 25750, 25000],
+    [25000, 24250, 23500, 22750, 22000]], League, Level);
+
+  if Tier = 2 then
+    Result := Result * 3 div 2
+  else if Tier = 3 then
+    Result := Result * 2;
+
+  if IsLegendary then
+    Result := Result * 5 div 2;
+
+  if IsSpawner then
+    Result := Result * i([6, 7, 8], Tier);
+end;
+
+procedure InitCardData(Entity : TEntity; Group, ChargeGroup : array of integer; IsLegendary, IsSpawner, IsSpell : boolean; Tier : integer);
+var ChargeCount, Cooldown : integer;
+    Cost : single;
+begin
+  Cost := GetCardBaseCost(Tier, Entity.CardLeague(Group), Entity.CardLevel(Group), IsLegendary, IsSpell, IsSpawner);
+  Cooldown := GetCardBaseChargeCooldown(Tier, Entity.CardLeague(Group), Entity.CardLevel(Group), IsLegendary, IsSpell, IsSpawner);
+
+  if Tier = 1 then
+    ChargeCount := i([1, 2, 3, 4, 5], Entity.CardLeague(Group))
+  else if Tier = 2 then
+    ChargeCount := i([1, 1, 2, 3, 4], Entity.CardLeague(Group))
+  else if Tier = 3 then
+    ChargeCount := i([1, 1, 1, 2, 3], Entity.CardLeague(Group));
+
+  if IsLegendary then
+    ChargeCount := i([1, 1, 1, 1, 2], Entity.CardLeague(Group));
+
+  if IsSpawner then
+  begin
+    Entity.Blackboard.SetIndexedValue(eiResourceCost, Group, reWood, Cost);
+    Entity.Blackboard.SetIndexedValue(eiResourceCost, Group, reTier, 1);
+  end
+  else
+  begin
+    Entity.Blackboard.SetIndexedValue(eiResourceCost, Group, reGold, Cost);
+    Entity.Blackboard.SetIndexedValue(eiResourceCost, Group, reTier, Tier);
+  end;
+  Entity.Blackboard.SetIndexedValue(eiResourceCost, Group, reCharge, 1);
+  Entity.Blackboard.SetIndexedValue(eiResourceCap, Group, reCharge, ChargeCount);
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, Group, reCharge, ChargeCount);
+  Entity.Blackboard.SetValue(eiCooldown, ChargeGroup, Cooldown);
+
+  if IsLegendary then
+  begin
+    TWelaReadyUnitPropertyComponent.CreateGrouped(Entity, Group)
+      .ChecksCommander()
+      .MustNotHave([upHasLegendaryUnit]);
+  end;
+end;

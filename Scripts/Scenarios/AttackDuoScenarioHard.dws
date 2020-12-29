@@ -1,0 +1,98 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TClientGame{$ENDIF});
+{$IFDEF SERVER}
+var
+  ScenarioDirector : TScenarioDirectorComponent;
+  {$ENDIF}
+begin
+  {$IFDEF SERVER}
+  ScenarioDirector := Game.ScenarioDirector;
+
+  ScenarioDirector.EnableMirroring;
+  // 1. outpost
+  ScenarioDirector.SpawnUnit(-48, -23, 'Units\Scenario\GolemLaneTowerLevel1_WithLaneNode.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-52.07, -19.63, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-52.07, -26.88, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnGuards(-53, -23, ['MediumMeleeGolem', 'SmallFlyingGolem', 'SmallRangedGolem', 'SmallRangedGolem', 'SmallFlyingGolem'], [], 0);
+
+  // 2. outpost
+  ScenarioDirector.SpawnUnit(0, -23, 'Units\Scenario\GolemLaneTowerLevel2_WithLaneNode.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-2, -22.78, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-2, -28.94, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(-2, -18.46, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnGuards(-5, -23, [], ['SmallMeleeGolem', 'MediumMeleeGolem', 'BigFlyingGolem', 'BigCasterGolem'], 600);
+
+  // 3. outpost
+  ScenarioDirector.SpawnUnit(48, -23, '\Units\Scenario\GolemLaneTowerLevel3_WithLaneNode.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(44.00, -19.63, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(44.00, -26.88, 'Units\Colorless\MeleeGolemTower.ets');
+  ScenarioDirector.SpawnGuards(43, -23, ['BigMeleeGolem', 'BigFlyingGolem', 'BigFlyingGolem'],
+    ['MediumMeleeGolem', 'SmallFlyingGolem', 'SmallRangedGolem'], 700);
+
+  ScenarioDirector.DisableMirroring;
+
+  // boss guards
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(76.00,  0, 'Units\Colorless\BossGolem.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(80.00,  0, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(78.00, -2, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(78.00,  2, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.00, -9, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.00,  9, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(87.00, -11, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(87.00,  11, 'Units\Colorless\BigGolemTower.ets');
+  ScenarioDirector.SpawnGuards(87 - 4, -23 + 23, ['BigMeleeGolem', 'BigMeleeGolem', 'BigMeleeGolem', 'MediumMeleeGolem', 'BigFlyingGolem', 'SmallRangedGolem', 'BigCasterGolem', 'BigCasterGolem', 'SmallRangedGolem', 'BigFlyingGolem'], [], 0);
+
+  ScenarioDirector
+  // intial state (gametick, value)
+  // don't drop units
+    .ChangeGoldIncome(0, 0)
+  // use only spawner
+    .ChangeWood(0, 6500)
+    .ChangeWoodIncome(0, 19)
+    .ChangeUnitSpawnerSubset(0, ['SmallMeleeGolem', 'SmallRangedGolem', 'SmallFlyingGolem', 'SmallCasterGolem', 'MediumMeleeGolem'])
+
+    .RegisterBossWave('FirstBossWave', ['SmallMeleeGolem'], ['SmallMeleeGolem', 'SmallRangedGolem', 'SmallCasterGolem'])
+
+  // changing states
+  // 1min
+    .SpawnRandomBossWave(1 * 60, 450)
+    .UnregisterBossWaveAtTime(1 * 60 + 5, 'FirstBossWave')
+
+  // 3min
+  // bosswaves
+    .RegisterBossWaveAtTime(2 * 60 + 55, 'Siege_1', ['SmallMeleeGolem', 'SmallMeleeGolem', 'SiegeGolem'], ['SiegeGolem', 'SmallRangedGolem'])
+    .RegisterBossWaveAtTime(2 * 60 + 55, 'Siege_2', ['MediumMeleeGolem', 'SiegeGolem'], ['SiegeGolem', 'SmallRangedGolem'])
+  // bosswave
+    .SpawnRandomBossWave(3 * 60, 550)
+
+  // 5min
+    .AddUnitsToSpawnerSubset(5 * 60, ['BigCasterGolem'])
+    .ChangeWoodIncome(5 * 60, 14)
+  // bosswave
+    .SpawnRandomBossWave(5 * 60, 650)
+
+  // 7min
+    .UnregisterBossWaveAtTime(6 * 60 + 55, 'Siege_1')
+    .UnregisterBossWaveAtTime(6 * 60 + 55, 'Siege_2')
+    .RegisterBossWaveAtTime(6 * 60 + 55, 'Damage', ['MediumMeleeGolem', 'BigCasterGolem', 'SmallCasterGolem', 'SmallCasterGolem'],
+    ['SmallMeleeGolem', 'SmallRangedGolem'])
+    .RegisterBossWaveAtTime(6 * 60 + 55, 'Flying', ['MediumMeleeGolem', 'MediumMeleeGolem', 'BigFlyingGolem'],
+    ['SmallMeleeGolem', 'SmallFlyingGolem'])
+    .RegisterBossWaveAtTime(6 * 60 + 55, 'Breaker', ['BigMeleeGolem', 'SiegeGolem', 'SiegeGolem'],
+    ['MediumMeleeGolem', 'SmallCasterGolem'])
+    .ChangeWoodIncome(7 * 60, 11)
+  // bosswave
+    .SpawnRandomBossWave(7 * 60, 750)
+
+  // 10min
+  // bosswave
+    .SpawnRandomBossWave(10 * 60, 850)
+
+  // 13min - Boss is ready to throw stones
+
+  // stop building new spawner, if player reach this point, it is hard enough to kill the boss
+    .ChangeWoodIncome(12 * 60, 0)
+    ;
+  {$ENDIF}
+end;

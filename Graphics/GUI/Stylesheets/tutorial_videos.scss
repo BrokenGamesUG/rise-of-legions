@@ -1,0 +1,74 @@
+﻿.tutorial-videos-dialog{
+	.window{
+		Position: 0 10;
+		Size : 80vw 50vh;
+		Padding-Left : 45;
+		Padding-Right : 45;
+		Padding-Bottom : 30;
+		.tutorial-video-list{
+			StackColumns : 2 1;
+			Padding-Right : 50;
+			Padding-Bottom : 15;
+			.tutorial-video-item{
+				Size : 50% 100%;
+				Padding : 5;
+				Margin-Right : 40;
+				.title{
+					Size : 100% 10%;
+					FontFlags : [ccVerticalCenter,ffAutoshrink];
+					FontSize : 90%;
+				}
+				img{
+					Size : 100% auto;
+					ParentAnchor : caBottomLeft;
+					Anchor : caBottomLeft;
+					Enabled : True;
+					&:hover{
+						BackgroundColorOverride : $20FFFFFF;
+					}
+				}
+				icon{
+					ZOffset : 10;
+					Position : -5 -20ch;
+					Size : 100bw auto;
+					ParentAnchor : caBottomRight;
+					Anchor : caCenter;
+					&.unseen{
+						BackgroundColorOverride : $override-full;
+					}
+				}
+			}
+		}
+		.btn-left, .btn-right{
+			ParentBox : pbPadding;
+			Size : 5.5% auto;
+		}
+		.btn-left{
+			Position-X: 15cw;
+		}
+		.btn-right{
+			Position-X: -15cw;
+		}
+	}
+}
+
+.btn-tutorial-videos{
+	Position : 0 92%;
+	ParentBox : pbPadding;
+	Anchor : caLeft;
+	Size : auto 100bh;
+	Padding : 10% 11% 10% 8%;
+	FontWeight : bold;
+	Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+	FontColor : $font-color-highlight-strong;
+	TextTransform : ttUppercase;
+	Background : MainMenu/Tutorial/tutorial_video_button.png;
+	&.pop-out{
+		TransformAnchor : caLeft;
+	}
+	&.not-found{
+		$jello-horizontal;
+		AnimationDelay : 2000;
+		TransformAnchor : caLeft;
+	}
+}

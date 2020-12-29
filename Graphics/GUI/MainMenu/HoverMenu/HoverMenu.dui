@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<div class="hover-menu">
+	<div class="deco">
+		<stack class="navigation">
+			<div class="btn-friendlist pop-out" :down="friendlist.IsVisible" dxml-on:click="quests.IsVisible := False; friendlist.IsVisible := not friendlist.IsVisible"></div>
+			<div class="btn-quest pop-out {{ completed if quests.QuestManager.IsAnyQuestCompleted }} {{ has-ping if quests.QuestManager.IsAnyQuestCompleted and not dialogs.IsAnyDialogVisible }}" :down="quests.IsVisible" dxml-on:click="friendlist.IsVisible := False; quests.IsVisible := not quests.IsVisible; metatutorial.CompletedStage(mtsQuestListOpen)">
+				<div dxml-for="index in F.Range(10)" class="ping" :animation-delay="index. * 100" :animation-delay-after="(10 - index.) * 100"></div>
+			</div>
+		</stack>
+	</div>
+	<div class="panels">
+		<div dxml-include="Mainmenu/Friendlist/Friendlist.dui"></div>
+		<div dxml-include="Mainmenu/Quests/Quests.dui"></div>
+	</div>
+</div>

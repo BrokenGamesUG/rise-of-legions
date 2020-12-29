@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<wrapper class="mainmenu meta-client {{ meta-tutorial if metatutorial.IsActive }} {{ metatutorial.Stage if metatutorial.IsActive }}" :visible="client.State = csMainMenu">
+	<div dxml-include="Mainmenu/SystemPanel/SystemPanel.dui"></div>
+	<div dxml-include="MainMenu/LoadingScreen/LoadingScreen.dui"></div>
+	<div dxml-include="MainMenu/loading.dui"></div>
+	<wrapper :visible="client.IsApiReady and (not menu.IsPreloading) and (not menu.IsLoading)">
+		<div class="overlay" :visible="(menu.CurrentMenu <> mtGameRewards) and (menu.CurrentMenu <> mtGameStatistics)">
+			<div dxml-include="Mainmenu/Navbar/Navbar.dui"></div>
+			<div dxml-include="Mainmenu/Navbar/PlayerIconChooseDialog.dui"></div>
+			<div dxml-include="Mainmenu/Navbar/FeedbackDialog.dui"></div>
+			<div dxml-include="Mainmenu/HoverMenu/HoverMenu.dui"></div>
+			<div dxml-include="Mainmenu/Tutorial/TutorialHint.dui"></div>
+			<div dxml-include="Mainmenu/Tutorial/RedeemStarterDeckDialog.dui"></div>
+			<div dxml-include="Mainmenu/Friendlist/ReferAFriendDialog.dui"></div>
+		</div>
+		
+		<div class="overlay">
+			<div dxml-include="Mainmenu/Notifications/Notification.dui"></div>
+			<div dxml-include="Mainmenu/Shared/Card/CardDetailDialog.dui"></div>
+			<div dxml-include="Mainmenu/Shared/Card/CardTemplateDetailDialog.dui"></div>
+		</div>
+		
+		<wrapper class="fullscreen-content">
+			<div dxml-include="Mainmenu/Friendlist/FriendlistInviteDialog.dui"></div>
+			<div dxml-include="Mainmenu/Tutorial/StartTutorialGameDialog.dui"></div>
+			<div dxml-include="Mainmenu/Reward/Rewards.dui"></div>
+			<div dxml-include="Mainmenu/Statistics/Statistics.dui"></div>
+			<!--div dxml-include="Mainmenu/Loot/LootboxDialog.dui"></div-->
+			<div dxml-include="MainMenu/Reward/LootDialog.dui"></div>
+			<div dxml-include="MainMenu/Idle/IdleDialog.dui"></div>
+			<div dxml-include="MainMenu/GenericLoadingDialog.dui"></div>
+			<div dxml-include="Mainmenu/PlayerLevel/LevelUpOverviewDialog.dui"></div>
+			<div dxml-include="Mainmenu/PlayerLevel/LevelUpDialog.dui"></div>
+			<div dxml-include="Mainmenu/Tutorial/TutorialVideoDialog.dui"></div>
+			<div dxml-include="MainMenu/Shop/PurchaseDialog.dui"></div>
+		</wrapper>
+		
+		<wrapper class="main-content">
+			<div dxml-include="Mainmenu/Dashboard/Dashboard.dui"></div>
+			<div dxml-include="Mainmenu/Teambuilding/Teambuilding.dui"></div>
+			<div dxml-include="Mainmenu/Deckbuilding/Decklist.dui"></div>
+			<div dxml-include="Mainmenu/Deckbuilding/Deckeditor.dui"></div>
+			<div dxml-include="Mainmenu/Collection/Collection.dui"></div>
+			<div dxml-include="Mainmenu/Leaderboards/Leaderboards.dui"></div>
+			<!--div dxml-include="Mainmenu/Inventory/Inventory.dui"></div-->
+			<div dxml-include="Mainmenu/Shop/Shop.dui"></div>
+		</wrapper>
+	</wrapper>
+</wrapper>

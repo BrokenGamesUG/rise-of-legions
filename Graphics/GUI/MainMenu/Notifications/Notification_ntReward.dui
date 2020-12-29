@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<div class="window reward-window loot-window items-{{ notification.RewardCount }} {{ wide if notification.HasWideItems }} {{ scrolling if notification.RewardCount > 6 }}">
+	<div class="window-shine subtile"></div>
+	<div class="window-caption">§notification_caption_{{ notifications.Notification.NotificationType }}</div>
+	<div class="notification notification-reward">
+		<div class="caption">§notification_reward_message</div>
+		<div class="loot">
+			<stack class="loot-list">
+				<div class="loot-item" dxml-for="item in notification.Rewards">
+					<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}.dui"></div>
+				</div>
+			</stack>
+		</div>
+	</div>
+	<stack class="window-buttons">
+		<btn class="btn-xl btn-success btn-notification-close" dxml-on:click="notifications.Close">§notification_reward_close</btn>
+	</stack>
+</div>

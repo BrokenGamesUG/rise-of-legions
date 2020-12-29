@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<wrapper class="generic-loading-dialog backdrop disabled dialog" :show="client.IsLoading">
+	<div class="window">
+		<div class="window-caption">
+			{{ client.LoadingCaption if client.LoadingCaption <> '' else §generic_loading_dialog_caption }}
+		</div>
+		<div class="message-wrapper">
+			<div class="message">{{ client.LoadingMessage if client.LoadingMessage <> '' else §generic_loading_dialog_message }}</div>
+			<div class="spinner" rotation="-1.0"></div>
+		</div>
+	</div>
+</wrapper>

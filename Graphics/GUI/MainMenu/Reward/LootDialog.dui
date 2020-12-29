@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<wrapper class="loot-dialog {{ skin if inventory.DraftBox.IsSkinbox }} backdrop disabled dialog" :show="dialogs.IsDialogVisible(diDraftbox)">
+	<div class="window">
+		<div class="window-shine"></div>
+		<div class="window-caption">§reward_loot{{ _skin if inventory.DraftBox.IsSkinbox }}_caption</div>
+		<div class="loot">
+			<stack class="loot-item-list">
+				<div class="loot-item pop-out {{ selected if inventory.ChosenDraftBoxChoice = item. }} {{ locked if inventory.DraftBox.IsCardBox and not item.ShopItem.PurchasableBySoftcurrency }} {{ owned if inventory.DraftBox.IsSkinbox and (index. < 3) and item.ShopItem.Skin.Unlocked }}" dxml-for="item in inventory.DraftBox.Choices" dxml-on:click="inventory.ChosenDraftBoxChoice := item.">
+					<div class:merge="item" dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}.dui"></div>
+					<div class="lock" title="§reward_loot_locked_hint"></div>
+					<div class="sold-out">§shop_item_sold_out</div>
+				</div>
+			</stack>
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl btn-success btn-choose {{ disabled if inventory.ChosenDraftBoxChoice = nil }}" dxml-on:click="inventory.Draft">§reward_loot_choose</btn>
+		</stack>
+	</div>
+</wrapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- Parameters | userprofile : TUserProfile -->
+<div class="level-panel {{ max-level if userprofile.IsMaxLevel }}">
+	<progress class="level-progress">
+		<wrapper class="level-xp">{{ userprofile.ExperiencePoints }} / {{ userprofile.LevelUpExperiencePoints }}</wrapper>
+		<bar width="{{ userprofile.LevelProgress * 100 }}%"></bar>
+	</progress>
+	<div class="level-loot-click-hint">§gui_player_level_up_click_hint</div>
+</div>

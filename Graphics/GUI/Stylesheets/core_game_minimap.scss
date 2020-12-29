@@ -1,0 +1,55 @@
+﻿.hud{
+	.minimap{
+		Size : 100bw auto;
+		ParentAnchor : caBottomRight;
+		Anchor : caBottomRight;
+		Background : HUD/MinimapPanel/map_panel.png;
+		MouseEvents : mePass;
+		.content{
+			Size : 93% 93%;
+			ParentAnchor : caBottomRight;
+			Anchor : caBottomRight;
+			Blur : True;
+			ZOffset: -1;
+			MouseEvents : mePass;
+			.map{
+				Size : 100% auto;
+				ParentAnchor : caBottomRight;
+				Anchor : caBottomRight;
+				ZOffset : 10;
+				Background : HUD/MinimapPanel/map_minimap.png;
+				MouseEvents : mePass;
+			}
+			.btn-menu{
+				Position : -10.5% -9.8%;
+				Size : 17% auto;
+				ParentAnchor : caBottomRight;
+				Anchor : caCenter;
+				Background : HUD/MinimapPanel/menu_button.png;
+				BackgroundHover : HUD/MinimapPanel/menu_button_hover.png;
+				BackgroundDown : HUD/MinimapPanel/menu_button_down.png;
+			}
+			.pings{
+				Position : 5% -37.5ch;
+				Anchor : caTopLeft;
+				ParentAnchor : caTopLeft;
+				Size : auto 19%;
+				Padding-Bottom : 25ch;
+				Padding-Right : 25ch;
+				.btn-ping{
+					Size : auto 100%;
+					Margin-Right : 10;
+					&.ping-generic{
+						Background : HUD/MinimapPanel/ping_generic.png;
+					}
+					&.ping-attack{
+						Background : HUD/MinimapPanel/ping_attack.png;
+					}
+					&.ping-defense{
+						Background : HUD/MinimapPanel/ping_defense.png;
+					}
+				}
+			}
+		}
+	}
+}

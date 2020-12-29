@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<wrapper class="inventory " :visible="menu.CurrentMenu = mtInventory">
+	<stack class="grid">
+		<div dxml-for="item in shop.Shop.Inventory" class="item frame col-4 row-3">
+			<btn class="lootbox" dxml-on:click="inventory.ShowLootbox(item.)">
+				<img></img>
+			</btn>
+		</div>
+	</stack>
+</wrapper>

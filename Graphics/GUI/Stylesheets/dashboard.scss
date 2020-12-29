@@ -1,0 +1,253 @@
+﻿.dashboard{
+	Padding : 20;
+	.left{
+		Size : 57% 100%;
+		.title-image{
+			Position : 0 -7;
+			Size : 100bw auto;
+			Background : MainMenu/Dashboard/Header.png;
+		}
+		.players-online{
+			Position : 0 72.2%;
+			Size : 100% 3.5%;
+			Anchor : caCenter;
+			ParentAnchor : caTop;
+			FontFlags : [ffCenter];
+		}
+		.beta-announcement{
+			Position : 0 72%;
+			Size : 100% 20.2%;
+			BoxSizing : bsMargin;
+			Margin : 20;
+			BackgroundColor : $AF236F7E;
+			.title{
+				Size : 100% 45%;
+				Padding : 4 6;
+				FontFlags : [ffCenter];
+				BackgroundColor : $AF1D4D57;
+			}
+			.text{
+				Position : 0 45%;
+				Size : 100% 70%;
+				Padding : 7;
+				FontFlags : [ffWordWrap];
+				FontSize : 16;
+			}
+		}
+		.news-tile{
+			Position : 0 90.5%;
+			Size-Y : 56;
+			BoxSizing : bsMargin;
+			Margin : 0 21;
+			.icon{
+				Position-Y : -1;
+				Size : auto 100%;
+			}
+		}
+	}
+	.divider{
+		Size : 3 100%;
+		Position : 59% 0;
+		BackgroundColor : $FF1C2A2B;
+	}
+	.right{
+		Size : 39% 100%;
+		Position : 61% 0;
+	}
+}
+
+.news-tile{
+	Size : 100% 80;
+	$frame;
+	Padding : 10;
+	BackgroundColor : $80173F48;
+	Enabled : True;
+	BorderSides : [];
+	Margin-Bottom : 10;
+	&:enabled:hover{
+		BorderSides : [bsTop,bsRight,bsBottom,bsLeft];
+		.caption{
+			FontColor : $font-color-real-white;
+		}
+	}
+	*{
+		MouseEvents : mePass;
+	}
+	&.danger{
+		BackgroundColor : $80A00000;
+	}
+	&.highlight{
+		$cyan-glow;
+		*{
+			BackgroundColorOverrideInheritance : False;
+		}
+	}
+	&.without-icon{
+		Size-Y : 38;
+		.caption{
+			Size-Y : 100%;
+		}
+	}
+	&.two-line-caption{
+		.icon{
+			Position-Y : -6;
+		}
+		.caption{
+			Position-Y : 7;
+			Size : 100% 60%;
+			FontSize : 45%;
+		}
+	}
+	&.banner{
+		Size-Y : 173;
+		Padding : 0;
+		&.highlight{
+			.icon{
+				$white-glow;
+			}
+		}
+		&.single{
+			Size-Y : 82;
+		}
+		&:enabled:hover{
+			.icon{
+				BackgroundColorOverride : $10FFFFFF;
+				hover{
+					Visibility : True;
+				}
+			}
+		}
+		.icon{
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			Size : 100% auto;
+			hover{
+				Size : 100% 100%;
+				Border : $frame-border;
+				Visibility : False;
+			}
+		}
+	}
+	.icon, .title{
+		ParentAnchor : caTop;
+		Anchor : caTop;
+		Size : auto 60%;
+	}
+	.sign{
+		Position-X : -10;
+		ParentAnchor : caRight;
+		Anchor : caRight;
+		Size : auto 80%;
+	}
+	stack.icon{
+		& > *{
+			Position-Y : 5%;
+			Size : auto 90%;
+			Margin-Left : 10;
+			Enabled : True;
+			MouseEvents : meAll;
+			TransitionProperty : gtTransform;
+			TransitionDuration : 50;
+			&:hover{
+				Transform : scale(1.1);
+				TransformAnchor : caCenter;
+			}
+		}
+	}
+	.title{
+		Size-X : 100%;
+		FontFlags : [ffCenter,ffVerticalCenter];
+		&.with-banner{
+			FontSize : 70%;
+			FontWeight : 700;
+			Background : MainMenu/Dashboard/news_title_background.png;
+		}
+		&.highlight{
+			FontColor : $highlight-cyan;
+		}
+		&.btn-broad{
+			Position-Y : -10;
+			Size : auto 90%;
+			MouseEvents : meAll;
+		}
+	}
+	.caption{
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Size : 100% 30%;
+		FontFlags : [ffVerticalCenter,ffCenter];
+		FontSize : 90%;
+	}
+	&.crystal-sunday{
+		Size-Y : 160;
+		Enabled : False;
+		BorderSides : [bsTop,bsRight,bsBottom,bsLeft];
+		.title{
+			Position-Y : 00;
+			Size : text 60;
+			FontSize : 34;
+			TextTransform: ttUppercase;
+			FontWeight : 700;
+			Fontcolor : $FF05C709;
+			FontFlags : [ffCenter];
+			.event, .date{
+				Position-Y : 33;
+				Size : 100% 18;
+				FontSize : 18;
+				TextTransform: ttUppercase;
+				FontWeight : 700;
+				FontFlags : [ffCenter];
+			}
+			.event{
+				Fontcolor : $font-color-white;
+			}
+			.date{
+				Position-Y : 50;
+				Size : 100% 24;
+				FontSize : 28;
+				FontColor : $FF45E877;
+			}
+			.crystal{
+				Size : auto 58;
+				Background : MainMenu/Dashboard/event_crystals.png;
+				&.cleft{
+					Position-X : -10;
+					ParentAnchor : caLeft;
+					Anchor : caRight;
+				}
+				&.cright{
+					Position-X : 10;
+					ParentAnchor : caRight;
+					Anchor : caLeft;
+					BackgroundAnchor : baTopRight;
+				}
+			}
+		}
+		.caption{
+			Position-Y : -15;
+			Padding : 0 10;
+			Size-Y : 40;
+			FontFlags: [ffCenter,ffWordWrap];
+			FontSize : 16;
+			Fontcolor : $font-color-white;
+		}
+		.countdown{
+			Position-Y: 3;
+			ParentAnchor : caBottom;
+			Anchor : caBottom;
+			Size : 100% 24;
+			FontFlags: [ffCenter,ffVerticalCenter];
+			Fontcolor : $FF05C709;
+		}
+	}
+}
+
+.news-tile-split{
+	Size : 100% 80;
+	Padding-Right : 10;
+	Margin-Bottom : 10;
+	.news-tile{
+		Size-X : 50%;
+		Margin-Right : 10;
+	}
+}

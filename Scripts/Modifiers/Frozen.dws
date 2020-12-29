@@ -1,0 +1,69 @@
+#define DEFAULT_DURATION 9000
+
+procedure ApplyWithDuration(Entity : TEntity; Duration : integer);
+var Group, ImmuneGroup : integer;
+    {$IFDEF CLIENT}
+    SoundKey : string;
+    {$ENDIF}
+begin
+  Group := Entity.ReserveFreeGroup();
+  ImmuneGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [Group], Duration); //Frozen-Duration
+  Entity.Blackboard.SetValue(eiCooldown, [ImmuneGroup], Duration + 10000); //FrozenImmunity-Duration
+
+  {$IFDEF SERVER}
+    // Stop unit at freeze
+    Entity.Eventbus.Trigger(eiStand, []);
+    Entity.Eventbus.Trigger(eiWelaStop, []);
+    // After eiCooldown Frozen is released
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [Group])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btNegative, btState]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [Group], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Frozen')
+      .TriggerOnKilled;
+
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [ImmuneGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [ImmuneGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [ImmuneGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [ImmuneGroup]);
+
+    TWelaHelperBeaconComponent.CreateGrouped(Entity, [Group, ImmuneGroup])
+      .TriggerAt([upFrozen]);
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasStateEffect, upFrozen]);
+  TUnitPropertyComponent.CreateGrouped(Entity, [ImmuneGroup], [upImmuneToFrozen]);
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Shared\Frozen.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius);
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectIce.Create(DURATION)
+          .AddKey(0, 0.0)
+          .AddKey(500, 1.0)
+          .AddKey(DURATION - 250, 1.0)
+          .AddKey(DURATION, 0.0)
+      );
+
+    // 'event:/card/black/effect/frozen'
+    if Entity.CollisionRadius > 0.7 then
+      SoundKey := 'event:/card/black/spell/frostspear/freeze_big'
+    else
+      SoundKey := 'event:/card/black/spell/frostspear/freeze_small';
+    TSoundComponent.CreateGrouped(Entity, [Group], SoundKey)
+      .TriggerNow();
+  {$ENDIF}
+end;
+
+procedure Apply(Entity : TEntity);
+begin
+  ApplyWithDuration(Entity, DEFAULT_DURATION);
+end;

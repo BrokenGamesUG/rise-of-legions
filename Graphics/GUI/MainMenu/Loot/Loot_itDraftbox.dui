@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="loot-wrapper loot-draftbox {{ skinbox if item.ShopItem.IsSkinBox }}">
+	<div class="icon">
+		<img class="league-icon" src="{{ HClient.GetLeagueIcon(item.ShopItem.League) }}"></img>
+	</div>
+</div>

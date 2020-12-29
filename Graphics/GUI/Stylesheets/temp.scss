@@ -1,0 +1,39 @@
+﻿.card{
+	.icon-frame{
+		.stats{
+			Visibility : True;
+		}
+	}
+}
+
+.deckeditor{
+	.current-deck{
+		.deck-card{
+			.icon-frame{
+				.league-icon{
+					Visibility : True;
+				}
+			}
+		}
+	}
+}
+
+.deck{
+	.info{
+		.league{
+			Visibility : True;
+		}
+	}
+}
+
+.hud{
+	.tooltip{
+		.content{
+			& > .icon{
+				.stats{
+					Visibility : True;
+				}
+			}
+		}
+	}
+}

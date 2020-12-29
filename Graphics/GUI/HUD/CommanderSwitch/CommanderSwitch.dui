@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<div class="commander-switch" :visible="hud.IsSandbox and hud.IsSandboxControlVisible and not hud.Capturemode">
+	<stack>
+		<btn dxml-for="index in F.Range(hud.CommanderCount)" class="commander-{{ index. if hud.CommanderCount > 12 else (index. + 2) }} {{ selected if index. = hud.CommanderActiveIndex }}" dxml-on:click="hud.CommanderChange(index.)">
+			{{ index. + 1 }}
+		</btn>
+	</stack>
+</div>

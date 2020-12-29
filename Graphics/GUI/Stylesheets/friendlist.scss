@@ -1,0 +1,133 @@
+﻿.friendlist{
+	Size : 204 82vh;
+	ParentAnchor : caBottomRight;
+	Anchor : caBottomRight;
+	ZOffset : -1;
+	Blur : True;
+	$frame;
+	.friend-id{
+		Size : text 5%;
+		Padding : 5;
+		btn{
+			ParentAnchor : caTopRight;
+			Anchor : caTopLeft;
+			Position : 3 -1;
+			Size : auto 100%;
+		}
+		
+	}
+	.btn-close-friendlist{
+		Size : auto 4.5%;
+		ParentAnchor : caTopRight;
+		Anchor : caTopRight;
+	}
+	.lists{
+		Position : 0 5%;
+		Size : 100% 95%;
+		BoxSizing : bsMargin;
+		Margin-Bottom : 100;
+		BackgroundColor : $80000000;
+		Stackorientation : soVertical;
+		Stackpartitioning : auto;
+		Overflow : ohScrollY;
+		& > stack{
+			Position : 0 inherit;
+			Size : 100% auto;
+			BackgroundColor : $80000000;
+			Stackorientation : soVertical;
+			Stackpartitioning : auto;
+			& > *{
+				Position : inherit inherit;
+				Size : 100% 46;
+				Padding : 5 3 5 5;
+				Margin : 1;
+				BoxSizing : bsMargin;
+				.name{
+					Position : 24% 0;
+					Size : 120 20;
+					MouseEvents : mePass;
+					Fontsize : 18;
+					FontFlags : [ffAutoShrink];
+				}
+				.icon{
+					Position : 0 100%;
+					Size : auto 100%;
+					Anchor : caBottomLeft;
+					Background : Shared/PlayerIcons/Unknown.png;
+					MouseEvents : mePass;
+				}
+				.message{
+					Position : 24% 55%;
+					Size : 120 20;	
+					Fontsize : 15;
+					FontFlags : [ffAutoShrink,ffVerticalCenter];
+				}
+				.btn-accept{
+					Position : 0 8%;
+					Size : auto 60%;
+					Anchor : caBottomRight;
+					ParentAnchor : caBottomRight;
+				}
+				.btn-cancel{
+					Position : 0 -8%;
+					Size : auto 60%;
+					Anchor : caTopRight;
+					ParentAnchor : caTopRight;
+				}
+				&:hover{
+					Border: 2 $border-cyan;
+				}
+			}
+			.friend{
+				wrapper{
+					*{
+						MouseEvents : mePass;
+					}
+				}
+			}
+			.csOnline{
+				BackgroundColor : $80000000;
+				.message{
+					Fontcolor : $FF00FF00;
+				}
+			}
+			.csOffline{
+				BackgroundColor : $80000000;
+				.message{
+					Fontcolor : $FFE0E0E0;
+				}
+				wrapper{
+					Opacity : 0.65;
+				}
+			}
+			.csInGame{
+				BackgroundColor : $80000000;
+				.message{
+					Fontcolor : $FFFFFF00;
+				}
+			}
+			.request-incoming{
+				BackgroundColor : $80006060;
+			}
+			.request-outgoing{
+				BackgroundColor : $80000000;
+				Opacity : 0.65;
+			}
+		}
+	}
+	.request-panel{
+		Size : 100% 100;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Padding : 2;
+		BackgroundColor : $A0000000;
+		btn{
+			Size : auto 50%;
+			ParentAnchor : caCenter;
+			Anchor : caBottom;
+			&:first-child{
+				Anchor : caTop;
+			}
+		}
+	}
+}

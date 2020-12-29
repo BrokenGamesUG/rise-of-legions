@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<div class="loot-wrapper loot-icon">
+	<div class="framed-icon" title="§shop_item_hint_icon">
+		<img class="framed-icon-icon" src="{{ HClient.GetPlayerIcon(item.ShopItem.Icon) }}"></img>
+	</div>
+</div>

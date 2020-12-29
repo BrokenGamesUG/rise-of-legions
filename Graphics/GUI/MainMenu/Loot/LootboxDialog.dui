@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<wrapper class="backdrop lootbox-dialog dialog" :show="inventory.Lootbox <> nil" dxml-on:click="inventory.HideLootbox">
+	<div class="window">
+		<div class="loot" :visible="inventory.Lootbox.Opened">
+			<stack>
+				<div class="loot-item col-{{ inventory.Lootbox.Content.Count }}" dxml-for="item in inventory.Lootbox.Content">
+					<div dxml-include="MainMenu/Loot/Loot_{{ item.ShopItem.ItemType }}.dui"></div>
+				</div>
+			</stack>
+		</div>
+		<div class="lootbox {{ opened if inventory.Lootbox.Opened }}">
+			<btn dxml-on:click="inventory.Lootbox.OpenAndReceiveLoot">
+				<div class="box"></div>
+			</btn>
+		</div>
+	</div>
+</wrapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<div class="loot-wrapper loot-disenchanted-card">
+	<div dxml-include="MainMenu/Shared/Card/CardTemplate.dui" dxml-with="card=item.ShopItem.Card.CardInfo"></div>
+	<stack class="compensation">
+		<div dxml-for:static="reward in item.ShopItem.Compensation" class="col-2 row-1 currency">
+			<div class="amount">{{ reward.Amount }}</div>
+			<img class="icon" src="{{ HClient.CurrencyIcon(reward.Currency.UID) }}"></img>
+		</div>
+	</stack>
+</div>

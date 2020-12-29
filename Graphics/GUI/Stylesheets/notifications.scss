@@ -1,0 +1,109 @@
+﻿.notification-dialog{
+	&.backdrop{
+		ZOffset : $zoffset-dialog;
+	}
+	.window{
+		ParentAnchor : caCenter;
+		Anchor : caCenter;
+		Size : 40vw 40vh;
+		&.loot-window{
+			Size-Y : 80vh;
+			&.items-1, &.items-2, &.items-3{
+				Size-Y : 40vh;
+			}
+			&.items-4, &.items-5, &.items-6{
+				Size-Y : 65vh;
+			}
+		}
+		&.message-window.loot-window.items-0{
+			Size-Y : auto;
+			.notification{
+				Size-Y : auto;
+			}
+		}
+		.notification{
+			ParentAnchor : caCenter;
+			Anchor : caCenter;
+			Size : 100% 100%;
+			.caption{
+				ParentAnchor : caBottom;
+				Anchor : caBottom;
+				Size : 100% 57;
+				FontSize : 40%;
+				FontFlags : [ffCenter,ffVerticalCenter];
+			}
+			&.notification-card{
+				.ncard{
+					ParentAnchor : caTop;
+					Anchor : caTop;
+					Size : 100% 75%;
+					.card{
+						ParentAnchor : caBottom;
+						Anchor : caBottom;
+						Size : auto 100%;
+						.shadow{
+							Size : auto 100%;
+						}
+					}
+				}
+				.caption{
+					Position : 0 -15;
+					&.sub{
+						Position : -25ch 15;
+						Size : text;
+						img{
+							Anchor : caLeft;
+							ParentAnchor : caRight;
+							Size : auto 60%;
+						}
+					}
+					
+				}
+			}
+			&.notification-message{
+				.caption{
+					FontSize : 33%;
+					FontFlags : [ffCenter,ffVerticalCenter,ffWordWrap];
+					&.centered{
+						Size : 100% text;
+						FontSize : 22;
+						FontFlags : [ffVerticalCenter,ffWordWrap];
+					}
+				}
+			}
+			&.notification-reward, &.notification-message{
+				.caption{
+					ParentAnchor : caTop;
+					Anchor : caTop;
+				}
+				.loot{
+					Size : 100% 100%;
+					Padding-Top : 57;
+				}
+			}
+			&.notification-friend-request{
+				.caption{
+					Position : 0 15%;
+					Size : 70% 20%;
+					Anchor : caTop;
+					FontFlags : [ffCenter];
+				}
+				.requester{
+					ParentAnchor : caCenter;
+					Anchor : caBottom;
+					Position : 0 5%;
+					Size : auto 40%;
+					.icon{
+						Size : auto 100%;
+						Margin-Right : 20ch;
+					}
+					.name{
+						Size : text 100%;
+						FontSize : 60%;
+						FontFlags : [ffVerticalCenter];
+					}
+				}
+			}
+		}
+	}
+}

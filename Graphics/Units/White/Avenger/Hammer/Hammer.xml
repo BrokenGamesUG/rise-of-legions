@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<TMesh type="Engine.Mesh.TMesh" identifier="87954512">
+  <GeometryFile>Hammer.FBX</GeometryFile>
+  <Cullmode>cmNone</Cullmode>
+  <Alpha>1</Alpha>
+  <AlphaTestTreshold>0</AlphaTestTreshold>
+  <Specular>False</Specular>
+  <SpecularIntensity>1</SpecularIntensity>
+  <SpecularPower>128</SpecularPower>
+  <DiffuseTetxure>HammerDiffuse.tga</DiffuseTetxure>
+  <NormalTexture></NormalTexture>
+  <SpecularTexture></SpecularTexture>
+  <GlowTexture>HammerGlow.tga</GlowTexture>
+</TMesh>

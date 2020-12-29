@@ -1,0 +1,103 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var HoTGroup, HoTEffectGroup, HealthGroup, Group : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  HealthGroup := Entity.ReserveFreeGroup();
+  HoTGroup := Entity.ReserveFreeGroup();
+  HoTEffectGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetIndexedValue(eiResourceBalance, [HoTGroup], reWelaCharge, 20);
+  Entity.Blackboard.SetIndexedValue(eiResourceCap, [HoTGroup], reWelaCharge, 20);
+  Entity.Blackboard.SetIndexedValue(eiResourceCost, [HoTGroup], reWelaCharge, 1);
+  Entity.Blackboard.SetValue(eiCooldown, [HoTGroup], 1000); //HoT-Tick
+  Entity.Blackboard.SetValue(eiWelaDamage, [HoTEffectGroup], 0.02); // 5% max hp per s
+  Entity.Blackboard.SetValue(eiDamageType, [HoTEffectGroup], [dtHoT]);
+  Entity.Blackboard.SetValue(eiWelaDamage, [HealthGroup], 160.0); // increase health
+
+  {$IFDEF SERVER}
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [Group], [btPositive]);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([Group, HoTGroup, HoTEffectGroup, HealthGroup]);
+
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('GiantGrowthByHoT')
+      .CheckDamageType(dtHot)
+      .TriggerOnHeal;
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [Group])
+      .Name('Enchanted')
+      .Name('GiantGrowth')
+      .TriggerOnTakeDamage;
+
+    // Increase Health, only server because cap is synced
+    TModifierResourceComponent.CreateGrouped(Entity, [HealthGroup])
+      .Resource(reHealth)
+      .ApplyNow();
+
+    // HoT
+    TBrainWelaSelfTargetComponent.CreateGrouped(Entity, [HoTGroup])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [HoTGroup], False);
+    TWelaReadyCostComponent.CreateGrouped(Entity, [HoTGroup])
+      .SetPayingGroup([HoTGroup]);
+    TWelaEffectPayCostComponent.CreateGrouped(Entity, [HoTGroup])
+      .SetPayingGroup([HoTGroup]);
+    TWelaEffectFireComponent.CreateGrouped(Entity, [HoTGroup])
+      .TargetGroup([HoTEffectGroup]);
+
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [HoTEffectGroup])
+      .MustHave([upInjured])
+      .MustNotHave([upUnhealable]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [HoTEffectGroup]);
+    TWarheadSpottyHealComponent.CreateGrouped(Entity, [HoTEffectGroup])
+      .PercentageOfMaxHealth;
+  {$ENDIF}
+
+  TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upBlessed, upBlessedGrowth]);
+
+  {$IFDEF CLIENT}
+    TMeshEffectComponent.CreateGrouped(Entity, [Group])
+      .TargetGroup([])
+      .SetEffect(
+        TMeshEffectGhost.Create()
+          .Color($FF73FF00)
+      );
+
+    TParticleEffectComponent.CreateGrouped(Entity, [HoTGroup], '\Green\giant_growth_regeneration.pfx', 2.0)
+      .ActivateOnFire()
+      .ScaleWith(eiCollisionRadius);
+
+    TSoundComponent.CreateGrouped(Entity, [HoTGroup], 'event:/card/green/spell/giant_growth/tick')
+      .TriggerOnFire();
+
+    TParticleEffectComponent.CreateGrouped(Entity, [Group], '\Green\giant_growth_mario_pulse.pfx', 0.4)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius);
+
+    TVisualModificatorSizeComponent.CreateGrouped(Entity, [0, 1, 2, 3, 4, 5, 6, 7, 8, Group])
+      .Keypoints([1.0, 1.0, 1.166, 1.066, 1.283, 1.133, 1.4, 1.2])
+      .TimeKeys([0, 300, 590, 630, 900, 960, 1200, 1300])
+      .Duration(1300);
+
+    TMeshEffectTint.Create(1300, $FFecffc5)
+      .AddKey(0, 0.0)
+      .AddKey(300, 0.0)
+      .AddKey(590, 1.0)
+      .AddKey(630, 0.0)
+      .AddKey(900, 1.0)
+      .AddKey(960, 0.0)
+      .AddKey(1200, 1.0)
+      .AddKey(1300, 0.0)
+      .AssignToEntity(Entity);
+
+    TIndicatorResourceCircleComponent.CreateGrouped(Entity, [HoTGroup])
+      .Padding(PI / 1000)
+      .ShowsResource(reWelaCharge)
+      .SetTexture(PATH_GRAPHICS_EFFECTS_TEXTURES + 'ProgressCircle.tga')
+      .SetRadius(1.5)
+      .ScaleWith(eiCollisionRadius)
+      .SetThickness(0.1)
+      .Color($4073ff00);
+  {$ENDIF}
+end;

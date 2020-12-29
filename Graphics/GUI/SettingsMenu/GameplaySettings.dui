@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<wrapper class="settings gameplay">
+	<stack class="column">
+		<check title="§SettingsGameplayDragWavetemplatesHint" dxml-on:change="settings.SetBoolean(coGameplayDragWavetemplates)" checked="{{ settings.GetBoolean(coGameplayDragWavetemplates) }}">
+			§SettingsGameplayDragWavetemplates
+		</check>
+		<check title="§SettingsGameplayEndlessBuildHint" dxml-on:change="settings.SetBoolean(coGameplayEndlessBuild)" checked="{{ settings.GetBoolean(coGameplayEndlessBuild) }}">
+			§SettingsGameplayEndlessBuild
+		</check>
+		<check title="§SettingsGameplayClipCursorHint" dxml-on:change="settings.SetBoolean(coGameplayClipCursor)" checked="{{ settings.GetBoolean(coGameplayClipCursor) }}">
+			§SettingsGameplayClipCursor
+		</check>
+		<check title="§SettingsGameplayRightClickPanningHint"  dxml-on:change="settings.SetBoolean(coGameplayRightClickPanning)" checked="{{ settings.GetBoolean(coGameplayRightClickPanning) }}">
+			§SettingsGameplayRightClickPanning
+		</check>
+		<div class="combo-caption">
+			§settings_gameplay_healthbarmode_caption
+		</div>
+		<select class="form-control">
+			<caption>§settings_gameplay_healthbarmode_{{ settings.HealthBarMode }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.HealthBarMode := hmNone">
+					§settings_gameplay_healthbarmode_hmNone
+				</div>
+				<div dxml-on:click="settings.HealthBarMode := hmDamaged">
+					§settings_gameplay_healthbarmode_hmDamaged
+				</div>
+				<div dxml-on:click="settings.HealthBarMode := hmAlways">
+					§settings_gameplay_healthbarmode_hmAlways
+				</div>
+			</stack>
+		</select>
+		<div class="combo-caption">
+			§settings_gameplay_dropzonemode_caption
+		</div>
+		<select class="form-control">
+			<caption>§settings_gameplay_dropzonemode_{{ settings.DropZoneMode }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.DropZoneMode := dzAll">
+					§settings_gameplay_dropzonemode_dzAll
+				</div>
+				<div dxml-on:click="settings.DropZoneMode := dzArea">
+					§settings_gameplay_dropzonemode_dzArea
+				</div>
+				<div dxml-on:click="settings.DropZoneMode := dzCursor">
+					§settings_gameplay_dropzonemode_dzCursor
+				</div>
+				<div dxml-on:click="settings.DropZoneMode := dzHide">
+					§settings_gameplay_dropzonemode_dzHide
+				</div>
+			</stack>
+		</select>
+		<div class="combo-caption" title="§settings_gameplay_clickprecision_hint">
+			§settings_gameplay_clickprecision_caption
+		</div>
+		<select class="form-control">
+			<caption>§settings_gameplay_clickprecision_{{ settings.ClickPrecision }}</caption>
+			<arrow></arrow>
+			<stack class="options">
+				<div dxml-on:click="settings.ClickPrecision := cpPrecise">
+					§settings_gameplay_clickprecision_cpPrecise
+				</div>
+				<div dxml-on:click="settings.ClickPrecision := cpExtended">
+					§settings_gameplay_clickprecision_cpExtended
+				</div>
+				<div dxml-on:click="settings.ClickPrecision := cpWide">
+					§settings_gameplay_clickprecision_cpWide
+				</div>
+			</stack>
+		</select>
+		<check title="§SettingsGameplayShowEffectRadiusHint" dxml-on:change="settings.SetBoolean(coGameplayShowEffectRadius)" checked="{{ settings.GetBoolean(coGameplayShowEffectRadius) }}">
+			§SettingsGameplayShowEffectRadius
+		</check>
+		<check title="§settings_gameplay_fixed_team_colors_hint" dxml-on:change="settings.SetBoolean(coGameplayFixedTeamColors)" checked="{{ settings.GetBoolean(coGameplayFixedTeamColors) }}">
+			§settings_gameplay_fixed_team_colors
+		</check>
+		<check title="§settings_gameplay_technical_panel_hint" dxml-on:change="settings.SetBoolean(coGameplayShowTechnicalPanel)" checked="{{ settings.GetBoolean(coGameplayShowTechnicalPanel) }}">
+			§settings_gameplay_technical_panel
+		</check>
+		<check title="§settings_coGameplayShowNumericChargeCooldown_hint" dxml-on:change="settings.SetBoolean(coGameplayShowNumericChargeCooldown)" checked="{{ settings.GetBoolean(coGameplayShowNumericChargeCooldown) }}">
+			§settings_gameplay_coGameplayShowNumericChargeCooldown
+		</check>
+		<check title="§settings_coGameplayShowDeckHotkeys_hint" dxml-on:change="settings.SetBoolean(coGameplayShowDeckHotkeys)" checked="{{ settings.GetBoolean(coGameplayShowDeckHotkeys) }}">
+			§settings_coGameplayShowDeckHotkeys
+		</check>
+		<check class="secret" dxml-on:change="settings.SetBoolean(coGeneralHasSecretAccess)" checked="{{ settings.GetBoolean(coGeneralHasSecretAccess) }}">
+			§settings_general_has_secret_access
+		</check>
+	</stack>
+	<btn class="btn-xl btn-revert" dxml-on:click="settings.RevertCategory(otGameplay)">§RevertSettings</btn>
+</wrapper>

@@ -1,0 +1,456 @@
+﻿.core-game{
+	MouseEvents : mePass;
+	.hud{
+		MouseEvents : mePass;
+		.ui{
+			MouseEvents : mePass;
+		}
+	}
+}
+
+.hud{
+	.announcements{
+		Position : 0 150;
+		ParentAnchor : caTop;
+		Anchor : caTop;
+		Size : auto auto;
+		AnimationName: empty_animation;
+		AnimationDuration : 120;
+		AnimationIterationCount : 1;
+		AnimationDelay : 280;
+		MouseEvents : mePass;
+		*{
+			MouseEvents : mePass;
+		}
+		&:hiding{
+			.background, .title, .subtitle{
+				$fade-out;
+			}
+		}
+		.background{
+			Size : auto 100bh;
+			Background : HUD/Announcements/AnnouncementBackground.png;
+			$fade-in;
+		}
+		.content{
+			Size : 100% 100%;
+			Padding : 29% 10%;
+		}
+		.subtitle{
+			$slide-left-in-large;
+		}
+		.title{
+			Size : 100% 70%;
+			TextTransform : ttUppercase;
+			$slide-right-in-large;
+		}
+		.title, .subtitle{
+			Fontcolor : $font-color-white;
+			FontFlags : [ffCenter];
+			FontWeight : 700;
+			AnimationDuration : 200;
+		}
+		.subtitle{
+			Position : 0 -5%;
+			ParentAnchor : caBottom;
+			Anchor : caBottom;
+			Size : 100% 32%;
+		}
+	}
+	
+	.game-info{
+		Size : 100bw auto;
+		ParentAnchor: caTop;
+		Anchor : caTop;
+		Background : HUD/GameStatePanel/top_panel.png;
+		Blur : True;
+		BlurMask : HUD/GameStatePanel/top_panel_blur.png;
+		.overlay{
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			ZOffset : 5;
+			Background : HUD/GameStatePanel/top_panel.png;
+		}
+		.game-time{
+			Size : 19.3% 100%;
+			ParentAnchor: caTop;
+			Anchor : caTop;
+			Fontcolor : $font-color-white;
+			Fontsize : 53%;
+			Fontflags : [ffCenter,ffVerticalCenter];
+			ZOffset : 5;
+		}
+		.nexus{
+			Size : 35.1% 75%;
+			bar{
+				Width : 40%;
+				Backgroundrepeat : brRepeat;
+				$red-flash;
+				AnimationIterationCount : 1;
+			}
+			&.blue{
+				bar{
+					Background : HUD/GameStatePanel/blue_shield_hp.png;
+				}
+			}
+			&.red{
+				bar{
+					Background : HUD/GameStatePanel/red_shield_hp.png;
+				}
+			}
+			&.left{
+				Position : 37.5% 0;
+				Anchor : caTopRight;
+				bar{
+					ParentAnchor : caTopRight;
+					Anchor : caTopRight;
+					BackgroundAnchor : baTopRight;
+				}
+				&.red{
+					bar{
+						BackgroundAnchor : baTopRight;
+					}
+				}
+			}
+			&.right{
+				Position : 62.5% 0;
+			}
+		}
+		.caption{
+			Position-Y : -29%;
+			Size : 19.5% 35%;
+			DefaultText : 40%;
+			Fontcolor : $font-color-white;
+			Fontsize : 92%;
+			Fontweight : 700;
+			Fontflags : [ffCenter,ffVerticalCenter];
+			FontBorder : 1;
+			ZOffset : 5;
+			&.left{
+				ParentAnchor : caBottomLeft;
+				Anchor : caBottomLeft;
+			}
+			&.right{
+				ParentAnchor : caBottomRight;
+				Anchor : caBottomRight;
+			}
+		}
+		.pve-attack-panel{
+			ParentAnchor : caTop;
+			Anchor : caTop;
+			Position : 0 75%;
+			Size : auto 100bh;
+			Background : HUD/GameStatePanel/pve_panel.png;
+			.attack-timer, .tower-counter, .boss-timer{
+				Size : 18% 40%;
+				Fontcolor : $font-color-white;
+				FontWeight : 700;
+				FontFlags : [ffLeft,ffVerticalCenter];
+				.display{
+					Size : 100% 100%;
+				}
+				.icon{
+					Size : auto 100%;
+					ParentAnchor : caLeft;
+					Anchor : caRight;
+				}
+			}
+			.attack-timer{
+				Position : -4% 6%;
+				Anchor : caTopRight;
+				ParentAnchor : caTopRight;
+				.icon{
+					Position-X : -10ch;
+					Background : HUD/GameStatePanel/pve_boss_attack_icon.png;
+				}
+				&.expired{
+					.icon{
+						Position-X : 42%;
+					}
+				}
+			}
+			.tower-counter{
+				Size : 7% 60%;
+				Position : 4.5% 12%;
+				Anchor : caCenter;
+				ParentAnchor : caCenter;
+				.icon{
+					Position : -5ch -5%;
+					Size-Y : 90%;
+					Background : HUD/GameStatePanel/pve_tower_icon.png;
+				}
+			}
+			.boss-timer{
+				Position : 13% 6%;
+				.icon{
+					Position-X : -10ch;
+					Background : HUD/GameStatePanel/pve_boss_wave_icon.png;
+				}
+				&.expired{
+					FontFlags : [ffCenter,ffVerticalCenter];
+				}
+			}
+		}
+	}
+	
+	.technical-panel{
+		Size : 158 34;
+		ZOffset : 3;
+		Padding : 10;
+		MouseEvents : pePass;
+		.fps{
+			Size : 60 100%;
+			DefaultText : 59 FPS;
+			Fontcolor : $font-color-black;
+		}
+		.ping-icon{
+			Position : 62 2;
+			Size : 10 60%;
+			Background : HUD/TechnicalPanel/PingSymbolGood.png;
+			&.neutral{
+				Background : HUD/TechnicalPanel/PingSymbolNeutral.png;
+			}
+			&.bad{
+				Background : HUD/TechnicalPanel/PingSymbolBad.png;
+			}
+		}
+		.ping-text{
+			Position : 78 0;
+			Size : 80 100%;
+			Fontcolor : $font-color-black;
+		}
+	}
+	
+	.tooltip{
+		Position : 100% 40%;
+		Size : 100bw auto;
+		Anchor : caRight;
+		Background : HUD/InfoPanel/info_panel_background.png;
+		.content{
+			Position-Y : 6%;
+			Size : 99% 79%;
+			ParentAnchor : caRight;
+			Anchor : caRight;
+			Blur : True;
+			ZOffset : -1;
+			.name{
+				Position-Y : 10%;
+				Anchor : caTop;
+				ParentAnchor : caTop;
+				Size : 85% 11%;
+				Fontcolor : $font-color-white;
+				Fontsize : 70%;
+				Fontweight : 700;
+				Fontflags : [ffCenter,ffVerticalCenter,ffAutoShrink];
+			}
+			& > .icon{
+				Position-Y : 10%;
+				Anchor : caBottom;
+				ParentAnchor : caTop;
+				Size : 48% auto;
+				BackgroundMipMapping : mhLoad;
+				.card-icon{
+					Size : 100% 100%;
+					BackgroundMipMapping : mhLoad;
+				}
+				.stats{
+					Position-Y : -6%;
+					ZOffset : 10;
+					.league-icon{
+						ZOffset : 10;
+						Position : 85% 98%;
+						Anchor : caCenter;
+						Size : auto 36%;
+						Padding : 5% 0 0 0;
+						Fontcolor : $font-color-white;
+						FontFlags : [ffCenter,ffVerticalCenter];
+						FontWeight : 1000;
+						FontSize : 60%;
+						FontBorder : 1 $FF000000;
+					}
+				}
+			}
+			.info{
+				Position-Y : 21%;
+				Size : 100% 50%;
+				Padding : 5cw;
+				progress{
+					Anchor : caTop;
+					ParentAnchor : caTop;
+					Size : 94% 15%;
+					BackgroundColor : $40000000;
+					&.health{
+						bar{
+							BackgroundColor : $DFC04040;
+						}
+						bar.overheal{
+							BackgroundColor : $DFFFFFFF;
+						}
+					}
+					&.mana{
+						Position : 0 16%;
+						Size-Y : 12%;
+						bar{
+							BackgroundColor : $DF5DCDCF;
+						}
+					}
+					.caption{
+						Size : 100% 100%;
+						Fontcolor : $font-color-white;
+						Fontsize : 90%;
+						FontWeight : 800;
+						Fontflags : [ffCenter,ffVerticalCenter];
+						FontBorder : 1 $FF000000;
+					}
+				}
+				.weapon, .armor{
+					Position-Y : 28%;
+					Size : 30% auto;
+					Anchor : caTop;
+					&.has_energy{
+						Position-Y : 36%;
+					}
+					.icon{
+						Size : 100% 100%;
+					}
+					.caption{
+						ParentAnchor : caBottom;
+						Anchor : caTop;
+						Size : 160% 40%;
+						Fontcolor : $font-color-white;
+						Fontsize : 90%;
+						Fontweight : 700;
+						Fontflags : [ffCenter,ffVerticalCenter];
+					}
+				}
+				.armor{
+					Position-X : 75%;
+				}
+				.weapon{
+					Position-X : 25%;
+				}
+			}
+		}
+		.spell-info, .abilities{
+			Padding : 5cw;
+			Fontcolor : $font-color-white;
+			Fontflags : [ffWordWrap];
+			.skill-hint{
+				Position : -3% 0;
+				Anchor : caAuto caRight caTopRight caBottomRight;
+				ParentAnchor : caLeft;
+			}
+			&:hover{
+				.skill-hint{
+					Visibility : True;
+				}
+			}
+		}
+		.spell-info{
+			Position-Y : 21%;
+			Size : 100% 79%;
+			Fontsize : 8%;
+		}
+		.abilities{
+			Position-Y : 71%;
+			Size : 100% 29%;
+			FontSize : 25%;
+		}
+	}
+	
+	.resources{
+		Size : 100bw auto;
+		ParentAnchor : caBottomLeft;
+		Anchor : caBottomLeft;
+		Background : HUD/RessourcePanel/ressource_panel.png;
+		.content{
+			Size : 93% 93%;
+			ParentAnchor : caBottomLeft;
+			Anchor : caBottomLeft;
+			Blur : True;
+			ZOffset : -1;
+			.gold-wrapper, .wood-wrapper, .income-wrapper{
+				Position-X : 17.5%;
+				Size : 76% 11%;
+				Padding-Right : 120ch;
+				.caption, .income{
+					Size : 100% 100%;
+					Anchor : caRight;
+					ParentAnchor : caRight;
+					Fontcolor : $font-color-white;
+					Fontsize : 70%;
+					Fontflags : [ffRight,ffVerticalCenter];
+				}
+				&.has-income{
+					.caption{
+						Padding-Right : 150ch;
+					}
+				}
+				icon{
+					Position : 62ch;
+					Size : auto 110%;
+					Anchor : caCenter;
+					ParentAnchor : caRight;
+				}
+			}
+			.gold-wrapper{
+				Position-Y : 6%;
+				.caption{
+					Padding-Right : 120ch;
+				}
+				icon{
+					Background : HUD/RessourcePanel/mana.png;
+				}
+			}
+			.wood-wrapper{
+				Position-Y : 22%;
+				.income{
+					Visibility : False;
+				}
+				&.has-income{
+					.income{
+						Visibility : True;
+					}
+				}
+				icon{
+					Background : HUD/RessourcePanel/essence.png;
+				}
+			}
+			.income-wrapper{
+				Position-Y : 38%;
+				.caption{
+					ZOffset : 10;
+				}
+				progress{
+					Size : 100% 100%;
+					bar{
+						BackgroundColor : $progress-cyan;
+					}
+				}
+				icon{
+					Background : HUD/RessourcePanel/income_upgrade.png;
+				}
+			}
+			.tech-wrapper{
+				Position : 31.5% 63%;
+				Size : 20% 20%;
+				.caption{
+					Size : 100% 100%;
+					Fontcolor : $font-color-white;
+					Fontsize : 60%;
+					Fontweight : 1000;
+					Fontflags : [ffCenter,ffVerticalCenter];
+				}
+				.tech-timer{
+					Position : 105% 2%;
+					Size : 100% 18;
+					Anchor : caLeft;
+					ParentAnchor : caCenter;
+					Fontcolor : $font-color-white;
+					Fontsize : 100%;
+					Fontflags : [ffCenter,ffVerticalCenter];
+				}
+			}
+		}
+	}
+}

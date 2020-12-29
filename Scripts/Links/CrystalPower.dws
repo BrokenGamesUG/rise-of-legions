@@ -1,0 +1,38 @@
+{$INCLUDE 'Math.dws'};
+
+function Apply(Entity : TEntity) : array of integer;
+var Group, PowerGroup, ProjectileGroup : integer;
+begin
+  Group := Entity.ReserveFreeGroup();
+  PowerGroup := Entity.ReserveFreeGroup();
+  ProjectileGroup := Entity.ReserveFreeGroup();
+
+  {$IFDEF SERVER}
+    // this buff can only placed once on a unit
+    TUnitPropertyComponent.CreateGrouped(Entity, [Group], [upHasCrystalPower]);
+
+    // if main weapon deals damage fire spark from that unit
+    TAutoBrainOnDealDamageComponent.CreateGrouped(Entity, [GROUP_MAINWEAPON, Group])
+      .FireInGroup([PowerGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [PowerGroup]);
+
+    // if main weapon shoots projectiles give it the fire spark ability
+    TAutoBrainOnWelaShotProjectileComponent.CreateGrouped(Entity, [ProjectileGroup]);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [ProjectileGroup]);
+  {$ENDIF}
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [PowerGroup], 'Modifiers\CrystalPowerSpark.dws')
+    .PassValueFromEvent(eiTeamID)
+    .PassDirectionToTarget();
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [ProjectileGroup], 'Modifiers\CrystalPowerFireSpark.dws');
+
+  {$IFDEF CLIENT}
+    TParticleEffectComponent.CreateGrouped(Entity, [PowerGroup], '\Colorless\crystal_power_idle.pfx', 1.0)
+      .ActivateNow
+      .ActivateOnCreate
+      .ScaleWith(eiCollisionRadius)
+      .BindToSubPositionGroup(BIND_ZONE_WEAPON, [0, 1]);
+  {$ENDIF}
+
+  Result := [Group, PowerGroup, ProjectileGroup];
+end;

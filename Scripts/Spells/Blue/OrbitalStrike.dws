@@ -1,0 +1,122 @@
+{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity);
+var BombardementGroup, SelfDamageGroup, DurationGroup : integer;
+begin
+  BombardementGroup := Entity.ReserveFreeGroup();
+  DurationGroup := Entity.ReserveFreeGroup();
+  SelfDamageGroup := Entity.ReserveFreeGroup();
+  Entity.Blackboard.SetValue(eiCooldown, [DurationGroup], 15000); //Buff-Duration
+
+  Entity.Blackboard.SetValue(eiCooldown, [SelfDamageGroup], 500);
+  Entity.Blackboard.SetValue(eiWelaDamage, [SelfDamageGroup], 13.0);
+  Entity.Blackboard.SetValue(eiDamageType, [SelfDamageGroup], [dtSpell]);
+
+  Entity.Blackboard.SetValue(eiWelaRange, [BombardementGroup], 6.0);
+  Entity.Blackboard.SetValue(eiCooldown, [BombardementGroup], 200);
+
+  {$IFDEF SERVER}
+    // After eiCooldown Buff is removed
+    TBrainWelaSelftargetComponent.CreateGrouped(Entity, [DurationGroup])
+      .ThinksPassively();
+    TAutoBrainBuffComponent.CreateGrouped(Entity, [DurationGroup], [btDivine]);
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [DurationGroup], False);
+    TWelaEffectRemoveAfterUseComponent.CreateGrouped(Entity, [DurationGroup])
+      .TargetGroup([DurationGroup, BombardementGroup, SelfDamageGroup]);
+
+    TBrainWelaSelfTargetComponent.CreateGrouped(Entity, [SelfDamageGroup])
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [SelfDamageGroup], True);
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [SelfDamageGroup]);
+    TWarheadSpottyDamageComponent.CreateGrouped(Entity, [SelfDamageGroup]);
+    TWelaEffectStatisticsComponent.CreateGrouped(Entity, [SelfDamageGroup])
+      .Name('Spell')
+      .TriggerOnDamageDone;
+
+    // apply bombardement to surrounding allied units
+    TThinkImpulseImmediateComponent.CreateGrouped(Entity, [BombardementGroup]);
+    TBrainWelaFightComponent.CreateGrouped(Entity, [BombardementGroup])
+      .DisableTargetLock()
+      .ThinksPassively();
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [BombardementGroup], False) // delay
+      .Cooldown(1000)
+      .Once;
+    TWelaReadyCooldownComponent.CreateGrouped(Entity, [BombardementGroup], True);
+    TWelaTargetingRadialComponent.CreateGrouped(Entity, [BombardementGroup])
+      .SetTargetTeamConstraint(tcAllies)
+      .PicksRandomTargets();
+    TWelaTargetConstraintAlliesComponent.CreateGrouped(Entity, [BombardementGroup]);
+    TWelaTargetConstraintNotSelfComponent.CreateGrouped(Entity, [BombardementGroup]);
+    TWelaTargetConstraintUnitPropertyComponent.CreateGrouped(Entity, [BombardementGroup])
+      .MustHaveAny([upUnit, upBuilding])
+      .MustNotHave([upInvisible, upBanished, upSpellImmune]);
+    TWelaTargetConstraintEventComponent.CreateGrouped(Entity, [BombardementGroup], eiDamageable);
+
+    TWelaEffectInstantComponent.CreateGrouped(Entity, [BombardementGroup]);
+  {$ENDIF}
+
+  TWarheadApplyScriptComponent.CreateGrouped(Entity, [BombardementGroup], 'Spells\Blue\OrbitalStrikeBombardement.dws');
+
+  {$IFDEF CLIENT}
+    // --------------- Permanent -------------------------------------------------------------------------------------
+
+    TVertexRayVisualizerComponent.CreateGrouped(Entity, [DurationGroup])
+      .Texture('\Effects\Spells\Blue\OrbitalStrike\OrbitalStrikeLaser.png')
+      .SetOpacity(0.50)
+      .SetWidth(RVariedSingle.Create(1.2, 0.3))
+      .SetLength(RVariedSingle.Create(8, 4))
+      .SetLongitudinalSpeed(RVariedSingle.Create(20.0, 2.5))
+      .SetRayCount(4)
+      .BindStartToSubPositionGroup(BIND_ZONE_HIT_ZONE, [0, 1])
+      .BindStartOffset(0, 30, 0)
+      .BindEndOffset(0, -30, 0)
+      .SizeKeypointsWidth([0.1, 0.2, 1.0])
+      .SizeKeypointsLength([0.0, 1.0, 1.0])
+      .SizeTimes([0, 150, 300]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [DurationGroup], '\Blue\orbital_strike_impact.pfx', 0.75)
+      .Delay(150)
+      .ActivateNow
+      .BindToSubPositionGroup(BIND_ZONE_HIT_ZONE, [0, 1]);
+
+    TParticleEffectComponent.CreateGrouped(Entity, [BombardementGroup], '\Blue\blue_border_wide.pfx', 5.0)
+      .Delay(1000)
+      .ActivateNow
+      .ActivateOnCreate
+      .FixedOrientationDefault()
+      .ScaleWith(eiWelaRange)
+      .FixedHeightGround
+      .VisibleWithOption(coGameplayShowEffectRadius);
+
+    TSoundComponent.CreateGrouped(Entity, [DurationGroup], 'event:/card/blue/spell/orbital_strike/cast')
+      .TriggerNow
+      .StopOnFree;
+
+    // --------------- Cast ------------------------------------------------------------------------------------------
+
+    TParticleEffectComponent.CreateGrouped(Entity, [DurationGroup], '\Blue\orbital_strike_cast.pfx', 0.4)
+      .ActivateNow
+      .BindToSubPositionGroup(BIND_ZONE_HIT_ZONE, [0, 1]);
+
+    TCameraShakerComponent.CreateGrouped(Entity, [DurationGroup])
+      .VectorShaker(0, -1, 0)
+      .Strength(0.2)
+      .Delay(150)
+      .Duration(150)
+      .NoFade
+      .Invert
+      .Waves(1)
+      .ActivateNow;
+
+    // --------------- Self Damage -----------------------------------------------------------------------------------
+
+    TCameraShakerComponent.CreateGrouped(Entity, [SelfDamageGroup])
+      .VectorShaker(-0.4, -1, 0.2)
+      .Strength(0.03)
+      .Duration(500)
+      .Waves(8)
+      .NoFade
+      .ActivateOnFire
+      .StopOnFree;
+  {$ENDIF}
+end;

@@ -1,0 +1,84 @@
+﻿.loading{
+	.background{
+		Size : auto 100%;
+		Anchor : caCenter;
+		ParentAnchor : caCenter;
+		Background : LoadingScreen/loadingscreen_background.jpg;
+	}
+	.loading-progress{
+		Size : 36.33% auto;
+		Position : 0 -5%;
+		ParentAnchor : caBottom;
+		Anchor : caBottom;
+		Padding : 25% 3% 24% 3%;
+		Background : LoadingScreen/loadingscreen_loading_bar.tga;
+		BackgroundMipMapping : True;
+		BackgroundMipMapLodBias : -1.0;
+		bar{
+			Background : LoadingScreen/loadingscreen_loading_bar_fill.tga;
+			BackgroundMipMapLodBias : -1.0;
+			Backgroundrepeat : brRepeat brStretch;
+			BackgroundMipMapping : True;
+		}
+		.loading-state{
+			Position : 0 30%;
+			ParentAnchor : caBottom;
+			Anchor : caTop;
+			Size : 100% 40%;
+			FontFlags : [ffCenter,ffVerticalCenter];
+		}
+		.first-time-hint{
+			Position : 0 -90%;
+			ParentAnchor : caTop;
+			Anchor : caBottom;
+			Size : 100sw 50%;
+			FontFlags : [ffCenter,ffVerticalCenter];
+		}
+	}
+}
+
+.match{
+	stack{
+		Size : 25% auto;
+		Anchor : caCenter;
+		Stackorientation : soVertical;
+		Stackpartitioning : auto;
+		&.left{
+			Position : 25% 48%;
+		}
+		&.right{
+			Position : 75% 48%;
+			& > *{
+				.username{
+					FontFlags : [ffRight,ffVerticalCenter,ffAutoShrink];
+				}
+				.deck{
+					ParentAnchor : caTopRight;
+					Anchor : caTopRight;
+				}
+			}
+		}
+		& > *{
+			Position : inherit inherit;
+			Size : 100% 200;
+			Padding : 35 0 35 0;
+			.username{
+				Size : 100% 40%;
+				Fontweight : 700;
+				FontColor : $font-color-gold;
+				Fontflags : [ffLeft,ffVerticalCenter,ffAutoShrink];
+			}
+			.deck{
+				Position-Y : 40%;
+				Size : auto 60%;
+			}
+		}
+	}
+	.vs-icon{
+		ParentAnchor : caCenter;
+		Anchor : caCenter;
+		Size : 7.214% auto;
+		Background : LoadingScreen/loadingscreen_vs.tga;
+		BackgroundMipMapping : True;
+	}
+}

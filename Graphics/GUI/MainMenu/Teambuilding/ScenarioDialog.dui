@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<wrapper class="scenario-dialog backdrop dialog" :show="dialogs.IsDialogVisible(diMatchmakingScenario)" dxml-on:click="dialogs.CloseDialog(diMatchmakingScenario)">
+	<div class="window">
+		<div class="window-caption">§Gamemode</div>
+		<stack vertical class="scenarios">
+			<btn dxml-for="scenario in matchmaking.ScenarioSelection" class="scenario {{ disabled if not scenario.Enabled }}" dxml-on:click="matchmaking.ChooseScenario(scenario.)">
+				<div class="caption">§scenario_{{ scenario.UID }}</div>
+				<div class="teamsize">
+					<div class="fa fa-users"></div>
+					<div class="count">{{ scenario.MaxTeamSize }}</div>
+				</div>
+				<div class="scenario-info">
+					<div class="description">
+					§scenario_{{ scenario.UID }}_description</div>
+				</div>
+			</btn>
+		</stack>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="dialogs.CloseDialog(diMatchmakingScenario)">§close</btn>
+		</stack>
+	</div>
+</wrapper>

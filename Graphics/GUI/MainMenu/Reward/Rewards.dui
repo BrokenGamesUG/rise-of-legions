@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<wrapper class="game-rewards" :visible="menu.CurrentMenu = mtGameRewards" :animate-on-if="not dialogs.IsAnyDialogVisible and (menu.CurrentMenu = mtGameRewards)" dxml-with="reward=statistics.GameData.Rewards">
+	<wrapper class="backdrop filled loader disabled" :visible="dialogs.IsDialogVisible(diStatisticsLoading)">
+		<div class="spinner" rotation="-1.0"></div>
+		<div>§game_statistics_loading</div>
+	</wrapper>
+	<div dxml-include="MainMenu/Reward/GameInfoHeader.dui"></div>
+	<div class="card-exp {{ premium-disabled if not reward.PremiumApplied }}">
+		<stack class="cards">
+			<div dxml-for="card in statistics.GameData.Rewards.CardWithRewards" dxml-include="MainMenu/Shared/Card/CardIconWithReward.dui"></div>
+		</stack>
+	</div>
+	<div class="experience-rewards {{ level-up if statistics.GameData.Rewards.LevelBefore < profile.Profile.Level }}">
+		<div class="level current">{{ (profile.Profile.Level - 1) if profile.Profile.IsMaxLevel else profile.Profile.Level }}</div>
+		<div class="experience-progress {{ premium-disabled if not reward.PremiumApplied }}">
+			<progress>
+				<bar class="before" :width%="1.0 if profile.Profile.IsMaxLevel else reward.LevelProgressBefore"></bar>
+				<bar class="gained" :visible="not profile.Profile.IsMaxLevel" :left%="reward.LevelProgressBefore" :width%="reward.LevelProgress - reward.LevelProgressBefore">
+					<div class="xp-reward">+{{ reward.Experience }}</div>
+				</bar>
+				<bar class="gained premium {{ intersected if (reward.LevelProgressAfterPremium - reward.LevelProgress) < 0.09 }}" :visible="not profile.Profile.IsMaxLevel" :left%="reward.LevelProgress" :width%="reward.LevelProgressAfterPremium - reward.LevelProgress" :title="§reward_screen_experience_no_premium if not reward.PremiumApplied">
+					<div class="xp-reward premium">+{{ reward.ExperiencePremium }}</div>
+				</bar>
+			</progress>
+		</div>
+		<div class="experience-to-go">{{ §reward_screen_experience_max if profile.Profile.IsMaxLevel else F._d(§rewardscreen_experience_to_go,profile.Profile.LevelUpExperiencePoints - profile.Profile.ExperiencePoints) }}</div>
+		<div class="level next">{{ profile.Profile.Level if profile.Profile.IsMaxLevel else profile.Profile.Level + 1 }}</div>
+	</div>
+	<stack class="resource-rewards">
+		<div class="resource-reward {{ active if not reward.PremiumApplied else disabled }}">
+			<caption>§reward_screen_credits_no_premium</caption>
+			<div class="amount">
+				+{{ statistics.GameData.Rewards.Gold }}
+				<div class="icon" src="{{ HClient.CurrencyIcon(currency_gold) }}"></div>
+			</div>
+			<icon class="checkmark"></icon>
+		</div>
+		<div class="resource-reward premium {{ active if reward.PremiumApplied else disabled }}" :title="§reward_screen_currency_no_premium if not reward.PremiumApplied">
+			<caption>§reward_screen_credits_with_premium</caption>
+			<div class="amount">
+				+{{ statistics.GameData.Rewards.Gold + statistics.GameData.Rewards.GoldPremium  }}
+				<div class="icon" src="{{ HClient.CurrencyIcon(currency_gold) }}"></div>
+			</div>
+			<icon class="checkmark"></icon>
+		</div>
+	</stack>
+	<btn class="btn-xl btn-next" dxml-on:click="menu.CurrentMenu := mtGameStatistics">§continue</btn>
+</wrapper>

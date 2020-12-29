@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<wrapper class="skin-choose-dialog backdrop clickable dialog" :show="dialogs.IsDialogVisible(diDeckCardSkin)" dxml-on:click="deckbuilder.DeckCard := nil">
+	<div class="window" dxml-with="card=deckbuilder.DeckCard.CardInstance.OriginCard">
+		<stack class="skins">
+			<div class="skin pop-out {{ chosen if deckbuilder.DeckCard.Skin = nil }}" :enabled="deckbuilder.DeckCard.Skin <> nil" dxml-on:click="deckbuilder.ChooseSkin(nil)">
+				<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=card.CardInfo"></div>
+				<div class="name">{{ card.CardInfo.name }}</div>
+			</div>
+			<div dxml-for="skin in card.Skins" class="skin pop-out {{ chosen if deckbuilder.DeckCard.Skin = skin. }}" :enabled="skin.Unlocked and (deckbuilder.DeckCard.Skin <> skin.)" dxml-on:click="deckbuilder.ChooseSkin(skin.)">
+				<div dxml-include="MainMenu/Shared/Card/CardTemplateIcon.dui" dxml-with="card=skin.CardInfo"></div>
+				<div class="lock" title="§deckbuilding_skin_dialog_lock_hint" dxml-on:click="menu.CurrentMenu := mtShop; shop.ShopItemFilter.Category := scSkins; deckbuilder.DeckCard := nil;"></div>
+				<div class="name">{{ skin.CardInfo.name }}</div>
+			</div>
+		</stack>
+		<div class="window-caption small">
+			§deckbuilding_skin_dialog_caption
+		</div>
+		<stack class="window-buttons">
+			<btn class="btn-xl" dxml-on:click="deckbuilder.DeckCard := nil">§close</btn>
+			<btn class="btn-xl btn-success" dxml-on:click="deckbuilder.DeckCard := nil; menu.CurrentMenu := mtShop; shop.ShopItemFilter.Category := scSkins">§to_shop</btn>
+		</stack>
+	</div>
+</wrapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<wrapper class="decklist" :visible="(deckbuilder.deck = nil) and (menu.CurrentMenu = mtDeck)">
+	<div class="new-card-hint" :visible="deckbuilder.CardManager.HasAnyNewCard">
+		§deckbuilding_new_card_hint
+		<div class="new-flag"></div>
+	</div>
+	<div dxml-include="MainMenu/Deckbuilding/ShopItemDialog_Deckslot.dui"></div>
+	<div dxml-include="MainMenu/Deckbuilding/DeckDeleteDialog.dui"></div>
+	<stack class="decks">
+		<btn dxml-for="deck in deckbuilder.Decks" class="deck-wrapper is-deck deck-index-{{ index. }} {{ disabled if matchmaking.InQueue }}" dxml-on:click="deckbuilder.Deck := deck.; matchmaking.manager.CurrentTeam.Deck := deck." dxml-on:mouse_enter="deck.HasBeenSeen">
+			<div dxml-include="MainMenu/Deckbuilding/Deck.dui"></div>
+			<div class="new-flag" :show="deck.New"></div>
+			<btn class="btn-small btn-danger btn-delete fa fa-times" title="§decklist_delete_btn_hint" dxml-on:click="deckbuilder.PrepareDeleteDeck(deck.)"></btn>
+		</div>
+		<div class="deck-wrapper is-add-deck {{ disabled if matchmaking.InQueue }}" :visible="profile.Profile.Deckslots > deckbuilder.Decks.Count">
+			<btn class="deck add" dxml-on:click="deckbuilder.AddDeck">
+				<div class="hover"></div>
+				<div class="info">
+					<div class="name">§deckbuilding_deck_add</div>
+				</div>
+			</btn> 
+		</div>
+		<div dxml-for="deck in F.Range((profile.Profile.Deckslots - deckbuilder.Decks.Count) - 1)" class="deck-wrapper {{ disabled if matchmaking.InQueue }}">
+			<div class="deck empty" dxml-on:click="deckbuilder.AddDeck"></div>
+		</div>
+		<div class="deck-wrapper">
+			<btn class="deck empty buy" dxml-on:click="dialogs.OpenDialog(diDeckslotPurchase)">
+				<div class="hover"></div>
+				<div class="icon"></div>
+				<div class="info">
+					<div class="name">§deckbuilding_deck_slot_buy</div>
+				</div>
+			</btn> 
+		</div>
+	</stack>
+</wrapper>

@@ -1,0 +1,866 @@
+﻿{$INCLUDE 'Math.dws'};
+
+procedure Apply(Entity : TEntity; {$IFDEF SERVER}Game : TServerGame{$ELSE}Game : TClientGame{$ENDIF});
+const
+  TEAMID : integer = PVE_TEAM_ID;
+  FLEE_DISTANCE : single = 15.0;
+  {$IFDEF SERVER}
+var
+  ScenarioDirector : TScenarioDirectorComponent;
+  SpawnedEntity : TEntity;
+  FreeGroup : integer;
+  {$ENDIF}
+begin
+  // adjust lane walk directions
+  Game.Map.Lanes.Single;
+
+  Game.Map.BuildZones
+    .AddBuildZone(// Red right Buildgrid
+    TBuildZone.Create(2)
+    .SetTeam(2)
+    .SetPosition(106.7, -23)
+    .SetSize(8, 3)
+    .SetFront(-1, 0)
+    .SetSpawnTarget(90, -23, 1, 0)
+    .Block(0, 0)
+    .Block(7, 0)
+    .Block(0, 2)
+    .Block(7, 2)
+    );
+
+  Game.Map.BuildZones
+    .AddBuildZone(// Blue right Buildgrid
+    TBuildZone.Create(0)
+    .SetTeam(1)
+    .SetPosition(-106.7, -23)
+    .SetSize(8, 3)
+    .SetFront(1, 0)
+    .SetSpawnTarget(-90, -23, -1, 0)
+    .Block(0, 0)
+    .Block(7, 0)
+    .Block(0, 2)
+    .Block(7, 2)
+    );
+
+  {$IFDEF SERVER}
+  Game.ScenarioDirector := TScenarioDirectorComponent.Create(Entity);
+  ScenarioDirector := Game.ScenarioDirector;
+
+  // setup
+  ScenarioDirector
+    .SetTeam(TEAMID)
+  // use stone league, as user want would see the enemy league when clicking on unit
+    .SetLeague(1)
+    .AddKIPlayer(2, 86, -23)
+    .ChooseUnitFaction(ecColorless)
+  // single player
+    .DisableMirroring;
+
+  // player nexus
+  Game.ServerEntityManager.SpawnUnit(-96, -23, 'Units\Neutral\NexusLevel1', 1); // Blue Nexus
+
+  // 1. outpost
+  Game.ServerEntityManager.SpawnUnit(-48, -23, 'Units\Neutral\LaneNode', 0);
+  SpawnedEntity := ScenarioDirector.SpawnUnitWithoutLimitedLifetimeAndReturnEntity(-52.07, -22.78, 'Units\Colorless\MeleeGolemTower.ets');
+  // SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 120.0);
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  SpawnedEntity.Blackboard.SetValue(eiWelaModifier, [FreeGroup], 5.0);
+  TBuffTakenDamageMultiplierComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .DamageTypeMustHave([dtRanged]);
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('neutral_basebuilding_destroyed');
+  ScenarioDirector.SpawnGuards(-63, -23, ['SmallRangedGolem'], [], 100);
+
+  SpawnedEntity := ScenarioDirector.SpawnUnitWithoutLimitedLifetimeAndReturnEntity(-23, -23, 'Units\Colorless\BigGolemTower.ets');
+  SpawnedEntity.UID := 'blocker_tower';
+  SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 280.0);
+
+  // 2. outpost
+  Game.ServerEntityManager.SpawnUnit(0, -23, 'Units\Scenario\TutorialTrigger', PVE_TEAM_ID);
+  Game.ServerEntityManager.SpawnUnit(0, -23, 'Units\Neutral\LaneNode', 0);
+  SpawnedEntity := ScenarioDirector.SpawnUnitWithoutLimitedLifetimeAndReturnEntity(-0, -23, 'Units\Colorless\SmallGolemTower.ets');
+  SpawnedEntity.Blackboard.SetValue(eiWelaDamage, [0, 1], 1.0);
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  SpawnedEntity.Blackboard.SetValue(eiWelaModifier, [FreeGroup], 0.0);
+  TBuffTakenDamageMultiplierComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .DamageTypeMustHave([dtSpell]);
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('neutral_basebuilding_destroyed');
+
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatch(0, -21, -1, 0, 'Units\Colorless\SmallMeleeGolem.ets', PVE_TEAM_ID);
+  SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 15.0);
+  SpawnedEntity.Blackboard.SetValue(eiAttentionrange, [0, 1, 2, 3, 4, 5], 6.0);
+  SpawnedEntity.UID := 'small_golem_1';
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('attacker_killed');
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  SpawnedEntity.Blackboard.SetValue(eiWelaModifier, [FreeGroup], 0.0);
+  TBuffTakenDamageMultiplierComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .DamageTypeMustNotHave([dtSpell]);
+
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatch(0, -25, -1, 0, 'Units\Colorless\SmallMeleeGolem.ets', PVE_TEAM_ID);
+  SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 15.0);
+  SpawnedEntity.Blackboard.SetValue(eiAttentionrange, [0, 1, 2, 3, 4, 5], 6.0);
+  SpawnedEntity.UID := 'small_golem_2';
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('attacker_killed');
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  SpawnedEntity.Blackboard.SetValue(eiWelaModifier, [FreeGroup], 0.0);
+  TBuffTakenDamageMultiplierComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .DamageTypeMustNotHave([dtSpell]);
+
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatch(2, -22, -1, 0, 'Units\Colorless\SmallMeleeGolem.ets', PVE_TEAM_ID);
+  SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 15.0);
+  SpawnedEntity.Blackboard.SetValue(eiAttentionrange, [0, 1, 2, 3, 4, 5], 6.0);
+  SpawnedEntity.UID := 'small_golem_3';
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('attacker_killed');
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  SpawnedEntity.Blackboard.SetValue(eiWelaModifier, [FreeGroup], 0.0);
+  TBuffTakenDamageMultiplierComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .DamageTypeMustNotHave([dtSpell]);
+
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatch(2, -24, -1, 0, 'Units\Colorless\SmallMeleeGolem.ets', PVE_TEAM_ID);
+  SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 15.0);
+  SpawnedEntity.Blackboard.SetValue(eiAttentionrange, [0, 1, 2, 3, 4, 5], 6.0);
+  SpawnedEntity.UID := 'small_golem_4';
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('attacker_killed');
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  SpawnedEntity.Blackboard.SetValue(eiWelaModifier, [FreeGroup], 0.0);
+  TBuffTakenDamageMultiplierComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .DamageTypeMustNotHave([dtSpell]);
+
+  // 3. outpost
+  ScenarioDirector.SpawnGuards(43, -23, ['SmallMeleeGolem'], [], 100);
+  SpawnedEntity := ScenarioDirector.SpawnUnitWithoutLimitedLifetimeAndReturnEntity(48, -23, '\Units\Scenario\GolemLaneTowerLevel1.ets');
+  // remove UpBase, so GolemTower will prevent capture LaneNode while exists
+  SpawnedEntity.Blackboard.SetValue(eiUnitProperties, [], [upLanetower, upTier1, upGround, upRanged, upBuilding, upGolem]);
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnDeathComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('neutral_basebuilding_destroyed');
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnit(48, -23, 'Units\Neutral\LaneNode', 0);
+  // fasten up capture time
+  SpawnedEntity.Blackboard.SetValue(eiWelaDamage, [2, 3, 6, 7], 3.0);
+
+
+  // boss guards
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.66, -28.90, 'Units\Colorless\SmallGolemTower.ets');
+  ScenarioDirector.SpawnUnitWithoutLimitedLifetime(85.86, -17.12, 'Units\Colorless\SmallGolemTower.ets');
+  // ScenarioDirector.SpawnGuards(80, -23, ['SmallMeleeGolem', 'BigMeleeGolem'], [], 0);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(85, -23, -1, 0, 'Units\Colorless\SmallMeleeGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE - 4.0);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(87, -23, -1, 0, 'Units\Colorless\BigMeleeGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE - 2.0);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(89, -21, -1, 0, 'Units\Colorless\SmallRangedGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(89, -23, -1, 0, 'Units\Colorless\SmallRangedGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(89, -25, -1, 0, 'Units\Colorless\SmallRangedGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(91, -22, -1, 0, 'Units\Colorless\SmallRangedGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE);
+  SpawnedEntity := Game.ServerEntityManager.SpawnUnitWithOverwatchAndFlee(91, -24, -1, 0, 'Units\Colorless\SmallRangedGolem.ets', PVE_TEAM_ID, FLEE_DISTANCE);
+  // SpawnedEntity.Blackboard.SetIndexedValue(eiResourceBalance, [], reHealth, 20.0);
+
+  // boss with disabled finishing attack
+  SpawnedEntity := ScenarioDirector.SpawnUnitWithoutLimitedLifetimeAndReturnEntity(96, -23, 'Units\Scenario\BossSiegeGolemAttack.ets');
+  SpawnedEntity.Blackboard.SetValue(eiWelaActive, [1], False);
+  FreeGroup := SpawnedEntity.ReserveFreeGroup();
+  TAutoBrainOnTakeDamageComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .FireSelfInGroup([FreeGroup])
+    .ThinksPassively;
+  TWelaEffectGameEventComponent.CreateGrouped(SpawnedEntity, [FreeGroup])
+    .Event('final_boss_killed');
+  TWelaEffectRemoveAfterUseComponent.CreateGrouped(SpawnedEntity, [FreeGroup]);
+
+  ScenarioDirector
+  // intial state (gametick, value)
+  // don't drop units
+    .ChangeGoldIncome(0, 0)
+  // use only spawner
+    .ChangeWood(0, 0)
+    .ChangeWoodIncome(0, 0)
+    .ChangeUnitSpawnerSubset(0, ['SmallMeleeGolem', 'SmallRangedGolem']);
+
+  TTutorialDirectorServerComponent.Create(Entity);
+  {$ENDIF}
+  {$IFDEF CLIENT}
+  Game.ClientMap.AddDecoEntity(96, -0.1, -23, -1, 0, 0, 0.12, '\Environment\NexusGround');
+
+  TTutorialDirectorComponent.Create(Entity)
+  // ===== Group definitions =======================
+    .BuildElementGroup('deck', ['deck_panel'])
+    .BuildKeybindingGroup('deck', [])
+    .BuildElementGroup('resources', ['resource_panel'])
+    .BuildKeybindingGroup('resources', [])
+    .BuildElementGroup('game_info', ['game_info_panel', 'minimap_panel', 'technical_panel'])
+    .BuildKeybindingGroup('game_info', [])
+    .BuildElementGroup('spawner_jump', ['spawner_jump_button'])
+    .BuildKeybindingGroup('spawner_jump', [kbNexusJump])
+    .BuildElementGroup('archer_drop', ['BuildButton1'])
+    .BuildKeybindingGroup('archer_drop', [kbDeckslot02])
+    .BuildElementGroup('ballista_drop', ['BuildButton2'])
+    .BuildKeybindingGroup('ballista_drop', [kbDeckslot03])
+    .BuildElementGroup('hail_of_arrows', ['BuildButton3'])
+    .BuildKeybindingGroup('hail_of_arrows', [kbDeckslot04])
+    .BuildElementGroup('footman_spawner_1', ['BuildButton6'])
+    .BuildKeybindingGroup('footman_spawner_1', [kbDeckslot07])
+    .BuildElementGroup('footman_spawner_2', ['BuildButton7'])
+    .BuildKeybindingGroup('footman_spawner_2', [kbDeckslot08])
+    .BuildElementGroup('archer_spawner', ['BuildButton5'])
+    .BuildKeybindingGroup('archer_spawner', [kbDeckslot06])
+    .BuildElementGroup('all_spawners', ['BuildButton5', 'BuildButton6', 'BuildButton7'])
+    .BuildKeybindingGroup('all_spawners', [kbDeckslot06, kbDeckslot07, kbDeckslot08])
+    .BuildElementGroup('build_buttons_late_game', ['BuildButton4'])
+    .BuildKeybindingGroup('build_buttons_late_game', [kbDeckslot05])
+    .BuildElementGroup('all_buttons', ['BuildButton0', 'BuildButton1', 'BuildButton2', 'BuildButton3', 'BuildButton4', 'BuildButton5', 'BuildButton6', 'BuildButton7', 'spawner_jump_button'])
+    .BuildKeybindingGroup('all_buttons', [kbDeckslot01, kbDeckslot02, kbDeckslot03, kbDeckslot04, kbDeckslot05, kbDeckslot06, kbDeckslot07, kbDeckslot08, kbNexusJump])
+  // ===== Step definitions ========================
+    .AddStepClientInit()
+    .StepLabel('Tutorial_Init')
+    .SendGameevent(GAME_EVENT_TECH_LEVEL_2)
+    .SendGameevent(GAME_EVENT_TECH_LEVEL_3)
+    .SendGameevent(GAME_EVENT_DEACTIVATE_INCOME)
+    .SendGameevent(GAME_EVENT_SET_GOLD_PREFIX + '330')
+    .SendGameevent(GAME_EVENT_SET_WOOD_PREFIX + '2200')
+    .PreventMultiCardPlay
+    .LockGroup('all_buttons')
+    .HideGroup('build_buttons_late_game')
+    .HideGroup('deck')
+    .HideGroup('resources')
+    .HideGroup('game_info')
+    .LockCamera
+    .MoveCamera(96, -23)
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      .AddClass('locked')
+      , TTutorialDirectorActionTutorialHint.Create
+      .Text('§tutorial_text_opener')
+      .ButtonText('§tutorial_text_opener_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .StepLabel('Tutorial_Goal')
+    .AddActions(
+      TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_goal')
+      .WorldPoint(96, 5.0, -23)
+      .WorldRadius(2.3)
+      .WindowButton('§tutorial_text_goal_confirm')
+      .NoBackdrop
+      .WindowAnchor(caRight)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .ClearTutorialHint
+    .MoveCameraOverTime(-106.5, -23, 1667)
+  // ===============================================
+    .AddStepTimer(1667)
+    .ClearGroupStates('deck')
+    .AddStepTimer(0)
+    .StepLabel('select_footman_spawner_1')
+    .UnlockGroup('footman_spawner_1')
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .AddStepTimer(0)
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_select_footman_now')
+      .LoadElementFromGroup('footman_spawner_1')
+      .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_SELECTED)
+    .ClearTutorialHint
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .RemoveClass('disabled')
+    , TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_place_footman_now')
+    .WorldPoint(-106.5 - 0.3, 0, -22 - 0.5)
+    .NoBackdrop
+    .WindowAnchor(caBottomRight)
+    )
+    .IfGameEventGotoStep(GAME_EVENT_CARD_DESELECTED, 'select_footman_spawner_1')
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_PLACED)
+    .StepLabel('Spawner_1_placed')
+    .ClearGroupStates('deck')
+    .LockGroup('footman_spawner_1')
+    .AddStepTimer(0)
+    .StepLabel('select_footman_spawner_2')
+    .UnlockGroup('footman_spawner_2')
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .AddStepTimer(0)
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_select_footman_2')
+      .LoadElementFromGroup('footman_spawner_2')
+      .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_SELECTED)
+    .ClearTutorialHint
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .RemoveClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_place_footman_2')
+      .WorldPoint(-108.5 - 0.3, 0, -22 - 0.5)
+      .NoBackdrop
+      .WindowAnchor(caBottomRight)
+    )
+    .IfGameEventGotoStep(GAME_EVENT_CARD_DESELECTED, 'select_footman_spawner_2')
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_PLACED)
+    .StepLabel('after_both_footman_spawner_placed')
+    .LockGroup('footman_spawner_2')
+    .ClearWorldObjects
+    .ClearTutorialHint
+  // ===============================================
+    .AddStepTimer(750)
+    .ClearGroupStates('resources')
+    //.AddStepTimer(0)
+    //.AddActions(
+    //  TTutorialDirectorActionArrowHighlight.Create
+    //  .Text('§tutorial_text_spawner_cost')
+    //  .Element('wood_wrapper')
+    //  .ElementAnchor(caRight)
+    //  .WindowButton('§tutorial_text_spawner_cost_confirm')
+    //)
+  // ===============================================
+    //.AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .ClearGroupStates('game_info')
+    //.AddStepTimer(0)
+    //.AddActions(
+    //  TTutorialDirectorActionArrowHighlight.Create
+    //  .Text('§tutorial_text_game_start')
+    //  .Element('game_time')
+    //  .ElementAnchor(caBottom)
+    // .WindowButton('§tutorial_text_game_start_confirm')
+    //)
+  // ===============================================
+    //.AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .SendGameevent(GAME_EVENT_CLIENT_READY)
+    .SendGameevent(GAME_EVENT_SKIP_WARMING)
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .MoveCamera(-90, -23)
+    //.AddActions(
+    //TTutorialDirectorActionArrowHighlight.Create
+    //.Element('game_time')
+    //.ElementAnchor(caBottom)
+    // .NoBackdrop
+    // )
+  // ===============================================
+    .AddStepGameTick(2)
+    .SendGameevent(GAME_EVENT_DEACTIVATE_SPAWNER)
+    .AddStepGameTick(3)
+    .PassiveText('§tutorial_text_gameplay_description', '§tutorial_text_gameplay_description_confirm')
+    //.AddAction(
+    //  TTutorialDirectorActionMoveCamera.Create
+    //    .Time(500)
+    //    .FollowLastSpawnedEntity()
+    //)
+    .MoveCameraOverTime(-70, -23, 5000)
+  // ===============================================
+    .AddStepGameTick(10)
+    .MoveCameraOverTime(-60, -23, 2500)
+  // ===============================================
+    .AddStepGameTick(19)
+    .StepLabel('footman killed')
+    .SendGameevent(GAME_EVENT_FREEZE_GAME)
+    .AddActions(
+      TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_melee_tower')
+      .WorldPoint(-52.07, 1.0, -22.78)
+      .WorldRadius(1.2)
+      .WindowButton('§tutorial_text_melee_tower_confirm')
+      .NoBackdrop
+      .WindowAnchor(caRight)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .StepLabel('select_archer_drop')
+    .UnlockGroup('archer_drop')
+    .ClearTutorialHint
+    .ClearWorldObjects
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .AddClass('disabled')
+    , TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_select_archer')
+    .LoadElementFromGroup('archer_drop')
+    .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_DROP_SELECTED)
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .RemoveClass('disabled')
+    , TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_drop_description')
+    .WorldPoint(-68.5 - 0.3, 0, -22 - 0.5)
+    .NoBackdrop
+    .WindowAnchor(caBottomRight)
+    )
+    .IfGameEventGotoStep(GAME_EVENT_CARD_DESELECTED, 'select_archer_drop')
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_DROP_PLACED)
+    .LockGroup('archer_drop')
+    .ClearTutorialHint
+    .ClearWorldObjects
+  // ===============================================
+    .AddStepTimer(1500)
+    .AddActions(
+    TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_gold_description')
+    .Element('gold_wrapper')
+    .ElementAnchor(caRight)
+    .WindowButton('§tutorial_text_gold_description_confirm')
+    )
+  // ===============================================
+    //.AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    //.AddActions(
+    //TTutorialDirectorActionArrowHighlight.Create
+    //.Text('§tutorial_text_soul_coin_conversion')
+    //.Element('wood_wrapper')
+    //.ElementAnchor(caRight)
+    //.WindowButton('§tutorial_text_soul_coin_conversion_confirm')
+    //)
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .SendGameevent(GAME_EVENT_UNFREEZE_GAME)
+  // ===============================================
+    .AddStepGameEvent('neutral_basebuilding_destroyed')
+    .StepLabel('first_golem_tower_destroyed')
+    .ClearTutorialHint
+    .PassiveText('§tutorial_text_capture_point', '§tutorial_text_capture_point_confirm')
+    .LockCamera
+    .MoveCameraOverTime(-48, -23, 2000)
+    .AddStepTimer(2000)
+    //.AddAction(
+    //  TTutorialDirectorActionArrowHighlight.Create
+    //  .WorldPoint(-48 - 0.3, 0, -23 - 0.5)
+    //  .NoBackdrop
+    //  .WindowAnchor(caBottom)
+    //)
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TOWER_CAPTURED)
+    .StepLabel('first_tower_captured')
+    .SendGameevent(GAME_EVENT_FREEZE_GAME)
+    .ClearTutorialHint
+    .ClearWorldObjects
+    .AddActions(
+      TTutorialDirectorActionScript.Create
+      .Scriptfile('Modifiers/TutorialRangeIndicator.dws')
+      .Entity('blocker_tower')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_lane_tower')
+      .WorldPoint(-48, 3.0, -23)
+      .WorldRadius(1.5)
+      .WindowButton('§tutorial_text_lane_tower_confirm')
+      .NoBackdrop
+      .WindowAnchor(caRight)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .GotoStep('select_ballista_drop')
+  // ===============================================
+    .AddStepNever()
+    .StepLabel('recast_ballista')
+    .AddStepTimer(500)
+    .SendGameevent(GAME_EVENT_GIVE_GOLD_PREFIX + '100')
+    .SendGameevent(GAME_EVENT_GIVE_WOOD_PREFIX + '-100')
+    .SendGameevent(GAME_EVENT_REFRESH_CHARGES)
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionTutorialHint.Create
+      .Text('§tutorial_text_recast_ballista')
+      .ButtonText('§tutorial_text_recast_ballista_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .StepLabel('select_ballista_drop')
+    .UnlockGroup('ballista_drop')
+    .MoveCameraOverTime(-38, -23, 1000)
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_select_ballista')
+      .LoadElementFromGroup('ballista_drop')
+      .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_DROP_SELECTED)
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .RemoveClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_summoning_sickness')
+      .WorldPoint(-40 - 0.3, 0.0, -23 - 0.5)
+      .NoBackdrop
+      .WindowAnchor(caBottomRight)
+    )
+    .IfGameEventGotoStep(GAME_EVENT_CARD_DESELECTED, 'select_ballista_drop')
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_DROP_PLACED)
+    .ClearTutorialHint
+  // ===============================================
+    .AddStepNewEntity([upUnit])
+    .LockGroup('ballista_drop')
+    .SendGameevent(GAME_EVENT_UNFREEZE_GAME)
+    .ClearTutorialHint
+    .ClearWorldObjects
+    .IfLastEntityDiesGotoStep('recast_ballista')
+  // ===============================================
+    .AddStepTimer(2500)
+    .AddActions(
+      TTutorialDirectorActionMoveCamera.Create
+      .Time(500)
+      .FollowLastSpawnedEntity()
+    )
+    .IfLastEntityDiesGotoStep('recast_ballista')
+    .AddStepGameEvent('StepTrigger')
+    .SendGameevent(GAME_EVENT_FREEZE_GAME)
+    .UnlockCamera
+    .LockCamera
+    .MoveCameraOverTime(0, -23, 500)
+  // ===============================================
+    .AddStepTimer(600)
+    .AddActions(
+      TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_spell')
+      .WorldPoint(0, 1.0, -23)
+      .WorldRadius(3.0)
+      .WindowButton('§tutorial_text_spell_confirm')
+      .NoBackdrop
+      .WindowAnchor(caRight)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .GotoStep('select_spell')
+  // ===============================================
+    .AddStepNever()
+    .StepLabel('recast_hail_of_arrows')
+    .SendGameevent(GAME_EVENT_GIVE_GOLD_PREFIX + '130')
+    .SendGameevent(GAME_EVENT_GIVE_WOOD_PREFIX + '-130')
+    .SendGameevent(GAME_EVENT_REFRESH_CHARGES)
+    .LockGroup('hail_of_arrows')
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionTutorialHint.Create
+      .Text('§tutorial_text_recast_spell')
+      .ButtonText('§tutorial_text_recast_spell_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .StepLabel('select_spell')
+    .UnlockGroup('hail_of_arrows')
+    .ClearWorldObjects
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_select_hail_of_arrows')
+      .LoadElementFromGroup('hail_of_arrows')
+      .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPELL_SELECTED)
+    .ClearTutorialHint
+    .PassiveText('§tutorial_text_cast_spell', '')
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .RemoveClass('disabled')
+    )
+    .IfGameEventGotoStep(GAME_EVENT_CARD_DESELECTED, 'select_spell')
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPELL_PLACED)
+    .GotoStep('wait_hail_of_arrows')
+  // ===============================================
+    .AddStepNever()
+    .StepLabel('cast_hail_of_arrows')
+    .AddStepGameEvent(GAME_EVENT_SPELL_PLACED)
+    .StepLabel('wait_hail_of_arrows')
+    .IfTimerGotoStep(2000, 'recast_hail_of_arrows')
+  // ===============================================
+    .AddStepUIDsDead(['small_golem_1', 'small_golem_2', 'small_golem_3', 'small_golem_4'])
+    .StepLabel('four_golems_killed')
+    .StepTriggerCount(4)
+    .LockGroup('hail_of_arrows')
+    .SendGameevent(GAME_EVENT_UNFREEZE_GAME)
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .AddActions(
+    TTutorialDirectorActionMoveCamera.Create
+    .Time(500)
+    .FollowLastSpawnedEntity()
+    )
+  // ===============================================
+    .AddStepGameEvent('neutral_basebuilding_destroyed')
+    .StepLabel('2nd_golemtower_destroyed')
+    .SendGameevent(GAME_EVENT_FREEZE_GAME)
+    .AddActions(
+      TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_generate_essence')
+      .Element('wood_wrapper')
+      .ElementAnchor(caRight)
+      .WindowButton('§tutorial_text_generate_essence_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .UnlockCamera
+    //.UnshadowGroup('archer_spawner')
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionTutorialHint.Create
+      .Text('§tutorial_text_next_spawner')
+      .ButtonText('§tutorial_text_next_spawner_confirm')
+      //TTutorialDirectorActionArrowHighlight.Create
+      //.Text('§tutorial_text_next_spawner')
+      //.LoadElementFromGroup('archer_spawner')
+      //.ElementAnchor(caTop)
+      //.NoArrow()
+      //.WindowButton('§tutorial_text_next_spawner_confirm')
+      , TTutorialDirectorActionLockCamera.Create
+      .SpawnerJumpAllowed()
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    //.ClearGroupUnshadow('archer_spawner')
+    .UnlockGroup('spawner_jump')
+    .AddActions(
+    TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_spawner_jump_to_base')
+    .Element('spawner_jump_button')
+    .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_JUMP)
+    .StepLabel('select_archer_spawner')
+    .ClearTutorialHint
+    .LockGroup('spawner_jump')
+    .UnlockGroup('archer_spawner')
+    .LockCamera
+    .AddActions(
+    TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_select_heavy_gunner')
+    .LoadElementFromGroup('archer_spawner')
+    .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_SELECTED)
+    .ClearWorldObjects
+    .ClearTutorialHint
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .RemoveClass('disabled')
+    , TTutorialDirectorActionArrowHighlight.Create
+    .Text('§tutorial_text_place_spawner_2')
+    .WorldPoint(-104.5 - 0.3, 0, -20 - 0.5)
+    .NoBackdrop
+    .WindowAnchor(caBottomRight)
+    )
+    .IfGameEventGotoStep(GAME_EVENT_CARD_DESELECTED, 'select_archer_spawner')
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_PLACED)
+    .LockGroup('archer_spawner')
+    .ClearWorldObjects
+    .AddStepTimer(750)
+    //.AddActions(
+    //  TTutorialDirectorActionArrowHighlight.Create
+    //  .Text('§tutorial_text_income_upgrade')
+    //  .Element('income_wrapper')
+    //  .ElementAnchor(caRight)
+    //  .WindowButton('§tutorial_text_income_upgrade_confirm')
+    //)
+  // ===============================================
+    //.AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .UnlockGroup('spawner_jump')
+    .AddActions(
+      TTutorialDirectorActionLockCamera.Create
+      .SpawnerJumpAllowed()
+      , TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .AddClass('disabled')
+      , TTutorialDirectorActionArrowHighlight.Create
+      .Text('§tutorial_text_spawner_jump_back')
+      .Element('spawner_jump_button')
+      .ElementAnchor(caTop)
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_SPAWNER_JUMP)
+    .StepLabel('jump_back')
+    .LockGroup('spawner_jump')
+    .ClearTutorialHint
+    .AddActions(
+    TTutorialDirectorActionTutorialHint.Create
+    .Text('§tutorial_text_camera')
+    .ButtonText('§tutorial_text_camera_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .StepLabel('Follow_path')
+    .PassiveText('§tutorial_text_camera_hint', '')
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .RemoveClass('disabled')
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(-90, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(-75, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(-58, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(-41, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(-24, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(-7, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(10, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(23, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+      , TTutorialDirectorActionWorldTexture.Create
+      .TexturePath('Graphics\GUI\HUD\Tutorial\Arrow.png')
+      .Position(36, 0.1, -23)
+      .Size(4 * 0.755, 4)
+      .Up(-1, 0, 0)
+    )
+    .UnlockCamera
+  // ===============================================
+    .AddStepCamPos(40.0, -23.0, 7.0)
+    .ClearWorldObjects
+    .LockCamera
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .AddClass('disabled')
+    , TTutorialDirectorActionTutorialHint.Create
+    .Text('§tutorial_text_last_outpost')
+    .ButtonText('§tutorial_text_last_outpost_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .ClearGroupLock('all_buttons')
+    .LockGroup('build_buttons_late_game')
+    .SendGameevent(GAME_EVENT_UNFREEZE_GAME)
+    .SendGameevent(GAME_EVENT_REFRESH_GOLD)
+    .SendGameevent(GAME_EVENT_REFRESH_CHARGES)
+    .SendGameevent(GAME_EVENT_ACTIVATE_INCOME)
+    .SendGameevent(GAME_EVENT_ACTIVATE_SPAWNER)
+    .AllowMultiCardPlay
+    .PassiveText('§tutorial_text_last_outpost_mark', 'Attackeee!')
+    .GroundText(-42, '§tutorial_text_last_outpost_lane')
+    .UnlockCamera
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .RemoveClass('disabled')
+    .RemoveClass('locked')
+    )
+  // ===============================================
+    .AddStepGameEvent('neutral_basebuilding_destroyed')
+    .StepLabel('3nd_golemtower_destroyed')
+    .ClearWorldObjects
+    .ClearGroupStates('build_buttons_late_game')
+    .SendGameevent(GAME_EVENT_FREEZE_GAME)
+    .SendGameevent(GAME_EVENT_DEACTIVATE_INCOME)
+    .SendGameevent(GAME_EVENT_DEACTIVATE_SPAWNER)
+    .LockCamera
+    .AddActions(
+    TTutorialDirectorActionGUIElement.Create
+    .Element('ui')
+    .AddClass('disabled')
+    .AddClass('locked')
+    , TTutorialDirectorActionTutorialHint.Create
+    .Text('§tutorial_text_primary_target')
+    .ButtonText('§tutorial_text_primary_target_confirm')
+    )
+  // ===============================================
+    .AddStepGameEvent(GAME_EVENT_TUTORIAL_HINT_CONFIRMED)
+    .StepLabel('final_attack')
+    .SendGameevent(GAME_EVENT_UNFREEZE_GAME)
+    .SendGameevent(GAME_EVENT_SET_GOLD_PREFIX + '10000')
+    .SendGameevent(GAME_EVENT_REFRESH_CHARGES)
+    .SendGameevent(GAME_EVENT_ACTIVATE_INCOME)
+    .SendGameevent(GAME_EVENT_ACTIVATE_SPAWNER)
+    .PassiveText('§tutorial_text_primary_target_mark', '§tutorial_text_primary_target_mark_confirm')
+    .UnlockCamera
+    .AddActions(
+      TTutorialDirectorActionGUIElement.Create
+      .Element('ui')
+      .RemoveClass('disabled')
+      .RemoveClass('locked')
+    )
+    // step for tracking
+    .AddStepGameEvent('final_boss_killed')
+    .StepLabel('final_boss_killed')
+    // dummy
+    .AddStepTimer(0)
+    ;
+  {$ENDIF}
+end;
