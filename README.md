@@ -25,11 +25,17 @@ Thanks to Michael the whole Fmod project is Open-Source too, so interested audio
 
 The game was developed by [Broken Games](http://brokengames.de/).
 
+
 Art by Sebastian Adomat https://www.artstation.com/art-o-mat
+
 Model Animations by Jennifer Jason http://www.jenniferjason.de/
+
 Sound Effects by Michael Klier www.michaelklier.studio
+
 Music by Julian Colbus www.mediacracy-music.com
+
 Publishing by Max Dohme http://www.crunchyleafgames.com/
+
 Everything else by Martin Lange and Tobias Tenbusch
 
 
