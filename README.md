@@ -49,4 +49,4 @@ The code base of Rise of Legions except the engine is licensed with:
 The engine and its license and dependencies can be found on Github too: https://github.com/BrokenGamesUG/delphi3d-engine
 
 All other files (graphics, soundseffects, etc.) are licensed with:
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![License: CC0](https://img.shields.io/badge/License-CC0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/deed.en)
